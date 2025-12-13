@@ -1,51 +1,49 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard – Portfolio</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard – Portfolio</title>
 
-  <!-- Main stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <h1 id="channel-title">Météo</h1>
+    </header>
 
-  <!-- Header -->
-  <header class="header">
-    <h1 id="channel-title">Météo</h1>
-  </header>
+    <!-- Main layout -->
+    <div class="layout">
+      <!-- Sidebar navigation -->
+      <nav class="sidebar" aria-label="Navigation des salons">
+        <ul>
+          <li data-channel="meteo" class="active">🌤 Météo</li>
+          <li data-channel="chat">💬 Discussions</li>
+          <li data-channel="stats">📊 Statistiques</li>
+          <li data-channel="settings">⚙️ Paramètres</li>
+        </ul>
+      </nav>
 
-  <!-- Main layout -->
-  <div class="layout">
+      <!-- Main content -->
+      <main class="content" role="main">
+        <section>
+          <h2>Bienvenue</h2>
+          <p>
+            Sélectionnez un salon dans la navigation pour afficher son contenu.
+          </p>
+        </section>
+      </main>
+    </div>
 
-    <!-- Sidebar navigation -->
-    <nav class="sidebar" aria-label="Navigation des salons">
-      <ul>
-        <li data-channel="meteo" class="active">🌤 Météo</li>
-        <li data-channel="chat">💬 Discussions</li>
-        <li data-channel="stats">📊 Statistiques</li>
-        <li data-channel="settings">⚙️ Paramètres</li>
-      </ul>
-    </nav>
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Projet Dashboard – Portfolio d’intégration web</p>
+    </footer>
 
-    <!-- Main content -->
-    <main class="content" role="main">
-      <section>
-        <h2>Bienvenue</h2>
-        <p>
-          Sélectionnez un salon dans la navigation pour afficher son contenu.
-        </p>
-      </section>
-    </main>
-
-  </div>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>Projet Dashboard – Portfolio d’intégration web</p>
-  </footer>
-
-  <!-- JavaScript -->
-  <script src="assets/js/app.js"></script>
-</body>
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
 </html>
