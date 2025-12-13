@@ -25,11 +25,25 @@ body {
   background-color: #1f2933;
   color: #ffffff;
   padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
+
 
 .header h1 {
   font-size: 1.5rem;
 }
+
+#theme-toggle {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
 
 /* =========================================
    Layout (Grid)
@@ -162,4 +176,42 @@ body {
 
 .chat__form button:hover {
   background-color: #1d4ed8;
+}
+
+/* =========================================
+   Dark mode
+========================================= */
+
+body.dark {
+  background-color: #0f172a;
+  color: #e5e7eb;
+}
+
+body.dark .header {
+  background-color: #020617;
+}
+
+body.dark .sidebar {
+  background-color: #020617;
+}
+
+body.dark .content {
+  background-color: #020617;
+}
+
+body.dark .footer {
+  background-color: #020617;
+  color: #9ca3af;
+}
+
+body.dark .chat__messages {
+  background-color: #020617;
+  border-color: #334155;
+}
+
+body.dark input,
+body.dark button {
+  background-color: #020617;
+  color: #e5e7eb;
+  border: 1px solid #334155;
 }
