@@ -2,11 +2,23 @@ $(document).ready(function () {
   // Contenu des salons (simulé)
   const channels = {
     meteo: `
-      <section>
-        <h2>Météo</h2>
-        <p>Temps ensoleillé aujourd’hui ☀️</p>
-        <p>Température : 18°C</p>
-      </section>
+        <section class="weather">
+            <h2>Météo en temps réel</h2>
+
+            <form id="weather-form" class="weather__form">
+            <input
+                type="text"
+                id="weather-input"
+                placeholder="Ville ou code postal"
+                required
+            >
+            <button type="submit">Rechercher</button>
+            </form>
+
+            <div id="weather-result" class="weather__result">
+            <p>Entrez une localisation pour afficher la météo.</p>
+            </div>
+        </section>
     `,
     chat: `
         <section class="chat">
@@ -26,20 +38,20 @@ $(document).ready(function () {
         </section>
     `,
     stats: `
-      <section>
-        <h2>Statistiques</h2>
-        <ul>
-          <li>Utilisateurs actifs : 12</li>
-          <li>Messages envoyés : 48</li>
-          <li>Salons disponibles : 4</li>
-        </ul>
-      </section>
+        <section>
+            <h2>Statistiques</h2>
+            <ul>
+            <li>Utilisateurs actifs : 12</li>
+            <li>Messages envoyés : 48</li>
+            <li>Salons disponibles : 4</li>
+            </ul>
+        </section>
     `,
     settings: `
-      <section>
-        <h2>Paramètres</h2>
-        <p>Options de personnalisation à venir.</p>
-      </section>
+        <section>
+            <h2>Paramètres</h2>
+            <p>Options de personnalisation à venir.</p>
+        </section>
     `,
   };
 
