@@ -11,6 +11,7 @@ const messageEl = document.getElementById("message");
 fetch("assets/data/songs.json")
   .then((res) => res.json())
   .then((data) => {
+    console.log("SONGS LOADED:", data);
     songs = shuffle(data);
     startGame();
   });
