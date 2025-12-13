@@ -10,8 +10,25 @@ header {
 
 #timeline {
   display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.drop-zone {
+  width: 30px;
+  height: 30px;
+  border: 2px dashed #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  background: #f9f9f9;
+}
+
+.drop-zone:hover {
+  background: #d0ebff;
+  border-color: #339af0;
 }
 
 .card {
@@ -22,7 +39,9 @@ header {
 }
 
 .card.year {
-  font-weight: bold;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 2px solid #333;
 }
 
 #message {
