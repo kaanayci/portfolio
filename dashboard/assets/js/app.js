@@ -1,6 +1,31 @@
 $(document).ready(function () {
   // Contenu des salons (simulé)
   const channels = {
+    home: `
+        <section class="home">
+            <h2>Bienvenue dans le salon Météo 🌤</h2>
+
+            <p>
+            Ce dashboard est un espace d’échange et d’information
+            autour de la météo.
+            </p>
+
+            <p>
+            Vous pouvez :
+            </p>
+
+            <ul>
+            <li>🌍 Consulter la météo en temps réel pour une localisation précise</li>
+            <li>💬 Discuter des conditions météo chez vous</li>
+            <li>📊 Explorer des statistiques liées à l’activité</li>
+            </ul>
+
+            <p>
+            Pour commencer, rendez-vous dans le salon
+            <strong>🌤 Météo</strong> et entrez une ville ou un code postal.
+            </p>
+        </section>
+    `,
     meteo: `
         <section class="weather">
             <h2>Météo en temps réel</h2>
@@ -115,6 +140,14 @@ $(document).ready(function () {
       $(this).text("🌙");
     }
   });
+
+  // Chargement initial : salon Accueil
+  $(".content").html(channels.home);
+  $("#channel-title").text("Accueil");
+
+  // État actif dans la sidebar
+  $(".sidebar li").removeClass("active");
+  $('.sidebar li[data-channel="home"]').addClass("active");
 });
 
 // Gestion de la météo
