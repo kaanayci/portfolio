@@ -28,25 +28,32 @@ function startGame() {
 
 function nextCard() {
   currentCard = songs.pop();
-  titleEl.textContent = currentCard.title;
-  artistEl.textContent = currentCard.artist;
-  audioEl.src = currentCard.preview_url;
+
+  messageEl.textContent = "❓ Place la carte dans la timeline";
+
+  audioEl.src = currentCard.preview_url || "";
   audioEl.play();
 }
 
 function renderTimeline() {
   timelineEl.innerHTML = "";
 
-  // zone AVANT la première carte
+  // zone avant la première carte
   addDropZone(0);
 
   timeline.forEach((card, index) => {
     const cardDiv = document.createElement("div");
-    cardDiv.className = "card year";
-    cardDiv.textContent = card.year;
+    cardDiv.className = "timeline-card";
+
+    cardDiv.innerHTML = `
+      <div class="year">${card.year}</div>
+      <div class="title">${card.title}</div>
+      <div class="artist">${card.artist}</div>
+    `;
+
     timelineEl.appendChild(cardDiv);
 
-    // zone APRÈS chaque carte
+    // zone après chaque carte
     addDropZone(index + 1);
   });
 }
@@ -75,6 +82,10 @@ function checkPlacement(position) {
 
     messageEl.textContent = "✅ Bien placé !";
     messageEl.className = "success";
+
+    // retourner la carte
+    const cards = document.querySelectorAll(".card");
+    cards[cards.length - 1]?.classList.add("flipped");
 
     renderTimeline();
     nextCard();
