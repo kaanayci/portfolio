@@ -69,9 +69,9 @@ function checkPlacement(position) {
     timeline.splice(position, 0, currentCard);
     messageEl.textContent = "✅ Bien placé !";
     renderTimeline();
-    nextCard();
     score++;
     scoreEl.textContent = "Score : " + score;
+    nextCard();
   } else {
     messageEl.textContent = "❌ Mauvais placement – Fin de partie";
     audioEl.pause();
