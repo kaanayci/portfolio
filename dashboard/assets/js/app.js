@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
   // Contenu des salons (simulé)
   const channels = {
     meteo: `
@@ -10,10 +9,23 @@ $(document).ready(function () {
       </section>
     `,
     chat: `
-      <section>
-        <h2>Discussions</h2>
-        <p>Aucune discussion pour le moment.</p>
-      </section>
+        <section class="chat">
+            <h2>Discussions</h2>
+
+            <div id="messages" class="chat__messages">
+            <p class="chat__message">👋 Bienvenue dans le salon de discussion</p>
+            </div>
+
+            <form id="chat-form" class="chat__form">
+            <input
+                type="text"
+                id="chat-input"
+                placeholder="Écrire un message..."
+                required
+            >
+            <button type="submit">Envoyer</button>
+            </form>
+        </section>
     `,
     stats: `
       <section>
@@ -30,12 +42,11 @@ $(document).ready(function () {
         <h2>Paramètres</h2>
         <p>Options de personnalisation à venir.</p>
       </section>
-    `
+    `,
   };
 
   // Clic sur un salon
   $(".sidebar li").on("click", function () {
-
     const channelKey = $(this).data("channel");
     const channelTitle = $(this).text();
 
@@ -48,7 +59,21 @@ $(document).ready(function () {
 
     // Injection du contenu
     $(".content").html(channels[channelKey]);
-
   });
-
 });
+
+// Gestion du chat (délégation d'événement)
+$(document).on("submit", "#chat-form", function (e) {
+  e.preventDefault();
+
+  const message = $("#chat-input").val().trim();
+
+  if (message === "") return;
+
+  $("#messages").append(
+    `<p class="chat__message">🧑 ${message}</p>`
+  );
+
+  $("#chat-input").val("");
+});
+
