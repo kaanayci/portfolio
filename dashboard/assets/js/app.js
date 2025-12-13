@@ -70,21 +70,24 @@ $(document).ready(function () {
     const channelKey = $(this).data("channel");
     const channelTitle = $(this).text();
 
-    // Gestion de l'état actif
     $(".sidebar li").removeClass("active");
     $(this).addClass("active");
 
-    // Mise à jour du titre
     $("#channel-title").text(channelTitle);
 
-    // Injection du contenu
     $(".content").fadeOut(150, function () {
       $(this)
         .html(channels[channelKey])
         .fadeIn(200, function () {
-          // Charger les messages UNIQUEMENT après insertion du HTML
           if (channelKey === "chat") {
             loadMessages();
+          }
+
+          if (channelKey === "meteo") {
+            const savedLocation = localStorage.getItem("weatherLocation");
+            if (savedLocation) {
+              fetchWeather(savedLocation);
+            }
           }
         });
     });
@@ -112,6 +115,47 @@ $(document).ready(function () {
       $(this).text("🌙");
     }
   });
+});
+
+// Gestion de la météo
+const WEATHER_API_KEY = "8bf9317dd25811ccc3ea56a0309ffc5a";
+
+function fetchWeather(location) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
+
+  $("#weather-result").html("<p>⏳ Chargement...</p>");
+
+  $.getJSON(url)
+    .done(function (data) {
+      const city = data.name;
+      const temp = Math.round(data.main.temp);
+      const desc = data.weather[0].description;
+      const icon = data.weather[0].icon;
+
+      $("#weather-result").html(`
+        <h3>${city}</h3>
+        <p>${desc}</p>
+        <p>
+          <strong>${temp}°C</strong>
+          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="">
+        </p>
+      `);
+
+      localStorage.setItem("weatherLocation", location);
+    })
+    .fail(function () {
+      $("#weather-result").html("<p>❌ Localisation invalide</p>");
+    });
+}
+// Gestion de la météo (délégation d'événement)
+$(document).on("submit", "#weather-form", function (e) {
+  e.preventDefault();
+
+  const location = $("#weather-input").val().trim();
+  if (!location) return;
+
+  fetchWeather(location);
+  localStorage.setItem("weatherLocation", location);
 });
 
 // Gestion du chat (délégation d'événement)
