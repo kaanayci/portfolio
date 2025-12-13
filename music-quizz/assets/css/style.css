@@ -1,0 +1,31 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+  background: #f4f4f4;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+
+#timeline {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.card {
+  padding: 1rem;
+  background: white;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.card.year {
+  font-weight: bold;
+}
+
+#message {
+  margin-top: 1rem;
+  font-weight: bold;
+}
