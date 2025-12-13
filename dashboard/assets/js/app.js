@@ -67,14 +67,15 @@ $(document).ready(function () {
 
     // Injection du contenu
     $(".content").fadeOut(150, function () {
-      $(this).html(channels[channelKey]).fadeIn(200);
+      $(this)
+        .html(channels[channelKey])
+        .fadeIn(200, function () {
+          // Charger les messages UNIQUEMENT après insertion du HTML
+          if (channelKey === "chat") {
+            loadMessages();
+          }
+        });
     });
-
-    if (channelKey === "chat") {
-      $("#messages").hide();
-      loadMessages();
-      $("#messages").slideDown(200);
-    }
   });
 
   // ----- Dark mode -----
