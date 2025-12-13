@@ -48,3 +48,17 @@ header {
   margin-top: 1rem;
   font-weight: bold;
 }
+/* Messages */
+#message.success {
+  color: green;
+}
+
+#message.error {
+  color: red;
+}
+
+/* Zones désactivées */
+.drop-zone.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
