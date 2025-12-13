@@ -12,9 +12,7 @@ $(document).ready(function () {
         <section class="chat">
             <h2>Discussions</h2>
 
-            <div id="messages" class="chat__messages">
-            <p class="chat__message">👋 Bienvenue dans le salon de discussion</p>
-            </div>
+            <div id="messages" class="chat__messages"></div>
 
             <form id="chat-form" class="chat__form">
             <input
