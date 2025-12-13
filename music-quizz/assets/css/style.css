@@ -14,12 +14,31 @@ header p {
   color: #adb5bd;
 }
 
+#playlist-select {
+  margin-bottom: 1.5rem;
+}
+
+#playlist-select input {
+  padding: 0.5rem;
+  width: 300px;
+  border-radius: 6px;
+  border: none;
+}
+
+#playlist-select button {
+  background: #ff2f92;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 #score {
-  color: #FF2F92;
+  color: #ff2f92;
   font-weight: bold;
   margin-bottom: 1rem;
 }
-
 
 #current-card {
   background: #2a2e45;
@@ -42,22 +61,21 @@ header p {
 }
 
 .timeline-card {
-  background: linear-gradient(145deg, #2A2E45, #1C2541);
-  color: #F8F9FA;
+  background: linear-gradient(145deg, #2a2e45, #1c2541);
+  color: #f8f9fa;
   border-radius: 10px;
   padding: 0.75rem;
   min-width: 140px;
   text-align: center;
   border: 1px solid rgba(62, 197, 255, 0.3);
-  box-shadow:
-    inset 0 0 10px rgba(62, 197, 255, 0.15),
+  box-shadow: inset 0 0 10px rgba(62, 197, 255, 0.15),
     0 4px 12px rgba(0, 0, 0, 0.6);
   transition: transform 0.2s ease;
 }
 
 .timeline-card .year {
   font-weight: bold;
-  color: #FF2F92;
+  color: #ff2f92;
 }
 
 .timeline-card .title {
@@ -107,16 +125,12 @@ header p {
 
 /* Messages */
 #message.success {
-  color: #2EC4B6;
+  color: #2ec4b6;
 }
 
 #message.error {
-  color: #FF595E;
+  color: #ff595e;
 }
-
-
-
-
 
 /* Zones désactivées */
 .drop-zone.disabled {

@@ -18,6 +18,25 @@ fetch("assets/data/songs.json")
     startGame();
   });
 
+document
+  .getElementById("start-game")
+  .addEventListener("click", startFromPlaylist);
+
+function startFromPlaylist() {
+  const url = document.getElementById("playlist-url").value;
+
+  fetch(`/api/playlist${url ? `?url=${encodeURIComponent(url)}` : ""}`)
+    .then((res) => res.json())
+    .then((data) => {
+      songs = shuffle(data);
+      startGame();
+    })
+    .catch(() => {
+      messageEl.textContent = "❌ Impossible de charger la playlist";
+      messageEl.className = "error";
+    });
+}
+
 function startGame() {
   timeline.push(songs.pop()); // première carte visible
   renderTimeline();
