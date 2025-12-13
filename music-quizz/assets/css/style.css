@@ -1,11 +1,38 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #0b132b;
+  color: #f8f9fa;
   padding: 2rem;
-  background: #f4f4f4;
 }
 
-header {
-  margin-bottom: 2rem;
+header h1 {
+  color: #ff2f92;
+  letter-spacing: 1px;
+}
+
+header p {
+  color: #adb5bd;
+}
+
+#score {
+  color: #FF2F92;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+#current-card {
+  background: #2a2e45;
+  border: 2px dashed #3ec5ff;
+  border-radius: 10px;
+  padding: 1rem;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+}
+
+#current-card .hint {
+  color: #adb5bd;
+  font-style: italic;
 }
 
 #timeline {
@@ -15,17 +42,22 @@ header {
 }
 
 .timeline-card {
+  background: linear-gradient(145deg, #2A2E45, #1C2541);
+  color: #F8F9FA;
+  border-radius: 10px;
   padding: 0.75rem;
-  min-width: 120px;
-  background: white;
-  border: 2px solid #333;
+  min-width: 140px;
   text-align: center;
-  font-size: 0.9rem;
+  border: 1px solid rgba(62, 197, 255, 0.3);
+  box-shadow:
+    inset 0 0 10px rgba(62, 197, 255, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease;
 }
 
 .timeline-card .year {
   font-weight: bold;
-  font-size: 1.1rem;
+  color: #FF2F92;
 }
 
 .timeline-card .title {
@@ -38,20 +70,21 @@ header {
 }
 
 .drop-zone {
-  width: 30px;
-  height: 30px;
-  border: 2px dashed #aaa;
+  width: 32px;
+  height: 32px;
+  border: 2px dashed #3ec5ff;
+  color: #3ec5ff;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   font-weight: bold;
-  background: #f9f9f9;
+  cursor: pointer;
 }
 
 .drop-zone:hover {
-  background: #d0ebff;
-  border-color: #339af0;
+  background: #3ec5ff;
+  color: #0b132b;
 }
 
 .card {
@@ -71,14 +104,19 @@ header {
   margin-top: 1rem;
   font-weight: bold;
 }
+
 /* Messages */
 #message.success {
-  color: green;
+  color: #2EC4B6;
 }
 
 #message.error {
-  color: red;
+  color: #FF595E;
 }
+
+
+
+
 
 /* Zones désactivées */
 .drop-zone.disabled {
@@ -122,18 +160,4 @@ header {
 .card-back {
   transform: rotateY(180deg);
   background: #fff;
-}
-
-#current-card {
-  border: 2px dashed #666;
-  padding: 1rem;
-  max-width: 300px;
-  background: #f5f5f5;
-  margin-bottom: 1rem;
-}
-
-#current-card .hint {
-  margin-bottom: 0.5rem;
-  font-style: italic;
-  color: #444;
 }
