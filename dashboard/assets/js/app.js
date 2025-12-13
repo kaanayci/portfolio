@@ -66,10 +66,14 @@ $(document).ready(function () {
     $("#channel-title").text(channelTitle);
 
     // Injection du contenu
-    $(".content").html(channels[channelKey]);
+    $(".content").fadeOut(150, function () {
+      $(this).html(channels[channelKey]).fadeIn(200);
+    });
 
     if (channelKey === "chat") {
+      $("#messages").hide();
       loadMessages();
+      $("#messages").slideDown(200);
     }
   });
 
@@ -111,7 +115,10 @@ $(document).on("submit", "#chat-form", function (e) {
   storedMessages.push(message);
   localStorage.setItem("chatMessages", JSON.stringify(storedMessages));
 
-  $("#messages").append(`<p class="chat__message">🧑 ${message}</p>`);
+  const newMessage = $(`<p class="chat__message">🧑 ${message}</p>`).hide();
+
+  $("#messages").append(newMessage);
+  newMessage.fadeIn(150);
 
   input.val("");
 });
