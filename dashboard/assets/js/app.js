@@ -43,6 +43,16 @@ $(document).ready(function () {
     `,
   };
 
+  function loadMessages() {
+    const storedMessages =
+      JSON.parse(localStorage.getItem("chatMessages")) || [];
+    $("#messages").empty();
+
+    storedMessages.forEach((message) => {
+      $("#messages").append(`<p class="chat__message">🧑 ${message}</p>`);
+    });
+  }
+
   // Clic sur un salon
   $(".sidebar li").on("click", function () {
     const channelKey = $(this).data("channel");
@@ -57,6 +67,10 @@ $(document).ready(function () {
 
     // Injection du contenu
     $(".content").html(channels[channelKey]);
+
+    if (channelKey === "chat") {
+      loadMessages();
+    }
   });
 
   // ----- Dark mode -----
@@ -87,11 +101,17 @@ $(document).ready(function () {
 $(document).on("submit", "#chat-form", function (e) {
   e.preventDefault();
 
-  const message = $("#chat-input").val().trim();
+  const input = $("#chat-input");
+  const message = input.val().trim();
 
   if (message === "") return;
 
+  const storedMessages = JSON.parse(localStorage.getItem("chatMessages")) || [];
+
+  storedMessages.push(message);
+  localStorage.setItem("chatMessages", JSON.stringify(storedMessages));
+
   $("#messages").append(`<p class="chat__message">🧑 ${message}</p>`);
 
-  $("#chat-input").val("");
+  input.val("");
 });
