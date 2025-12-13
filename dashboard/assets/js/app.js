@@ -60,6 +60,29 @@ $(document).ready(function () {
     // Injection du contenu
     $(".content").html(channels[channelKey]);
   });
+
+  // ----- Dark mode -----
+
+  // Appliquer le thème au chargement
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "dark") {
+    $("body").addClass("dark");
+    $("#theme-toggle").text("☀️");
+  }
+
+  // Toggle thème
+  $("#theme-toggle").on("click", function () {
+    $("body").toggleClass("dark");
+
+    if ($("body").hasClass("dark")) {
+      localStorage.setItem("theme", "dark");
+      $(this).text("☀️");
+    } else {
+      localStorage.setItem("theme", "light");
+      $(this).text("🌙");
+    }
+  });
 });
 
 // Gestion du chat (délégation d'événement)
@@ -70,10 +93,7 @@ $(document).on("submit", "#chat-form", function (e) {
 
   if (message === "") return;
 
-  $("#messages").append(
-    `<p class="chat__message">🧑 ${message}</p>`
-  );
+  $("#messages").append(`<p class="chat__message">🧑 ${message}</p>`);
 
   $("#chat-input").val("");
 });
-
