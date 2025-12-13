@@ -65,16 +65,30 @@ function checkPlacement(position) {
 
   const year = currentCard.year;
 
-  if ((!left || year >= left.year) && (!right || year <= right.year)) {
+  const isCorrect =
+    (!left || year >= left.year) && (!right || year <= right.year);
+
+  if (isCorrect) {
     timeline.splice(position, 0, currentCard);
-    messageEl.textContent = "✅ Bien placé !";
-    renderTimeline();
     score++;
     scoreEl.textContent = "Score : " + score;
+
+    messageEl.textContent = "✅ Bien placé !";
+    messageEl.className = "success";
+
+    renderTimeline();
     nextCard();
   } else {
     messageEl.textContent = "❌ Mauvais placement – Fin de partie";
+    messageEl.className = "error";
+    messageEl.textContent += ` (Année réelle : ${currentCard.year})`;
+
     audioEl.pause();
+
+    // Désactiver toutes les zones
+    document
+      .querySelectorAll(".drop-zone")
+      .forEach((zone) => zone.classList.add("disabled"));
   }
 }
 
