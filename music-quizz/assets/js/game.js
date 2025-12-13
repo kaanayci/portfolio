@@ -1,7 +1,9 @@
 let songs = [];
 let timeline = [];
 let currentCard = null;
+let score = 0;
 
+const scoreEl = document.getElementById("score");
 const timelineEl = document.getElementById("timeline");
 const titleEl = document.getElementById("song-title");
 const artistEl = document.getElementById("song-artist");
@@ -20,6 +22,8 @@ function startGame() {
   timeline.push(songs.pop()); // première carte visible
   renderTimeline();
   nextCard();
+  score = 0;
+  scoreEl.textContent = "Score : 0";
 }
 
 function nextCard() {
@@ -33,13 +37,26 @@ function nextCard() {
 function renderTimeline() {
   timelineEl.innerHTML = "";
 
+  // zone AVANT la première carte
+  addDropZone(0);
+
   timeline.forEach((card, index) => {
-    const div = document.createElement("div");
-    div.className = "card year";
-    div.textContent = card.year;
-    div.onclick = () => checkPlacement(index + 1);
-    timelineEl.appendChild(div);
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "card year";
+    cardDiv.textContent = card.year;
+    timelineEl.appendChild(cardDiv);
+
+    // zone APRÈS chaque carte
+    addDropZone(index + 1);
   });
+}
+
+function addDropZone(position) {
+  const zone = document.createElement("div");
+  zone.className = "drop-zone";
+  zone.textContent = "+";
+  zone.onclick = () => checkPlacement(position);
+  timelineEl.appendChild(zone);
 }
 
 function checkPlacement(position) {
@@ -53,6 +70,8 @@ function checkPlacement(position) {
     messageEl.textContent = "✅ Bien placé !";
     renderTimeline();
     nextCard();
+    score++;
+    scoreEl.textContent = "Score : " + score;
   } else {
     messageEl.textContent = "❌ Mauvais placement – Fin de partie";
     audioEl.pause();
