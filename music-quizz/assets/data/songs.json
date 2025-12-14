@@ -2,19 +2,16 @@
   {
     "title": "Test Song",
     "artist": "Test Artist",
-    "year": 2000,
-    "preview_url": ""
+    "year": 2000
   },
   {
     "title": "Older Song",
     "artist": "Old Artist",
-    "year": 1990,
-    "preview_url": ""
+    "year": 1990
   },
   {
     "title": "Newer Song",
     "artist": "New Artist",
-    "year": 2010,
-    "preview_url": ""
+    "year": 2010
   }
 ]
