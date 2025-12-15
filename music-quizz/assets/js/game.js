@@ -22,21 +22,6 @@ fetch("assets/data/songs.json")
 
 startBtn.addEventListener("click", startGame);
 
-function startFromPlaylist() {
-  const url = document.getElementById("playlist-url").value;
-
-  fetch(`/api/playlist${url ? `?url=${encodeURIComponent(url)}` : ""}`)
-    .then((res) => res.json())
-    .then((data) => {
-      songs = shuffle(data);
-      startGame();
-    })
-    .catch(() => {
-      messageEl.textContent = "❌ Impossible de charger la playlist";
-      messageEl.className = "error";
-    });
-}
-
 function startGame() {
   if (songs.length === 0) return;
 
