@@ -3,24 +3,24 @@
     "title": "Smells Like Teen Spirit",
     "artist": "Nirvana",
     "year": 1991,
-    "preview": "assets/audio/nirvana.mp3"
+    "preview": "audio/nirvana.mp3"
   },
   {
     "title": "Californication",
     "artist": "Red Hot Chili Peppers",
     "year": 1999,
-    "preview": "assets/audio/rhcp.mp3"
+    "preview": "audio/rhcp.mp3"
   },
   {
     "title": "Seven Nation Army",
     "artist": "The White Stripes",
     "year": 2003,
-    "preview": "assets/audio/white-stripes.mp3"
+    "preview": "audio/white-stripes.mp3"
   },
   {
     "title": "Take On Me",
     "artist": "a-ha",
     "year": 1985,
-    "preview": "assets/audio/aha.mp3"
+    "preview": "audio/aha.mp3"
   }
 ]
