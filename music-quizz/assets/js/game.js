@@ -36,6 +36,12 @@ function startGame() {
 }
 
 function nextCard() {
+  if (songs.length === 0) {
+    messageEl.textContent = "🎉 Partie terminée !";
+    audioEl.pause();
+    return;
+  }
+
   currentCard = songs.pop();
 
   messageEl.textContent = "❓ Place la carte dans la timeline";
