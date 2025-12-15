@@ -1,8 +1,10 @@
+// Variables globales
 let songs = [];
 let timeline = [];
 let currentCard = null;
 let score = 0;
 
+// Éléments DOM
 const scoreEl = document.getElementById("score");
 const timelineEl = document.getElementById("timeline");
 const titleEl = document.getElementById("song-title");
