@@ -38,12 +38,18 @@ function startFromPlaylist() {
 }
 
 function startGame() {
-  timeline.push(songs.pop()); // première carte visible
-  renderTimeline();
-  nextCard();
+  if (songs.length === 0) return;
+
+  timeline = [];
+  timeline.push(songs.pop());
+
   score = 0;
   scoreEl.textContent = "Score : 0";
+
+  renderTimeline();
+  nextCard();
 }
+
 
 function nextCard() {
   currentCard = songs.pop();
