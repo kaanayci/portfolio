@@ -229,6 +229,11 @@ main {
     margin: 0 auto;
   }
 
+  #playlist-select{
+    flex-direction: column;
+    align-items: stretch; /* étirer les éléments sur toute la largeur */
+  }
+
   #playlist-select input,
   #playlist-select button {
     width: 100%;
