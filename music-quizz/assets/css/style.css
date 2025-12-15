@@ -25,8 +25,8 @@ body {
 }
 
 main {
-  width: 100%;
-  max-width: 900px; /* parfait pour une timeline */
+  max-width: 1100px;
+  margin: 0 auto;
   padding: 2rem;
 }
 
@@ -211,4 +211,3 @@ main {
     padding: 1rem;
   }
 }
-
