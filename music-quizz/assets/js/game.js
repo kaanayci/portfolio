@@ -14,15 +14,13 @@ const playlistInput = document.getElementById("playlist-url");
 
 // Charger les chansons depuis le fichier JSON
 fetch("assets/data/songs.json")
-  .then(res => res.json())
-  .then(data => {
+  .then((res) => res.json())
+  .then((data) => {
     console.log("SONGS LOADED:", data);
     songs = shuffle(data);
   });
 
-document
-  .getElementById("start-game")
-  .addEventListener("click", startFromPlaylist);
+startBtn.addEventListener("click", startGame);
 
 function startFromPlaylist() {
   const url = document.getElementById("playlist-url").value;
