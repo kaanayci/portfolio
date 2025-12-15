@@ -43,6 +43,9 @@ function nextCard() {
   if (songs.length === 0) {
     messageEl.textContent = "🎉 Partie terminée !";
     audioEl.pause();
+    audioEl.currentTime = 0;
+    audioEl.src = currentCard.preview;
+    audioEl.load();
     return;
   }
 
@@ -86,9 +89,8 @@ function endGame() {
 
   document
     .querySelectorAll(".drop-zone")
-    .forEach(zone => zone.classList.add("disabled"));
+    .forEach((zone) => zone.classList.add("disabled"));
 }
-
 
 // Afficher la timeline
 function renderTimeline() {
