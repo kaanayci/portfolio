@@ -2,7 +2,12 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   background: #0b132b;
   color: #f8f9fa;
-  padding: 2rem;
+
+  min-height: 100vh;
+  margin: 0;
+
+  display: flex;
+  justify-content: center; /* centrage horizontal */
 }
 
 header h1 {
