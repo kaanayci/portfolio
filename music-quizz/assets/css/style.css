@@ -30,13 +30,6 @@ main {
   padding: 2rem;
 }
 
-.top-layout{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: start;
-  gap: 3rem;
-}
-
 #playlist-select {
   margin-bottom: 1.5rem;
 }
@@ -84,6 +77,19 @@ main {
 
   overflow-x: auto; /* scroll horizontal mobile */
   padding-bottom: 1rem;
+}
+
+.top-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 3rem;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .timeline-card {
