@@ -85,6 +85,8 @@ main {
   grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: start;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .controls {
