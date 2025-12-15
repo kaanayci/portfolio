@@ -83,10 +83,11 @@ function endGame() {
     .forEach(zone => zone.classList.add("disabled"));
 }
 
+
+// Afficher la timeline
 function renderTimeline() {
   timelineEl.innerHTML = "";
 
-  // zone avant la première carte
   addDropZone(0);
 
   timeline.forEach((card, index) => {
@@ -100,8 +101,6 @@ function renderTimeline() {
     `;
 
     timelineEl.appendChild(cardDiv);
-
-    // zone après chaque carte
     addDropZone(index + 1);
   });
 }
