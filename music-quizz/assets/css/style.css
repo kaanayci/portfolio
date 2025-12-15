@@ -75,6 +75,7 @@ main {
   align-items: center;
   gap: 0.5rem;
 
+  margin-top: 3rem;
   overflow-x: auto; /* scroll horizontal mobile */
   padding-bottom: 1rem;
 }
