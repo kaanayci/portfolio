@@ -50,7 +50,7 @@ function nextCard() {
 
   messageEl.textContent = "❓ Place la carte dans la timeline";
 
-  audioEl.src = currentCard.preview_url || "";
+  audioEl.src = currentCard.preview || "";
   audioEl.play();
 }
 
