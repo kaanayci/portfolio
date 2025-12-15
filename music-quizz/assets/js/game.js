@@ -73,6 +73,16 @@ function checkPlacement(position) {
   }
 }
 
+function endGame() {
+  messageEl.textContent = `❌ Mauvais placement – Année réelle : ${currentCard.year}`;
+  messageEl.className = "error";
+  audioEl.pause();
+
+  document
+    .querySelectorAll(".drop-zone")
+    .forEach(zone => zone.classList.add("disabled"));
+}
+
 function renderTimeline() {
   timelineEl.innerHTML = "";
 
