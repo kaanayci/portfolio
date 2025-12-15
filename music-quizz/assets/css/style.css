@@ -30,6 +30,13 @@ main {
   padding: 2rem;
 }
 
+.top-layout{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 3rem;
+}
+
 #playlist-select {
   margin-bottom: 1.5rem;
 }
