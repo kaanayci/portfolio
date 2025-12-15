@@ -9,13 +9,15 @@ const titleEl = document.getElementById("song-title");
 const artistEl = document.getElementById("song-artist");
 const audioEl = document.getElementById("audio");
 const messageEl = document.getElementById("message");
+const startBtn = document.getElementById("start-game");
+const playlistInput = document.getElementById("playlist-url");
 
+// Charger les chansons depuis le fichier JSON
 fetch("assets/data/songs.json")
-  .then((res) => res.json())
-  .then((data) => {
+  .then(res => res.json())
+  .then(data => {
     console.log("SONGS LOADED:", data);
     songs = shuffle(data);
-    startGame();
   });
 
 document
@@ -49,7 +51,6 @@ function startGame() {
   renderTimeline();
   nextCard();
 }
-
 
 function nextCard() {
   currentCard = songs.pop();
