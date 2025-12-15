@@ -74,6 +74,9 @@ main {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  overflow-x: auto; /* scroll horizontal mobile */
+  padding-bottom: 1rem;
 }
 
 .timeline-card {
