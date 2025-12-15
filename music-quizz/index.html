@@ -2,8 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <title>Hipster – Timeline Musicale</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Hitster – Timeline Musicale</title>
   </head>
   <body>
     <header>
@@ -12,35 +11,39 @@
     </header>
 
     <main>
-      <section id="playlist-select">
-        <p>🎵 Playlist Spotify (optionnel)</p>
-        <input
-          type="text"
-          id="playlist-url"
-          placeholder="Lien de playlist Spotify"
-        />
-        <button id="start-game">Démarrer la partie</button>
+      <section class="top-layout">
+        <header>
+          <h1>Hipster – Timeline Musicale</h1>
+          <p>Place la musique au bon endroit dans le temps</p>
+        </header>
+
+        <section class="controls">
+          <div id="playlist-select">
+            <p>🎵 Playlist Spotify (optionnel)</p>
+            <input
+              type="text"
+              id="playlist-url"
+              placeholder="Lien de playlist Spotify"
+            />
+            <button id="start-game">Démarrer la partie</button>
+          </div>
+
+          <p id="score">Score : 0</p>
+
+          <section id="current-card">
+            <p class="hint">
+              🎧 Écoute la musique et place la carte dans la timeline
+            </p>
+            <audio id="audio" controls></audio>
+          </section>
+        </section>
       </section>
 
-      <p id="score">Score : 0</p>
-
-      <!-- Carte en cours -->
-      <section id="current-card">
-        <p class="hint">
-          🎧 Écoute la musique et place la carte dans la timeline
-        </p>
-        <audio id="audio" controls></audio>
-      </section>
-
-      <!-- Timeline -->
-      <section id="timeline">
-        <!-- cartes injectées en JS -->
-      </section>
-
-      <!-- Message -->
+      <section id="timeline"></section>
       <p id="message"></p>
     </main>
 
     <script src="assets/js/game.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css" />
   </body>
 </html>
