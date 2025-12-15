@@ -22,6 +22,7 @@ fetch("assets/data/songs.json")
 
 startBtn.addEventListener("click", startGame);
 
+// Démarrer une nouvelle partie
 function startGame() {
   if (songs.length === 0) return;
 
@@ -35,6 +36,7 @@ function startGame() {
   nextCard();
 }
 
+// Afficher la carte suivante
 function nextCard() {
   if (songs.length === 0) {
     messageEl.textContent = "🎉 Partie terminée !";
@@ -50,6 +52,7 @@ function nextCard() {
   audioEl.play();
 }
 
+// Vérifier le placement de la carte
 function checkPlacement(position) {
   const left = timeline[position - 1];
   const right = timeline[position];
@@ -73,6 +76,7 @@ function checkPlacement(position) {
   }
 }
 
+// Fin du jeu en cas de mauvais placement
 function endGame() {
   messageEl.textContent = `❌ Mauvais placement – Année réelle : ${currentCard.year}`;
   messageEl.className = "error";
@@ -105,6 +109,7 @@ function renderTimeline() {
   });
 }
 
+// Ajouter une zone de dépôt
 function addDropZone(position) {
   const zone = document.createElement("div");
   zone.className = "drop-zone";
@@ -113,6 +118,7 @@ function addDropZone(position) {
   timelineEl.appendChild(zone);
 }
 
+// Mélanger un tableau
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
