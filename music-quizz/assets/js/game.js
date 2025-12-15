@@ -50,6 +50,29 @@ function nextCard() {
   audioEl.play();
 }
 
+function checkPlacement(position) {
+  const left = timeline[position - 1];
+  const right = timeline[position];
+  const year = currentCard.year;
+
+  const isCorrect =
+    (!left || year >= left.year) && (!right || year <= right.year);
+
+  if (isCorrect) {
+    timeline.splice(position, 0, currentCard);
+    score++;
+    scoreEl.textContent = "Score : " + score;
+
+    messageEl.textContent = "✅ Bien placé !";
+    messageEl.className = "success";
+
+    renderTimeline();
+    nextCard();
+  } else {
+    endGame();
+  }
+}
+
 function renderTimeline() {
   timelineEl.innerHTML = "";
 
@@ -79,43 +102,6 @@ function addDropZone(position) {
   zone.textContent = "+";
   zone.onclick = () => checkPlacement(position);
   timelineEl.appendChild(zone);
-}
-
-function checkPlacement(position) {
-  const left = timeline[position - 1];
-  const right = timeline[position];
-
-  const year = currentCard.year;
-
-  const isCorrect =
-    (!left || year >= left.year) && (!right || year <= right.year);
-
-  if (isCorrect) {
-    timeline.splice(position, 0, currentCard);
-    score++;
-    scoreEl.textContent = "Score : " + score;
-
-    messageEl.textContent = "✅ Bien placé !";
-    messageEl.className = "success";
-
-    // retourner la carte
-    const cards = document.querySelectorAll(".card");
-    cards[cards.length - 1]?.classList.add("flipped");
-
-    renderTimeline();
-    nextCard();
-  } else {
-    messageEl.textContent = "❌ Mauvais placement – Fin de partie";
-    messageEl.className = "error";
-    messageEl.textContent += ` (Année réelle : ${currentCard.year})`;
-
-    audioEl.pause();
-
-    // Désactiver toutes les zones
-    document
-      .querySelectorAll(".drop-zone")
-      .forEach((zone) => zone.classList.add("disabled"));
-  }
 }
 
 function shuffle(array) {
