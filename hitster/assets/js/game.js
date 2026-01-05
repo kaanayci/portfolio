@@ -22,7 +22,46 @@ fetch("assets/data/songs.json?v=1")
     songs = shuffle(data);
   });
 
-startBtn.addEventListener("click", startGame);
+startBtn.addEventListener("click", async () => {
+  const url = playlistInput.value.trim();
+
+  // Si l'utilisateur met un lien -> on génère côté serveur puis on recharge songs.json
+  if (url) {
+    messageEl.textContent =
+      "⏳ Import de la playlist et génération des morceaux...";
+    try {
+      const resp = await fetch("/api/playlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ playlistUrl: url }),
+      });
+
+      const result = await resp.json();
+      if (!result.ok) throw new Error(result.error || "Import échoué");
+
+      // Recharge le JSON après génération (cache-buster)
+      const ts = Date.now();
+      const res = await fetch(`assets/data/songs.json?v=${ts}`);
+      const data = await res.json();
+      songs = shuffle(data);
+
+      if (songs.length === 0) {
+        messageEl.textContent =
+          "⚠️ Aucun extrait audio trouvé (iTunes) pour cette playlist.";
+        return;
+      }
+
+      messageEl.textContent = `✅ Playlist importée (${songs.length} morceaux jouables)`;
+      startGame();
+    } catch (e) {
+      messageEl.textContent = `❌ ${e.message}`;
+      console.error(e);
+    }
+  } else {
+    // Pas de lien -> on démarre avec le JSON déjà présent
+    startGame();
+  }
+});
 
 // Démarrer une nouvelle partie
 function startGame() {
