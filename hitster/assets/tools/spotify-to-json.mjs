@@ -147,6 +147,7 @@ async function convertPlaylistToJson() {
   );
 
   // Recherche iTunes en série (simple). Si tu veux optimiser : batch/parallel avec limite.
+  const finalSongs = [];
   let found = 0;
   for (let i = 0; i < baseSongs.length; i++) {
     const s = baseSongs[i];
