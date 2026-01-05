@@ -4,10 +4,13 @@ const path = require("path");
 
 const app = express();
 
-// 1) Body parser JSON AVANT les routes
+// 👉 Racine réelle du projet (portfolio/)
+const ROOT_DIR = path.resolve(__dirname, ".."); // remonte de hitster/ vers portfolio/
+
+// 1) JSON body AVANT les routes
 app.use(express.json());
 
-// 2) Désactiver le cache pour songs.json (évite de rejouer l’ancien fichier)
+// 2) No-cache pour songs.json (pour forcer le reload)
 app.use((req, res, next) => {
   if (req.url.includes("songs.json")) {
     res.setHeader("Cache-Control", "no-store");
@@ -15,7 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 3) Route: générer songs.json à partir d’un lien Spotify
+// 3) API : générer songs.json depuis une playlist
 app.post("/api/playlist", async (req, res) => {
   try {
     const { playlistUrl, playlistId } = req.body || {};
@@ -28,16 +31,9 @@ app.post("/api/playlist", async (req, res) => {
       });
     }
 
-    // Import dynamique du convertisseur ESM (.mjs)
+    // Convertisseur dans: portfolio/hitster/assets/tools/spotify-to-json.mjs
     const modulePath = path.resolve(__dirname, "assets/tools/spotify-to-json.mjs");
     const converter = await import(`file://${modulePath}`);
-
-    if (typeof converter.generateSongsJsonFromSpotifyPlaylist !== "function") {
-      return res.status(500).json({
-        ok: false,
-        error: "Le module spotify-to-json.mjs n'exporte pas generateSongsJsonFromSpotifyPlaylist().",
-      });
-    }
 
     const result = await converter.generateSongsJsonFromSpotifyPlaylist(id);
 
@@ -53,24 +49,21 @@ app.post("/api/playlist", async (req, res) => {
   }
 });
 
-// 4) Fichiers statiques (après les routes API)
-app.use(express.static(__dirname));
+// 4) Static : sert tout le dossier portfolio/ (donc /hitster marche)
+app.use(express.static(ROOT_DIR));
 
 app.listen(3000, () => console.log("Serveur lancé sur http://localhost:3000"));
 
-// -------- Helpers --------
+// Helpers
 function extractSpotifyPlaylistId(input) {
   if (!input || typeof input !== "string") return null;
 
-  // https://open.spotify.com/playlist/<ID>?si=...
   const m1 = input.match(/open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)/);
   if (m1?.[1]) return m1[1];
 
-  // spotify:playlist:<ID>
   const m2 = input.match(/spotify:playlist:([a-zA-Z0-9]+)/);
   if (m2?.[1]) return m2[1];
 
-  // ID brut
   const raw = input.trim();
   if (/^[a-zA-Z0-9]{16,32}$/.test(raw)) return raw;
 
