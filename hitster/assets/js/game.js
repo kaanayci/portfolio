@@ -44,7 +44,7 @@ function nextCard() {
     messageEl.textContent = "🎉 Partie terminée !";
     audioEl.pause();
     audioEl.currentTime = 0;
-    audioEl.src = currentCard.preview;
+    audioEl.src = currentCard?.audio || "";
     audioEl.load();
     return;
   }
@@ -53,8 +53,20 @@ function nextCard() {
 
   messageEl.textContent = "❓ Place la carte dans la timeline";
 
-  audioEl.src = currentCard.preview || "";
-  audioEl.play();
+  audioEl.pause();
+  audioEl.currentTime = 0;
+
+  if (currentCard.audio) {
+    audioEl.src = currentCard.audio;
+    audioEl.load();
+    audioEl.play().catch(() => {
+      messageEl.textContent =
+        "🔇 Lecture bloquée (clique encore sur Démarrer ou autorise l’audio)";
+    });
+  } else {
+    audioEl.src = "";
+    messageEl.textContent = "⚠️ Aucun extrait trouvé pour ce titre (iTunes).";
+  }
 }
 
 // Vérifier le placement de la carte
