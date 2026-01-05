@@ -171,6 +171,7 @@ async function convertPlaylistToJson() {
     }
   }
 
+  console.log("WRITE TO:", outputPath);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(finalSongs, null, 2), "utf-8");
   console.log(
