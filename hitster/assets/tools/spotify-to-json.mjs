@@ -15,11 +15,15 @@ const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const PLAYLIST_ID = process.argv[2];
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
-  console.error("❌ SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET manquants (variables d'environnement).");
+  console.error(
+    "❌ SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET manquants (variables d'environnement)."
+  );
   process.exit(1);
 }
 if (!PLAYLIST_ID) {
-  console.error("❌ Playlist ID manquant. Usage : node spotify-to-json.mjs <PLAYLIST_ID>");
+  console.error(
+    "❌ Playlist ID manquant. Usage : node spotify-to-json.mjs <PLAYLIST_ID>"
+  );
   process.exit(1);
 }
 
@@ -34,13 +38,16 @@ async function getSpotifyToken() {
   const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
-      Authorization: "Basic " + Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64"),
+      Authorization:
+        "Basic " +
+        Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64"),
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: "grant_type=client_credentials",
   });
 
-  if (!res.ok) throw new Error(`Token error (${res.status}) : ${await res.text()}`);
+  if (!res.ok)
+    throw new Error(`Token error (${res.status}) : ${await res.text()}`);
   return (await res.json()).access_token;
 }
 
@@ -56,8 +63,11 @@ async function fetchAllPlaylistTracks(token) {
   let url = `https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks?limit=100`;
 
   while (url) {
-    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
-    if (!res.ok) throw new Error(`Playlist error (${res.status}) : ${await res.text()}`);
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok)
+      throw new Error(`Playlist error (${res.status}) : ${await res.text()}`);
 
     const data = await res.json();
     items.push(...(data.items || []));
@@ -109,7 +119,7 @@ async function fetchItunesPreview(title, artist) {
   if (!best?.previewUrl) return null;
 
   return {
-    audio: best.previewUrl,          // <- extrait audio iTunes
+    audio: best.previewUrl, // <- extrait audio iTunes
     itunesUrl: best.trackViewUrl ?? null,
   };
 }
@@ -132,28 +142,39 @@ async function convertPlaylistToJson() {
     }))
     .filter((s) => s.year); // optionnel
 
-  console.log(`ℹ️ Tracks Spotify trouvés: ${baseSongs.length}. Recherche iTunes previews...`);
+  console.log(
+    `ℹ️ Tracks Spotify trouvés: ${baseSongs.length}. Recherche iTunes previews...`
+  );
 
   // Recherche iTunes en série (simple). Si tu veux optimiser : batch/parallel avec limite.
   let found = 0;
   for (let i = 0; i < baseSongs.length; i++) {
     const s = baseSongs[i];
-    const it = await fetchItunesPreview(s.title, s.artist);
+
+    // petit boost de matching : on ne cherche que sur le premier artiste
+    const mainArtist = s.artist.split(",")[0].trim();
+
+    const it = await fetchItunesPreview(s.title, mainArtist);
+
     if (it?.audio) {
       s.audio = it.audio;
       s.itunesUrl = it.itunesUrl;
+      finalSongs.push(s);
       found++;
     }
 
     if ((i + 1) % 10 === 0 || i === baseSongs.length - 1) {
-      console.log(`... ${i + 1}/${baseSongs.length} (previews trouvés: ${found})`);
+      console.log(
+        `... ${i + 1}/${baseSongs.length} (previews gardés: ${found})`
+      );
     }
   }
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  fs.writeFileSync(outputPath, JSON.stringify(baseSongs, null, 2), "utf-8");
-
-  console.log(`✅ songs.json généré (${found} previews iTunes) → ${outputPath}`);
+  fs.writeFileSync(outputPath, JSON.stringify(finalSongs, null, 2), "utf-8");
+  console.log(
+    `✅ songs.json généré (${finalSongs.length} morceaux avec preview iTunes) → ${outputPath}`
+  );
 }
 
 convertPlaylistToJson().catch((err) => {
