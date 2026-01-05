@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const fetch = require("node-fetch");
+const path = require("path");
 
 const app = express();
 app.use(express.static("."));
@@ -73,3 +74,52 @@ app.get("/api/playlist", async (req, res) => {
 app.listen(3000, () =>
   console.log("Serveur lancé sur http://localhost:3000")
 );
+
+// POST /api/playlist
+// Body: { playlistUrl: "https://open.spotify.com/playlist/..." } OU { playlistId: "..." }
+app.post("/api/playlist", express.json(), async (req, res) => {
+  try {
+    const { playlistUrl, playlistId } = req.body || {};
+
+    const id = extractSpotifyPlaylistId(playlistUrl) || playlistId;
+    if (!id) {
+      return res.status(400).json({ ok: false, error: "Playlist Spotify invalide (URL ou ID manquant)." });
+    }
+
+    // IMPORTANT: ton convertisseur est en .mjs (ESM). En CommonJS on utilise import() dynamique.
+    const modulePath = path.resolve(__dirname, "assets/tools/spotify-to-json.mjs");
+    const converter = await import(`file://${modulePath}`);
+
+    // On suppose que tu vas exporter une fonction depuis spotify-to-json.mjs (voir étape 2)
+    const result = await converter.generateSongsJsonFromSpotifyPlaylist(id);
+
+    return res.json({
+      ok: true,
+      playlistId: id,
+      savedTo: result.outputPath,
+      count: result.count
+    });
+  } catch (e) {
+    console.error("API /api/playlist error:", e);
+    return res.status(500).json({ ok: false, error: e.message || "Erreur serveur" });
+  }
+});
+
+// Extraction robuste d'ID depuis une URL Spotify playlist
+function extractSpotifyPlaylistId(input) {
+  if (!input || typeof input !== "string") return null;
+
+  // Ex: https://open.spotify.com/playlist/<ID>?si=...
+  const m1 = input.match(/open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)/);
+  if (m1?.[1]) return m1[1];
+
+  // Ex: spotify:playlist:<ID>
+  const m2 = input.match(/spotify:playlist:([a-zA-Z0-9]+)/);
+  if (m2?.[1]) return m2[1];
+
+  // Si on reçoit déjà un ID brut
+  if (/^[a-zA-Z0-9]{16,32}$/.test(input.trim())) return input.trim();
+
+  return null;
+}
+
