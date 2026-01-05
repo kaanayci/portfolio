@@ -58,9 +58,9 @@ function extractYear(releaseDate) {
 }
 
 /** Récupère tous les tracks d'une playlist Spotify (pagination) */
-async function fetchAllPlaylistTracks(token) {
+async function fetchAllPlaylistTracks(token, playlistId) {
   const items = [];
-  let url = `https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks?limit=100`;
+  let url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100`;
 
   while (url) {
     const res = await fetch(url, {
@@ -219,4 +219,14 @@ export async function generateSongsJsonFromSpotifyPlaylist(playlistId) {
   fs.writeFileSync(outputPath, JSON.stringify(finalSongs, null, 2), "utf-8");
 
   return { count: finalSongs.length, outputPath };
+}
+
+if (process.argv[2]) {
+  const playlistId = process.argv[2];
+  generateSongsJsonFromSpotifyPlaylist(playlistId)
+    .then((r) => console.log(`✅ songs.json généré (${r.count}) → ${r.outputPath}`))
+    .catch((e) => {
+      console.error("❌ Erreur :", e.message);
+      process.exit(1);
+    });
 }
