@@ -44,6 +44,7 @@ function nextCard() {
     messageEl.textContent = "🎉 Partie terminée !";
     audioEl.pause();
     audioEl.currentTime = 0;
+    console.log("AUDIO URL:", currentCard.audio);
     audioEl.src = currentCard?.audio || "";
     audioEl.load();
     return;
@@ -56,16 +57,21 @@ function nextCard() {
   audioEl.pause();
   audioEl.currentTime = 0;
 
-  if (currentCard.audio) {
+  if (
+    typeof currentCard.audio === "string" &&
+    currentCard.audio.startsWith("http")
+  ) {
     audioEl.src = currentCard.audio;
     audioEl.load();
     audioEl.play().catch(() => {
       messageEl.textContent =
-        "🔇 Lecture bloquée (clique encore sur Démarrer ou autorise l’audio)";
+        "🔇 Clique sur Démarrer pour autoriser la lecture audio";
     });
   } else {
-    audioEl.src = "";
-    messageEl.textContent = "⚠️ Aucun extrait trouvé pour ce titre (iTunes).";
+    // IMPORTANT: ne jamais laisser un src vide ou null
+    audioEl.removeAttribute("src");
+    audioEl.load();
+    messageEl.textContent = "⚠️ Aucun extrait audio disponible pour ce titre";
   }
 }
 
