@@ -125,7 +125,7 @@ async function convertPlaylistToJson() {
   const songs = toGameSongs(items);
 
   // Emplacement de sortie utilisé par ton jeu
-  const outputPath = path.resolve("./assets/data/songs.json");
+  const outputPath = path.resolve("./hitster/assets/data/songs.json");
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(songs, null, 2), "utf-8");
