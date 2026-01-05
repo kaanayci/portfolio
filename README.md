@@ -1,32 +1,52 @@
 # Portfolio – Intégration Web
 
-Ce dépôt contient mon **portfolio d’intégration web**, réalisé dans le cadre
-du cours *Réseaux / Web – Intégration web* (CPNE – Informatique de gestion).
+Ce dépôt contient mon **portfolio d’intégration web**, réalisé dans le cadre du cours  
+*Réseaux / Web – Intégration web* (CPNE – Informatique de gestion).
 
-Le portfolio regroupe :
-- des **projets concrets** en HTML, CSS et JavaScript
-- une **documentation technique structurée**
-- une **réflexion critique** sur mes choix et apprentissages
+Ce portfolio a pour objectif de démontrer :
+- ma maîtrise des bases du développement web (HTML, CSS, JavaScript)
+- ma capacité à structurer et documenter des projets
+- ma progression et ma réflexion critique tout au long du cours
 
-Il a pour objectif de démontrer ma progression, ma maîtrise des bases du web
-et ma capacité à documenter un projet comme un développeur professionnel.
+---
+
+## 📦 Contenu du portfolio
+
+Le portfolio regroupe trois types de contenus complémentaires :
+
+### 🔹 Projets pratiques
+Des projets d’intégration web fonctionnels permettant d’appliquer les notions vues en cours :
+- mise en page responsive
+- manipulation du DOM
+- logique JavaScript
+- structuration de projets
+
+### 🔹 Documentation technique
+Chaque projet est accompagné de :
+- fichiers `README.md`
+- documentation spécifique (règles du jeu, explications fonctionnelles)
+- commentaires dans le code lorsque nécessaire
+
+### 🔹 Réflexion critique
+Le portfolio inclut une démarche réflexive sur :
+- les choix techniques réalisés
+- les difficultés rencontrées
+- les compétences acquises et à approfondir
 
 ---
 
 ## 🌐 Portfolio en ligne
 
-🔗 **Lien : http://91.98.164.47/
+🔗 **Lien : http://91.98.164.47/**
 
-Le portfolio est hébergé en ligne et reste accessible indépendamment
-de la machine locale.
+Le portfolio est hébergé sur un serveur distant et accessible depuis n’importe quel navigateur moderne.
 
 ---
 
 ## 🧱 Structure du projet
 
-Le portfolio est organisé comme un hub regroupant plusieurs projets
-indépendants. Chaque projet possède sa propre architecture, ses ressources
-et sa documentation.
+Le portfolio est organisé comme un **hub** regroupant plusieurs projets indépendants.
+Chaque projet possède sa propre architecture et sa documentation.
 
 ```txt
 portfolio/
@@ -43,7 +63,7 @@ portfolio/
 │       ├── css/style.css
 │       └── js/app.js
 │
-└── music-quizz/            # Projet Music Quiz
+└── hitster/                # Projet Hitster (adaptation web)
     ├── index.html
     ├── server.js
     ├── README.md
