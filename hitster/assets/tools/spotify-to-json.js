@@ -24,6 +24,7 @@
 import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
+import "dotenv/config";
 
 // ✅ Secrets via variables d'environnement (ne jamais commit dans Git)
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
