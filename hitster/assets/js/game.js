@@ -37,7 +37,18 @@ startBtn.addEventListener("click", async () => {
       body: JSON.stringify({ playlistUrl: url }),
     });
 
-    const result = await resp.json();
+    const raw = await resp.text();
+    console.log("API RAW RESPONSE:", raw);
+
+    let result;
+    try {
+      result = JSON.parse(raw);
+    } catch {
+      messageEl.textContent =
+        "❌ Le serveur ne renvoie pas du JSON (voir console).";
+      return;
+    }
+
     console.log("API RESULT:", result);
 
     if (!result.ok) {
