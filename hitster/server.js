@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const path = require("path");
 
 const app = express();
-app.use(express.static("."));
+app.use(express.static(__dirname));
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
