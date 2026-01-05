@@ -182,3 +182,41 @@ convertPlaylistToJson().catch((err) => {
   console.error("❌ Erreur :", err.message);
   process.exit(1);
 });
+
+export async function generateSongsJsonFromSpotifyPlaylist(playlistId) {
+  // utilise playlistId au lieu de process.argv[2]
+  const token = await getSpotifyToken();
+  const items = await fetchAllPlaylistTracks(token, playlistId);
+
+  const baseSongs = items
+    .map((item) => item?.track)
+    .filter((t) => t)
+    .map((t) => ({
+      title: t.name,
+      artist: t.artists.map((a) => a.name).join(", "),
+      year: extractYear(t.album?.release_date),
+      image: t.album?.images?.[0]?.url ?? null,
+      spotifyUrl: t.external_urls?.spotify ?? null,
+      audio: null,
+      itunesUrl: null,
+    }))
+    .filter((s) => s.year);
+
+  const finalSongs = [];
+  for (const s of baseSongs) {
+    const mainArtist = s.artist.split(",")[0].trim();
+    const it = await fetchItunesPreview(s.title, mainArtist);
+
+    // ✅ Tu as demandé: si pas de preview -> on ne garde pas
+    if (it?.audio) {
+      s.audio = it.audio;
+      s.itunesUrl = it.itunesUrl;
+      finalSongs.push(s);
+    }
+  }
+
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+  fs.writeFileSync(outputPath, JSON.stringify(finalSongs, null, 2), "utf-8");
+
+  return { count: finalSongs.length, outputPath };
+}
