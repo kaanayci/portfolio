@@ -67,12 +67,19 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const handleSubmit = () => {
+  let success = false
   if (isLogin.value) {
-    userStore.login(email.value, password.value)
+    success = userStore.login(email.value, password.value)
   } else {
-    userStore.register(email.value, password.value)
+    success = userStore.register(email.value, password.value)
   }
-  // Redirect to home or previous page
-  router.push('/')
+  
+  if (success) {
+     // Redirect to profile or admin if admin
+     if (userStore.isAdmin) router.push('/admin')
+     else router.push('/profil')
+  } else {
+     alert("Erreur d'authentification")
+  }
 }
 </script>
