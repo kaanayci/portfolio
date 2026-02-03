@@ -99,3 +99,6 @@ body.dark .mt-val { color: #cbd5e1; }
 
 body.dark .filter-btn { background: #1e293b; color: #cbd5e1; border-color: #334155; }
 body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+
+.mt-badge-dist { background: rgba(16, 185, 129, 0.9); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 500; }
+
