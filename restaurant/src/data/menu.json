@@ -94,6 +94,7 @@
       "name": "Pide Kebab",
       "description": "Viande de kebab, fromage",
       "price": 15.00,
+      "hasSauceChoice": true,
       "image": "pide-kebab.jpg"
     },
     {
@@ -426,9 +427,9 @@
     }
   ],
   "options": {
-    "bases": ["Yaourt", "Cocktail", "Piquante"],
-    "tacos_meats": ["Kebab", "Nuggets", "Cordon Bleu", "Viande hachée", "Poitrine poulet", "Falafel", "Tenders", "Jambon (Dinde)", "Merguez", "Thon"],
-    "tacos_sauces": ["Andalouse", "Algérien", "Barbecue", "Blanche", "Brazil", "Cheezy Easy", "Cocktail", "Curry", "Harissa", "Ketchup", "Marocaine", "Mayonnaise", "Biggy Burger"],
+    "bases": ["Blanche", "Cocktail", "Piquante", "Algérienne", "Marocaine", "Barbecue", "Brésil", "Mayonnaise", "Ketchup", "Curry", "Samouraï", "Biggy Burger", "Andalouse"],
+    "tacos_meats": ["Kebab", "Nuggets", "Cordon Bleu", "Viande hachée", "Poitrine poulet", "Falafel", "Tenders", "Merguez", "Thon"],
+    "tacos_sauces": ["Blanche", "Cocktail", "Piquante", "Algérienne", "Marocaine", "Barbecue", "Brésil", "Mayonnaise", "Ketchup", "Curry", "Samouraï", "Biggy Burger", "Andalouse"],
     "extras": [
         { "name": "Mozzarella", "price": 1.00 },
         { "name": "Cheddar", "price": 1.00 },
@@ -442,19 +443,19 @@
         { "name": "Tomate", "price": 1.00 }
     ],
      "pizza_extras": [
-        { "name": "Ananas", "price": 2.00 },
-        { "name": "Champignons", "price": 2.00 },
-        { "name": "Gorgonzola", "price": 2.00 },
-        { "name": "Gruyère", "price": 2.00 },
-        { "name": "Jambon de dinde", "price": 2.00 },
-        { "name": "Mozzarella", "price": 2.00 },
-        { "name": "Œuf", "price": 2.00 },
-        { "name": "Oignons", "price": 2.00 },
-        { "name": "Olives", "price": 2.00 },
-        { "name": "Parmesan", "price": 2.00 },
-        { "name": "Poivrons", "price": 2.00 },
-        { "name": "Thon", "price": 2.00 },
-        { "name": "Viande de kebab", "price": 2.00 }
+        { "name": "Ananas", "price": 1.00 },
+        { "name": "Champignons", "price": 1.00 },
+        { "name": "Gorgonzola", "price": 1.00 },
+        { "name": "Gruyère", "price": 1.00 },
+        { "name": "Jambon de dinde", "price": 1.00 },
+        { "name": "Mozzarella", "price": 1.00 },
+        { "name": "Œuf", "price": 1.00 },
+        { "name": "Oignons", "price": 1.00 },
+        { "name": "Olives", "price": 1.00 },
+        { "name": "Parmesan", "price": 1.00 },
+        { "name": "Poivrons", "price": 1.00 },
+        { "name": "Thon", "price": 1.00 },
+        { "name": "Viande de kebab", "price": 1.00 }
     ],
     "salad_sauces": ["Italienne", "Française", "Sans sauce"]
   }
