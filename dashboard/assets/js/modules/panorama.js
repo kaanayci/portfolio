@@ -79,11 +79,19 @@ function loadMountains() {
                 // Simulation Données Ski
                 let snowDepth = st.alt > 1500 ? 120 : 40; 
                 // Ajustement basique selon météo actuelle
-                if (data.main.temp > 5) snowDepth -= 20;
+                if (data.main.temp > 5) snowDepth -= 30;
                 if (data.main.temp < -2) snowDepth += 15;
-                if (data.weather[0].main === 'Snow') snowDepth += 5;
+                if (data.weather[0].main === 'Snow') snowDepth += 10;
+                if (snowDepth < 0) snowDepth = 0;
                 
-                const openPistes = Math.floor(Math.random() * 41) + 60; // 60-100%
+                let openPistes = Math.floor(Math.random() * 41) + 60; // 60-100%
+                let isOpen = true;
+
+                // Simple logic for Open/Closed
+                if (snowDepth < 10) {
+                    isOpen = false;
+                    openPistes = 0;
+                }
 
                 return {
                     ...st,
@@ -92,6 +100,7 @@ function loadMountains() {
                     icon: data.weather[0].icon,
                     snowDepth: snowDepth,
                     openPistes: openPistes,
+                    isOpen: isOpen,
                     isSnowing: data.weather[0].main === 'Snow',
                     details: data
                 };
@@ -193,11 +202,16 @@ function renderMountains(list, containerId, isNearby = false) {
             distBadge = `<span class="mt-badge-dist">📍 ${Math.round(st.distance)}km</span>`;
         }
 
+        const openBadge = st.isOpen 
+            ? '<span class="mt-badge-open">✅ Ouvert</span>' 
+            : '<span class="mt-badge-closed">❌ Fermé</span>';
+
         const card = `
             <div class="mt-card animate-pop" style="animation-delay: ${i*0.05}s" onclick="localStorage.setItem('lastCity', '${st.q}'); $('.sidebar li[data-channel=meteo]').click();">
                 <div class="mt-card-header" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('${st.img}');">
                     <div class="mt-badges">
                         <span class="mt-badge-region">${st.region}</span>
+                        ${openBadge}
                         ${st.isSnowing ? '<span class="mt-badge-snow">❄️ Neige</span>' : ''}
                         ${distBadge}
                     </div>
