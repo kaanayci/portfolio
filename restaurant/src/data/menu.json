@@ -109,7 +109,7 @@
       "id": 17,
       "categoryId": "pides",
       "name": "Pide Viande Hachée",
-      "description": "Viande hachée épicée, poivrons, tomates",
+      "description": "Viande hachée et fromage",
       "price": 16.00,
       "image": "pide-viande.jpg"
     },
@@ -117,7 +117,7 @@
       "id": 18,
       "categoryId": "pides",
       "name": "Pide Sucuk",
-      "description": "Saucisse turque à l'ail, fromage, œuf",
+      "description": "Sucuk, fromage",
       "price": 15.00,
       "image": "pide-sucuk.jpg"
     },
@@ -125,7 +125,7 @@
       "id": 19,
       "categoryId": "pides",
       "name": "Pide Fromage",
-      "description": "Mélange de fromages turcs",
+      "description": "Mozzarella, et œufs",
       "price": 14.00,
       "image": "pide-fromage.jpg"
     },
@@ -133,7 +133,7 @@
       "id": 30,
       "categoryId": "sandwiches",
       "name": "Sandwich Kebab",
-      "description": "Pain sésame, viande kebab, salade, sauce",
+      "description": "Pain sésame, viande kebab, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 10.00,
       "isBestSeller": true,
       "hasSauceChoice": true,
@@ -143,7 +143,7 @@
       "id": 31,
       "categoryId": "sandwiches",
       "name": "Sandwich Kebab XL",
-      "description": "Version extra large du sandwich kebab",
+      "description": "Pain sésame, viande kebab (XL), sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 15.00,
       "hasSauceChoice": true,
       "image": "sandwich-kebab-xl.jpg"
@@ -152,7 +152,7 @@
       "id": 32,
       "categoryId": "sandwiches",
       "name": "Sandwich Falafel",
-      "description": "Pain sésame, falafels, salade, sauce",
+      "description": "Pain sésame, falafels, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 12.00,
       "hasSauceChoice": true,
       "image": "sandwich-falafel.jpg"
@@ -161,7 +161,7 @@
       "id": 33,
       "categoryId": "durum",
       "name": "Dürüm Kebab",
-      "description": "Galette roulée, viande kebab, salade, sauce",
+      "description": "Galette roulée, viande kebab, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 10.00,
       "isBestSeller": true,
       "hasSauceChoice": true,
@@ -171,7 +171,7 @@
       "id": 34,
       "categoryId": "durum",
       "name": "Dürüm Kebab XL",
-      "description": "Version extra large du dürüm",
+      "description": "Galette roulée, viande kebab (XL), sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 15.00,
       "hasSauceChoice": true,
       "image": "durum-kebab-xl.jpg"
@@ -180,7 +180,7 @@
       "id": 35,
       "categoryId": "durum",
       "name": "Dürüm Falafel",
-      "description": "Galette roulée, falafels, salade, sauce",
+      "description": "Galette roulée, falafels, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 12.00,
       "hasSauceChoice": true,
       "image": "durum-falafel.jpg"
@@ -189,7 +189,7 @@
       "id": 36,
       "categoryId": "box",
       "name": "Kebab Box",
-      "description": "Viande kebab et frites dans une boîte",
+      "description": "Frites, viande kebab, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 10.00,
       "hasSauceChoice": true,
       "image": "box-kebab.jpg"
@@ -198,7 +198,7 @@
       "id": 37,
       "categoryId": "box",
       "name": "Nuggets Box",
-      "description": "Nuggets et frites dans une boîte",
+      "description": "Frites, nuggets, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 10.00,
       "hasSauceChoice": true,
       "image": "box-nuggets.jpg"
@@ -207,7 +207,7 @@
       "id": 38,
       "categoryId": "box",
       "name": "Falafel Box",
-      "description": "Falafels et frites dans une boîte",
+      "description": "Frites, falafels, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 12.00,
       "hasSauceChoice": true,
       "image": "box-falafel.jpg"
@@ -216,7 +216,7 @@
       "id": 39,
       "categoryId": "box",
       "name": "Cordon Bleu Box",
-      "description": "Morceaux de cordon bleu et frites",
+      "description": "Frites, cordon bleu, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 12.00,
       "hasSauceChoice": true,
       "image": "box-cordon.jpg"
@@ -225,7 +225,7 @@
       "id": 40,
       "categoryId": "box",
       "name": "Chicken Crispy Box",
-      "description": "Poulet croustillant et frites",
+      "description": "Frites, poulet croustillant, sauce, salade verte, tomate, oignon, chou rouge et carotte",
       "price": 12.00,
       "hasSauceChoice": true,
       "image": "box-crispy.jpg"
@@ -270,7 +270,7 @@
       "id": 41,
       "categoryId": "tacos_bowl",
       "name": "Tacos Bowl Kebab",
-      "description": "Frites, sauce fromagère, viande kebab",
+      "description": "Frites, mozarella, viande kebab",
       "price": 15.00,
       "hasTaosSauceChoice": true,
       "image": "bowl-kebab.jpg"
@@ -279,7 +279,7 @@
       "id": 42,
       "categoryId": "tacos_bowl",
       "name": "Tacos Bowl Viande Hachée",
-      "description": "Frites, sauce fromagère, viande hachée",
+      "description": "Frites, mozarella, viande hachée",
       "price": 15.00,
       "hasTaosSauceChoice": true,
       "image": "bowl-hachee.jpg"
@@ -288,7 +288,7 @@
       "id": 43,
       "categoryId": "tacos_bowl",
       "name": "Tacos Bowl Poulet",
-      "description": "Frites, sauce fromagère, poitrine de poulet",
+      "description": "Frites, mozarella, poitrine de poulet",
       "price": 15.00,
       "hasTaosSauceChoice": true,
       "image": "bowl-poulet.jpg"
@@ -297,7 +297,7 @@
       "id": 45,
       "categoryId": "tacos",
       "name": "French Tacos M",
-      "description": "1 tortilla, 1 viande au choix, frites, sauce fromagère",
+      "description": "1 tortilla, 1 viande au choix, frites, mozarella",
       "price": 10.00,
       "options": {
         "meatCount": 1
@@ -309,7 +309,7 @@
       "id": 46,
       "categoryId": "tacos",
       "name": "French Tacos L",
-      "description": "2 tortillas, 1 viande au choix (taille L), frites, sauce fromagère",
+      "description": "2 tortillas, 1 viande au choix (taille L), frites, mozarella",
       "price": 15.00,
       "options": {
         "meatCount": 1
@@ -321,7 +321,7 @@
       "id": 47,
       "categoryId": "tacos",
       "name": "French Tacos XL",
-      "description": "3 tortillas, 1 viande au choix (taille XL), frites, sauce fromagère",
+      "description": "3 tortillas, 1 viande au choix (taille XL), frites, mozarella",
       "price": 17.00,
       "options": {
         "meatCount": 1
@@ -427,9 +427,9 @@
     }
   ],
   "options": {
-    "bases": ["Blanche", "Cocktail", "Piquante", "Algérienne", "Marocaine", "Barbecue", "Brésil", "Mayonnaise", "Ketchup", "Curry", "Samouraï", "Biggy Burger", "Andalouse"],
+    "bases": ["Blanche", "Cocktail", "Piquante", "Algérienne", "Marocaine", "Barbecue", "Brésil", "Mayonnaise", "Ketchup", "Curry", "Samouraï", "Biggy Burger", "Andalouse", "Cheezy"],
     "tacos_meats": ["Kebab", "Nuggets", "Cordon Bleu", "Viande hachée", "Poitrine poulet", "Falafel", "Tenders", "Merguez", "Thon"],
-    "tacos_sauces": ["Blanche", "Cocktail", "Piquante", "Algérienne", "Marocaine", "Barbecue", "Brésil", "Mayonnaise", "Ketchup", "Curry", "Samouraï", "Biggy Burger", "Andalouse"],
+    "tacos_sauces": ["Blanche", "Cocktail", "Piquante", "Algérienne", "Marocaine", "Barbecue", "Brésil", "Mayonnaise", "Ketchup", "Curry", "Samouraï", "Biggy Burger", "Andalouse", "Cheezy"],
     "extras": [
         { "name": "Mozzarella", "price": 1.00 },
         { "name": "Cheddar", "price": 1.00 },
