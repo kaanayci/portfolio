@@ -19,6 +19,19 @@
     }
 }
 
+/* 
+    Pour la section "À proximité" uniquement (#nearby-grid).
+    Si peu d'éléments, ils s'étendent plus large, sinon partagent l'espace.
+    On surcharge la grille par défaut.
+*/
+#nearby-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+#nearby-grid:has(.mt-card:nth-last-child(n+4)) {
+    /* Si 4 ou plus, on revient à une grille plus dense */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
 .city-card, .mountain-card {
     background: white;
     padding: 1rem;
