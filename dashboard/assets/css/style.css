@@ -972,3 +972,48 @@ body.dark .forecast-card:hover { background: #334155; border-color: #60a5fa; }
     min-width: 0; /* Prevents grid blowout */
 }
 
+
+/* --- New Forecast Range Styles --- */
+.fc-temp-range {
+    display: flex;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+.fc-temp-range .max {
+    color: #ef4444; /* Red for hot */
+}
+
+.fc-temp-range .min {
+    color: #3b82f6; /* Blue for cold */
+    opacity: 0.8;
+}
+
+/* --- Floating Animation --- */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating-icon {
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+/* --- Wind Compass --- */
+.wind-compass {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.wind-compass span {
+    transition: transform 1s ease-out;
+    display: inline-block;
+}
+
+/* --- Dark Mode Tweaks for Forecast --- */
+body.dark .fc-temp-range .max { color: #f87171; }
+body.dark .fc-temp-range .min { color: #60a5fa; }
+
