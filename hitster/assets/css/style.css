@@ -1,21 +1,39 @@
+:root {
+  /* Palette de couleurs */
+  --color-primary: #ff2f92;      /* Rose Hitster */
+  --color-secondary: #00d4ff;    /* Bleu Cyan */
+  --color-background: #0b132b;   /* Bleu Nuit Profond */
+  --color-surface: #1c2541;      /* Bleu Acier (Cartes) */
+  --color-surface-hover: #3a506b;
+  --color-text-main: #f8f9fa;
+  --color-text-muted: #adb5bd;
+  --color-success: #2ecc71;
+  --color-error: #e74c3c;
+  
+  /* Status Colors */
+  --status-before: #ffc107;
+  --status-after: #00d4ff;
+  --status-between: #9b59b6;
+}
+
 header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
 header h1 {
-  color: #ff2f92;
+  color: var(--color-primary);
   letter-spacing: 1px;
 }
 
 header p {
-  color: #adb5bd;
+  color: var(--color-text-muted);
 }
 
 body {
   font-family: "Segoe UI", Arial, sans-serif;
-  background: #0b132b;
-  color: #f8f9fa;
+  background: var(--color-background);
+  color: var(--color-text-main);
 
   min-height: 100vh;
   margin: 0;
@@ -53,7 +71,7 @@ main {
 }
 
 #playlist-select button {
-  background: #ff2f92;
+  background: var(--color-primary);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -62,14 +80,14 @@ main {
 }
 
 #score {
-  color: #ff2f92;
+  color: var(--color-primary);
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
 #current-card {
   background: #2a2e45;
-  border: 2px dashed #3ec5ff;
+  border: 2px dashed var(--color-secondary);
   border-radius: 10px;
   padding: 1rem;
   max-width: 320px;
@@ -77,7 +95,7 @@ main {
 }
 
 #current-card .hint {
-  color: #adb5bd;
+  color: var(--color-text-muted);
   font-style: italic;
 }
 
@@ -108,8 +126,8 @@ main {
 }
 
 .timeline-card {
-  background: linear-gradient(145deg, #2a2e45, #1c2541);
-  color: #f8f9fa;
+  background: linear-gradient(145deg, #2a2e45, var(--color-surface));
+  color: var(--color-text-main);
   border-radius: 10px;
   padding: 0.75rem;
   min-width: 140px;
@@ -142,7 +160,7 @@ main {
 
 .timeline-card .year {
   font-weight: bold;
-  color: #ff2f92;
+  color: var(--color-primary);
 }
 
 .timeline-card .title {
@@ -157,8 +175,8 @@ main {
 .drop-zone {
   width: 32px;
   height: 32px;
-  border: 2px dashed #3ec5ff;
-  color: #3ec5ff;
+  border: 2px dashed var(--color-secondary);
+  color: var(--color-secondary);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -168,8 +186,8 @@ main {
 }
 
 .drop-zone:hover {
-  background: #3ec5ff;
-  color: #0b132b;
+  background: var(--color-secondary);
+  color: var(--color-background);
 }
 
 .card {
@@ -262,9 +280,9 @@ main {
 }
 
 .modal-content {
-  background: #1c2541;
+  background: var(--color-surface);
   padding: 2rem;
-  border: 2px solid #ff2f92;
+  border: 2px solid var(--color-primary);
   border-radius: 15px;
   text-align: center;
   width: 400px;
@@ -272,7 +290,7 @@ main {
 /* ---------------------------- */
 
 .modal-content h2 {
-  color: #ff2f92;
+  color: var(--color-primary);
   font-size: 2rem;
   margin-top: 0;
 }
@@ -280,7 +298,7 @@ main {
 .final-score {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #3ec5ff;
+  color: var(--color-secondary);
   margin: 1.5rem 0;
 }
 
