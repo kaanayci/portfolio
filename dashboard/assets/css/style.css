@@ -252,3 +252,135 @@ body.dark button {
   color: #e5e7eb;
   border: 1px solid #334155;
 }
+
+/* =========================================
+   Stats
+========================================= */
+.stats__container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+body.dark .stats__container {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+.stats__info {
+  margin-top: 1rem;
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+/* =========================================
+   Weather V2 Styles
+========================================= */
+.weather__controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.weather__form {
+    display: flex;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.weather__form input {
+    flex: 1;
+    min-width: 200px;
+}
+
+.weather-card {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.weather-header h3 {
+    font-size: 2rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.country-badge {
+    font-size: 0.8rem;
+    background: rgba(255,255,255,0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.weather-desc {
+    text-transform: capitalize;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.weather-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.temp-box {
+    display: flex;
+    align-items: center;
+}
+
+.temp {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.temp-box img {
+    width: 80px;
+    height: 80px;
+}
+
+.weather-stats {
+    background: rgba(255,255,255,0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid #3b82f6;
+    color: #3b82f6;
+    font-weight: bold;
+}
+
+.btn-secondary:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+body.dark .weather-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid #334155;
+}
