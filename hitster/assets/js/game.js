@@ -31,6 +31,75 @@ const modalDifficultySelect = document.getElementById("modal-difficulty");
 const btnRestart = document.getElementById("btn-restart");
 const btnNewPlaylist = document.getElementById("btn-new-playlist");
 
+// Custom Player Elements
+const playPauseBtn = document.getElementById("play-pause-btn");
+const progressBar = document.getElementById("progress-bar");
+const progressContainer = document.getElementById("progress-container");
+const timeDisplay = document.getElementById("time-display");
+
+// Logic Player
+if (playPauseBtn && audioEl) {
+  playPauseBtn.addEventListener("click", togglePlay);
+
+  audioEl.addEventListener("play", () => {
+    playPauseBtn.textContent = "⏸";
+    if (audioLoader) audioLoader.classList.remove("active");
+  });
+
+  audioEl.addEventListener("pause", () => {
+    playPauseBtn.textContent = "▶";
+  });
+
+  audioEl.addEventListener("timeupdate", updateProgress);
+
+  audioEl.addEventListener("ended", () => {
+    playPauseBtn.textContent = "▶";
+    if (progressBar) progressBar.style.width = "0%";
+  });
+}
+
+if (progressContainer && audioEl) {
+  progressContainer.addEventListener("click", (e) => {
+    const width = progressContainer.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioEl.duration;
+    if (duration) {
+      audioEl.currentTime = (clickX / width) * duration;
+    }
+  });
+}
+
+function togglePlay() {
+  if (audioEl.paused) {
+    audioEl.play().catch(() => {
+        messageEl.textContent = "🔇 Interaction requise pour l'audio";
+    });
+  } else {
+    audioEl.pause();
+  }
+}
+
+function updateProgress() {
+  const { duration, currentTime } = audioEl;
+  if (!progressBar || !timeDisplay) return;
+  
+  if (isNaN(duration)) {
+      progressBar.style.width = "0%";
+      timeDisplay.textContent = "0:00";
+      return;
+  }
+  
+  const percent = (currentTime / duration) * 100;
+  progressBar.style.width = `${percent}%`;
+  timeDisplay.textContent = formatTime(currentTime);
+}
+
+function formatTime(s) {
+  const min = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${min}:${sec < 10 ? "0" + sec : sec}`;
+}
+
 // Gestion du Loader Audio
 if (audioEl && audioLoader) {
   audioEl.addEventListener("loadstart", () => {
@@ -199,6 +268,10 @@ function nextCard() {
 
   audioEl.pause();
   audioEl.currentTime = 0;
+  
+  // Reset Player UI explicitly
+  if (progressBar) progressBar.style.width = "0%";
+  if (timeDisplay) timeDisplay.textContent = "0:00";
 
   if (
     typeof currentCard.audio === "string" &&
