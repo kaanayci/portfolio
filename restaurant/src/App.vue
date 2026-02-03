@@ -4,6 +4,7 @@ import { useMenuStore } from '@/stores/menu'
 import { useCartStore } from '@/stores/cart'
 import { useUserStore } from '@/stores/user'
 import InstallPrompt from '@/components/common/InstallPrompt.vue'
+import ToastContainer from '@/components/common/ToastContainer.vue'
 
 const menuStore = useMenuStore()
 const cartStore = useCartStore()
@@ -16,6 +17,7 @@ onMounted(() => {
 
 <template>
   <div class="min-h-screen flex flex-col">
+    <ToastContainer />
     <!-- Header -->
     <header class="bg-primary text-white p-4 shadow-md sticky top-0 z-40">
       <div class="container mx-auto flex justify-between items-center">
@@ -40,6 +42,11 @@ onMounted(() => {
                 {{ cartStore.itemCount }}
               </span>
             </div>
+          </RouterLink>
+
+          <!-- Admin Link -->
+          <RouterLink v-if="userStore.isAdmin" to="/admin" class="hover:text-secondary font-medium transition flex items-center gap-1 bg-red-800 px-3 py-1 rounded">
+             <span>⚙️ Admin</span>
           </RouterLink>
 
           <!-- User Icon -->
