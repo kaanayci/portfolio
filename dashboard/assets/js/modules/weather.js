@@ -24,7 +24,6 @@ function fetchWeather(query) {
         
         if (typeof query === "string") {
             localStorage.setItem("lastCity", query);
-            addToHistory(query);
         }
   
         // 2. Forecast (only if current succeeded)
