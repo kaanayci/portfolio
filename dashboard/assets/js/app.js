@@ -28,6 +28,13 @@ $(document).ready(function () {
                     >
                     <button type="submit">Rechercher</button>
                 </form>
+                
+                <!-- Unit Toggle -->
+                <div class="unit-toggle-container" id="unit-toggle" data-unit="metric">
+                    <div class="toggle-pill"></div>
+                    <span class="unit-option active" data-val="metric">°C</span>
+                    <span class="unit-option" data-val="imperial">°F</span>
+                </div>
             </div>
 
             <div id="weather-result" class="weather__result">
@@ -59,6 +66,21 @@ $(document).ready(function () {
             <h2>🗺️ Carte Interactive</h2>
             <p>Météo en direct sur la Suisse.</p>
             <div id="map"></div>
+        </section>
+    `,
+    favorites: `
+        <section class="favorites-section">
+            <h2>🌟 Mes Villes Favorites</h2>
+            <p>Vos lieux préférés en un coup d'œil.</p>
+            
+            <div id="favorites-grid" class="favorites-grid">
+                <div class="loading">Chargement des favoris...</div>
+            </div>
+            <div id="fav-empty-state" class="empty-state" style="display:none">
+                <span style="font-size: 3rem">⭐</span>
+                <p>Aucun favori pour le moment.</p>
+                <p style="font-size:0.9rem; opacity:0.7">Ajoutez des villes depuis la recherche avec le bouton étoile.</p>
+            </div>
         </section>
     `,
     compare: `
@@ -122,6 +144,9 @@ $(document).ready(function () {
                 const lastCity = localStorage.getItem("lastCity");
                 if(lastCity) fetchWeather(lastCity);
             }
+            if (pageKey === "favorites") {
+                loadFavoritesPage();
+            }
             if (pageKey === "mountain") {
                 loadMountains();
             }
@@ -168,20 +193,67 @@ $(document).ready(function () {
 // --- Logic Météo ---
 const WEATHER_API_KEY = "8bf9317dd25811ccc3ea56a0309ffc5a";
 let weatherChart = null; // Instance globale du graphique
+let currentUnit = localStorage.getItem('weatherUnit') || 'metric'; // 'metric' (C) or 'imperial' (F)
+
+function getUnitLabel() {
+    return currentUnit === 'metric' ? '°C' : '°F';
+}
+
+function getSpeedLabel() {
+    return currentUnit === 'metric' ? 'km/h' : 'mph';
+}
+
+function renderSkeleton() {
+    const skeletonHTML = `
+        <div class="weather-card animate-pop skeleton">
+            <div class="weather-header">
+                <div class="skeleton-title" style="width: 50%"></div>
+            </div>
+            <div class="weather-main">
+                <div class="skeleton-circle"></div>
+                <div class="skeleton-title" style="width: 30%; margin-top: 1rem;"></div>
+                <div class="weather-details-grid" style="margin-top: 2rem; width: 100%;">
+                    <div class="skeleton-text"></div><div class="skeleton-text"></div>
+                    <div class="skeleton-text"></div><div class="skeleton-text"></div>
+                    <div class="skeleton-text"></div><div class="skeleton-text"></div>
+                </div>
+            </div>
+        </div>
+        <div class="chart-container animate-pop skeleton"></div>
+    `;
+    $("#weather-result").html(skeletonHTML);
+}
+
+function displayError(message) {
+    const errorHTML = `
+        <div class="error-state animate-pop">
+            <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">😕</span>
+            <h3>Oups !</h3>
+            <p>${message}</p>
+            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer;">Réessayer</button>
+        </div>
+    `;
+    $("#weather-result").html(errorHTML);
+    $('body').removeClass().addClass('bg-default'); // Reset bg
+}
 
 function fetchWeather(query) {
   let urlCurrent = "";
   let urlForecast = "";
   
+  // Save/Update unit UI
+  updateUnitUI();
+
   if (typeof query === "object" && query.lat) {
-      urlCurrent = `https://api.openweathermap.org/data/2.5/weather?lat=${query.lat}&lon=${query.lon}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
-      urlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${query.lat}&lon=${query.lon}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
+      urlCurrent = `https://api.openweathermap.org/data/2.5/weather?lat=${query.lat}&lon=${query.lon}&units=${currentUnit}&lang=fr&appid=${WEATHER_API_KEY}`;
+      urlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${query.lat}&lon=${query.lon}&units=${currentUnit}&lang=fr&appid=${WEATHER_API_KEY}`;
   } else {
-      urlCurrent = `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
-      urlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
+      urlCurrent = `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=${currentUnit}&lang=fr&appid=${WEATHER_API_KEY}`;
+      urlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=${currentUnit}&lang=fr&appid=${WEATHER_API_KEY}`;
   }
 
-  $("#weather-result").html("<div class='loading'>⏳ Chargement...</div>");
+  // Show Skeleton instead of simple loader
+  renderSkeleton();
 
   // 1. Current Weather
   $.getJSON(urlCurrent)
@@ -200,17 +272,20 @@ function fetchWeather(query) {
       });
 
       // 3. Air Pollution (NEW)
-      // On utilise lat/lon de la réponse "current weather" pour être précis
       const lat = data.coord.lat;
       const lon = data.coord.lon;
       $.getJSON(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`)
           .done(function(airData) {
-              const aqi = airData.list[0].main.aqi; // 1 = Bon, 5 = Très mauvais
+              const aqi = airData.list[0].main.aqi; 
               renderAirQuality(aqi);
           });
     })
-    .fail(function () {
-      $("#weather-result").html("<div class='error'>❌ Ville introuvable.</div>");
+    .fail(function (jqXHR) {
+        let msg = "Ville introuvable.";
+        if(jqXHR.status === 0) msg = "Problème de connexion internet.";
+        else if(jqXHR.status === 401) msg = "Erreur API (Clé invalide).";
+        
+        displayError(msg);
     });
 }
 
@@ -277,7 +352,27 @@ function renderWeather(data) {
     const pressure = data.main.pressure;
     const visibility = (data.visibility / 1000).toFixed(1); // mètres -> km
 
-    // Horaires Soleil
+    // Horaires Soleil & Auto Dark Mode
+    const now = Date.now() / 1000;
+    const isNight = now < data.sys.sunrise || now > data.sys.sunset;
+    
+    // Auto Theme Logic (if overrides manual control desire, but request said "adapte à l'heure")
+    if (localStorage.getItem("theme") !== "light" && localStorage.getItem("theme") !== "dark") {
+        // Only if user hasn't manually set a preference? Or force it?
+        // Let's force update body class but not overwrite localStorage to respect manual toggle if used later
+        if(isNight) $("body").addClass("dark"); 
+        else $("body").removeClass("dark");
+    } else {
+        // Respect manual - but maybe add visual indicator?
+        // For now, let's implement the prompt strict requirement: "Mode sombre qui s'adapte à l'heure"
+        // We will make it so that if it's night, we enable dark mode unless user forced light.
+        // Actually, best UX is: when weather loads, if user hasn't interacted with theme toggle yet (default), adapt.
+    }
+    
+    // Simplification for the task: Update Theme Icon based on current state (caused by manual or auto)
+    $("#theme-toggle").text($("body").hasClass("dark") ? "☀️" : "🌙");
+
+
     const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
     const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
 
@@ -298,20 +393,35 @@ function renderWeather(data) {
     } else if (temp > 20 && mainCond.includes("clear")) {
         advice = "😎 T-shirt et lunettes de soleil conseillés.";
     }
+    
+    // Unit Labels
+    const unitLabel = getUnitLabel();
+    const speedLabel = getSpeedLabel();
+
+    // Favorites Check
+    const favorites = JSON.parse(localStorage.getItem('weatherFavs') || '[]');
+    const isFav = favorites.includes(city);
+    const favClass = isFav ? 'active' : '';
 
     $("#weather-result").html(`
       <div class="weather-card animate-pop">
         <div class="weather-header">
-            <h3>${city} ${country === 'CH' ? '🇨🇭' : country}</h3>
-            <p class="weather-desc">${desc.charAt(0).toUpperCase() + desc.slice(1)}</p>
+            <div>
+                <h3>${city} ${country === 'CH' ? '🇨🇭' : country}</h3>
+                <p class="weather-desc">${desc.charAt(0).toUpperCase() + desc.slice(1)}</p>
+            </div>
+            <div class="weather-actions">
+                <button class="icon-btn ${favClass}" id="btn-fav" data-city="${city}" title="Ajouter aux favoris">⭐</button>
+                <button class="icon-btn" id="btn-share" title="Partager">📤</button>
+            </div>
         </div>
         
         <div class="weather-main">
             <div class="temp-big">
-                ${temp}°
+                ${temp}${unitLabel}
                 <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${desc}" class="floating-icon">
             </div>
-            <p class="feels-like">Ressenti ${feelsLike}°</p>
+            <p class="feels-like">Ressenti ${feelsLike}${unitLabel}</p>
             
             <div class="weather-details-grid">
                 <div class="detail-item">
@@ -322,7 +432,7 @@ function renderWeather(data) {
                     <span>💨 Vent</span>
                     <div class="wind-compass">
                         <span style="transform: rotate(${windDeg}deg); display:inline-block; font-size: 1.2rem;">➤</span>
-                        <strong>${windSpeed} km/h</strong>
+                        <strong>${windSpeed} ${speedLabel}</strong>
                     </div>
                 </div>
                 <div class="detail-item">
@@ -700,3 +810,144 @@ function createCompareCard(data, isWarmer) {
         </div>
     `;
 }
+
+/* --- UI Helpers (Favorites, Share, Toggles) --- */
+function updateUnitUI() {
+    const $toggle = $('#unit-toggle');
+    const $options = $toggle.find('.unit-option');
+    
+    // Update container attr
+    $toggle.attr('data-unit', currentUnit);
+    
+    // Update text classes
+    $options.removeClass('active');
+    $toggle.find(`[data-val="${currentUnit}"]`).addClass('active');
+}
+
+// Event Delegation for Unit Toggle
+$(document).on('click', '#unit-toggle', function() {
+    currentUnit = currentUnit === 'metric' ? 'imperial' : 'metric';
+    localStorage.setItem('weatherUnit', currentUnit);
+    updateUnitUI();
+    
+    // Reload search if possible
+    const lastCity = localStorage.getItem("lastCity");
+    if(lastCity) fetchWeather(lastCity);
+});
+
+// Event Delegation for Favorites
+$(document).on('click', '#btn-fav', function() {
+    const city = $(this).data('city');
+    let favorites = JSON.parse(localStorage.getItem('weatherFavs') || '[]');
+    
+    if(favorites.includes(city)) {
+        favorites = favorites.filter(c => c !== city);
+        $(this).removeClass('active');
+        alert(`${city} retiré des favoris.`);
+    } else {
+        favorites.push(city);
+        $(this).addClass('active');
+        alert(`${city} ajouté aux favoris !`);
+    }
+    
+    // Save
+    localStorage.setItem('weatherFavs', JSON.stringify(favorites));
+    // If we have a history loader function (loadHistory), we could call it here to refresh tags if favorites are shown there
+    if(typeof loadHistory === 'function') loadHistory();
+});
+
+// Event Delegation for Share
+$(document).on('click', '#btn-share', function() {
+    const title = document.title;
+    const city = localStorage.getItem('lastCity') || "ma ville";
+    const text = `Regarde la météo à ${city} !`;
+    const url = window.location.href;
+
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: text,
+            url: url,
+        }).catch(err => console.log('Share failed', err));
+    } else {
+        // Fallback
+        alert("Copier le lien pour partager: " + url);
+    }
+});
+
+/* --- Favorites Page Logic --- */
+function loadFavoritesPage() {
+    const favorites = JSON.parse(localStorage.getItem('weatherFavs') || '[]');
+    const $grid = $('#favorites-grid');
+    const $empty = $('#fav-empty-state');
+    
+    if (favorites.length === 0) {
+        $grid.hide();
+        $empty.fadeIn();
+        return;
+    }
+    
+    $grid.html('<div class="loading">Chargement des favoris...</div>').show();
+    $empty.hide();
+    
+    // Create an array of promises to fetch all weather data
+    const promises = favorites.map(city => {
+        return $.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${currentUnit}&lang=fr&appid=${WEATHER_API_KEY}`)
+            .catch(err => null); // Return null on error to not break Promise.all
+    });
+    
+    Promise.all(promises).then(results => {
+        $grid.empty();
+        
+        results.forEach((data, index) => {
+            if (!data) return; // Skip failed requests
+            
+            const city = data.name;
+            const temp = Math.round(data.main.temp);
+            const icon = data.weather[0].icon;
+            const desc = data.weather[0].description;
+            const unit = getUnitLabel();
+            
+            const cardHtml = `
+                <div class="fav-card animate-pop">
+                    <div class="fav-card-header">
+                        <h3>${city}</h3>
+                        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="icon" width="50">
+                    </div>
+                    
+                    <div class="fav-temp">
+                        ${temp}${unit}
+                    </div>
+                    <p class="fav-desc">${desc.charAt(0).toUpperCase() + desc.slice(1)}</p>
+                    
+                    <div class="fav-footer">
+                        <button class="fav-btn fav-btn-view" onclick="viewFavorite('${city.replace(/'/g, "\\'")}')">Voir détails</button>
+                        <button class="fav-btn fav-btn-remove" onclick="removeFavorite('${city.replace(/'/g, "\\'")}')">Supprimer</button>
+                    </div>
+                </div>
+            `;
+            $grid.append(cardHtml);
+        });
+    });
+}
+
+function viewFavorite(city) {
+    // Switch to meteo tab
+    $(".sidebar li[data-channel='meteo']").click();
+    // wait for fadeOut/in
+    setTimeout(() => {
+        $("#weather-input").val(city);
+        fetchWeather(city);
+    }, 400); 
+}
+
+function removeFavorite(city) {
+    if(!confirm(`Retirer ${city} des favoris ?`)) return;
+    
+    let favorites = JSON.parse(localStorage.getItem('weatherFavs') || '[]');
+    favorites = favorites.filter(c => c !== city);
+    localStorage.setItem('weatherFavs', JSON.stringify(favorites));
+    
+    loadFavoritesPage(); // Reload current page
+}
+
