@@ -91,32 +91,8 @@ function updateBackground(condition) {
     $card.addClass(themeClass);
 }
 
-function addToHistory(city) {
-    let history = JSON.parse(localStorage.getItem("weatherHistory")) || [];
-    // Eviter doublons et garder max 5
-    history = history.filter(c => c.toLowerCase() !== city.toLowerCase());
-    history.unshift(city);
-    if(history.length > 5) history.pop();
-    
-    localStorage.setItem("weatherHistory", JSON.stringify(history));
-    loadHistory();
-}
+// Functions removed: addToHistory, loadHistory
 
-function loadHistory() {
-    const history = JSON.parse(localStorage.getItem("weatherHistory")) || [];
-    if(history.length === 0) {
-        $('#weather-history').hide();
-        return;
-    }
-    
-    let html = '';
-    history.forEach(city => {
-        html += `<span class="history-tag" onclick="fetchWeather('${city}')">${city}</span>`;
-    });
-    
-    $('#history-tags').html(html);
-    $('#weather-history').fadeIn();
-}
 
 // Global Event Listeners for UI
 $(document).ready(function() {
