@@ -438,6 +438,8 @@ function addDropZone(position) {
 
   zone.ondrop = (e) => {
     e.preventDefault();
+    zone.classList.remove("drag-over");
+    checkPlacement(position);
   };
 
   timelineEl.appendChild(zone);
@@ -448,9 +450,6 @@ function addDropZone(position) {
  * @param {Array} array - Le tableau à mélanger
  * @returns {Array} Le tableau mélangé
  */
-  timelineEl.appendChild(zone);
-
-
 // Mélanger un tableau (Fisher-Yates Shuffle)
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
