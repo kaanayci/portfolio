@@ -652,3 +652,75 @@ body.dark .chart-container {
     border-color: rgba(255,255,255,0.1);
 }
 
+
+/* --- Panorama & Mountain Grids --- */
+.panorama-grid, .mountain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.city-card, .mountain-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #e2e8f0;
+}
+
+.city-card:hover, .mountain-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: #3b82f6;
+}
+
+.city-temp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e293b;
+}
+
+.city-temp img {
+    width: 40px;
+}
+
+/* Mountain Specific */
+.mountain-card {
+    background: linear-gradient(to bottom right, #f8fafc, #e2e8f0);
+}
+
+.mountain-card.frozen {
+    background: linear-gradient(to bottom right, #e0f2fe, #bae6fd);
+    border-color: #7dd3fc;
+}
+
+.mt-temp {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.mt-desc {
+    display: block;
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: capitalize;
+}
+
+/* Dark Mode */
+body.dark .city-card, body.dark .mountain-card {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f1f5f9;
+}
+
+body.dark .city-temp, body.dark .mt-temp { color: #f1f5f9; }
+body.dark .mt-desc { color: #94a3b8; }
+
