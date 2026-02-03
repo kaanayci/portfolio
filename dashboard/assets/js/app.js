@@ -4,21 +4,11 @@ $(document).ready(function () {
   const pages = {
     home: `
         <section class="home">
-            <h2>Bienvenue sur SwissMétéo 🇨🇭</h2>
+            <h2>🇨🇭 Panorama Suisse</h2>
+            <p>Aperçu en direct des grandes régions.</p>
 
-            <p>
-            Une application simple et directe pour consulter la météo de vos régions préférées.
-            </p>
-
-            <div class="quick-actions">
-                <p>Commencez dès maintenant :</p>
-                <button class="btn-primary" onclick="$('.sidebar li[data-channel=\\'meteo\\']').click()">
-                    🔎 Rechercher une ville
-                </button>
-            </div>
-            
-            <div style="margin-top: 2rem; opacity: 0.7; font-size: 0.9rem;">
-                <p><em>"Il n'y a pas de mauvais temps, que des mauvais vêtements."</em></p>
+            <div class="panorama-grid" id="panorama-container">
+                <div class="loading">📡 Chargement du panorama...</div>
             </div>
         </section>
     `,
@@ -51,6 +41,16 @@ $(document).ready(function () {
             <div id="weather-history" class="weather-history" style="display:none; margin-top: 2rem;">
                 <h3>Dernières recherches</h3>
                 <div class="tags-container" id="history-tags"></div>
+            </div>
+        </section>
+    `,
+    mountain: `
+        <section class="mountain">
+            <h2>🏔️ Stations de Ski & Alpes</h2>
+            <p>Conditions dans les stations populaires.</p>
+
+            <div class="mountain-grid" id="mountain-container">
+                 <div class="loading">❄️ Chargement des stations...</div>
             </div>
         </section>
     `,
@@ -89,10 +89,16 @@ $(document).ready(function () {
         .html(pages[pageKey])
         .fadeIn(200, function () {
             // Après chargement de la vue :
+            if (pageKey === "home") {
+                loadPanorama();
+            }
             if (pageKey === "meteo") {
                 loadHistory(); 
                 const lastCity = localStorage.getItem("lastCity");
                 if(lastCity) fetchWeather(lastCity);
+            }
+            if (pageKey === "mountain") {
+                loadMountains();
             }
         });
     });
@@ -351,3 +357,64 @@ $(document).on("submit", "#weather-form", function (e) {
   const val = $("#weather-input").val().trim();
   if (val) fetchWeather(val);
 });
+
+// --- Panorama ---
+function loadPanorama() {
+    const cities = ["Genève", "Lausanne", "Zürich", "Bern", "Lugano", "Lucerne", "Basel"];
+    $('#panorama-container').html('');
+    
+    cities.forEach(city => {
+        $.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${city},CH&units=metric&lang=fr&appid=${WEATHER_API_KEY}`)
+        .done(data => {
+            const temp = Math.round(data.main.temp);
+            const icon = data.weather[0].icon;
+            
+            const card = `
+                <div class="city-card animate-pop" onclick="fetchWeather('${city}'); $('.sidebar li[data-channel=meteo]').click();">
+                    <h3>${city}</h3>
+                    <div class="city-temp">
+                        ${temp}° 
+                        <img src="https://openweathermap.org/img/wn/${icon}.png">
+                    </div>
+                </div>
+            `;
+            $('#panorama-container').append(card);
+        });
+    });
+}
+
+// --- Montagne & Ski ---
+function loadMountains() {
+    // Stations de ski suisses populaires
+    const stations = [
+        {name: "Zermatt", q: "Zermatt"},
+        {name: "Verbier", q: "Bagnes"}, // Weather station for Verbier
+        {name: "Crans-Montana", q: "Crans-Montana"},
+        {name: "Davos", q: "Davos"},
+        {name: "St. Moritz", q: "Saint-Moritz"},
+        {name: "Gstaad", q: "Gstaad"},
+        {name: "Jungfrau", q: "Lauterbrunnen"},
+        {name: "Leysin", q: "Leysin"},
+    ];
+    
+    $('#mountain-container').html('');
+    
+    stations.forEach(st => {
+        $.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${st.q},CH&units=metric&lang=fr&appid=${WEATHER_API_KEY}`)
+        .done(data => {
+            const temp = Math.round(data.main.temp);
+            // Déterminer si "ça caille" (gel) pour le style visuel
+            const isFrozen = temp <= 0 ? 'frozen' : '';
+            const desc = data.weather[0].description;
+            
+            const card = `
+                <div class="mountain-card ${isFrozen} animate-pop" onclick="fetchWeather('${st.q}'); $('.sidebar li[data-channel=meteo]').click();">
+                    <h3>${st.name}</h3>
+                    <span class="mt-temp">${temp}°C</span>
+                    <span class="mt-desc">${desc}</span>
+                </div>
+            `;
+            $('#mountain-container').append(card);
+        });
+    });
+}
