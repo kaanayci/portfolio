@@ -21,11 +21,6 @@ const pages = {
           </div>
       </div>
       
-      <div id="weather-history" style="display:none; margin-bottom: 1rem;">
-          <small>Récemment : </small> 
-          <span id="history-tags"></span>
-      </div>
-
       <div id="weather-result" class="weather__result">
           <p>Recherchez une ville pour afficher la météo.</p>
       </div>
@@ -92,7 +87,6 @@ function loadChannel(channelName) {
     if (channelName === "mountain") loadMountains();
     if (channelName === "meteo") {
         const lastCity = localStorage.getItem("lastCity");
-        loadHistory();
         updateUnitUI(); // Restore toggle state
         
         if (lastCity) {
