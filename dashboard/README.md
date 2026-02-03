@@ -1,122 +1,102 @@
-# Dashboard – Application Web
+# 🌦️ Météo Dashboard Suisse (MétéoCH)
 
-Ce projet est un **dashboard web interactif** développé en HTML, CSS et
-JavaScript dans le cadre de mon portfolio d’intégration web.
+Bienvenue sur le **Météo Dashboard Suisse**, une application web progressive (PWA) complète conçue pour visualiser la météo en temps réel, suivre l'état des stations de ski et comparer les climats de différentes villes.
 
-Il a pour objectif de présenter des données de manière claire et dynamique
-au sein d’une interface responsive, tout en respectant une architecture
-simple et maintenable.
+Ce projet démontre des compétences avancées en intégration web (HTML/CSS/JS), manipulation d'APIs tierces et conception d'interfaces utilisateur modernes et réactives.
 
 ---
 
-## 🎯 Objectifs du projet
+## ✨ Fonctionnalités Principales
 
-- Créer un tableau de bord dynamique sans framework
-- Séparer clairement la structure, le style et la logique
-- Charger et afficher des données de manière dynamique
-- Mettre en place une architecture proche d’un projet professionnel
-- Utiliser un serveur Node.js pour le développement local
+### 1. 🌍 Météo Détaillée
+- **Données en temps réel** : Température, ressenti, humidité, vent, pression, UV, qualité de l'air.
+- **Prévisions** : Graphiques interactifs (Chart.js) sur 24h et prévisions sur 5 jours.
+- **Géolocalisation** : Détection automatique de la position de l'utilisateur.
+- **Recommandations** : Conseils vestimentaires basés sur les conditions actuelles.
+- **Itinéraires** : Lien direct vers Google Maps pour la navigation.
+
+### 2. 🏔️ Météo des Montagnes & Ski
+- **Monitoring des Stations** : Suivi en direct des stations suisses (Grindelwald, Verbier, Zermatt...).
+- **État des Pistes** : Simulation intelligente de l'ouverture/fermeture des pistes et de l'enneigement.
+- **Mode "À Proximité"** : Affiche automatiquement les stations à moins de 50km de vous.
+- **Visuels Immersifs** : Cartes riches avec photos des stations.
+
+### 3. 🆚 Comparateur de Villes
+- **Multi-comparaison** : Comparez jusqu'à **4 villes** simultanément côte à côte.
+- **Analyse Visuelle** : Graphique comparatif des températures et ressentis.
+- **Tableau de Données** : Comparaison ligne par ligne de toutes les métriques (Vent, Pression, Lever/Coucher soleil...).
+- **Indicateurs** : Mise en évidence automatique de la ville la plus chaude ("Winner").
+
+### 4. 🗺️ Carte Interactive
+- Visualisation globale via **Leaflet.js**.
+- Marqueurs dynamiques avec météo en temps réel pour les grandes villes suisses.
+
+### 5. 📲 Progressive Web App (PWA)
+- **Installable** : Fonctionne comme une application native sur Mobile et Desktop.
+- **Offline First** : L'interface reste accessible sans connexion internet (Service Worker).
+- **Notifications** : Support des notifications push pour les alertes.
+
+### 6. ⚙️ Personnalisation
+- **Thèmes** : Mode Clair / Mode Sombre (Dark Mode).
+- **Unités** : Bascule facile entre Métrique (°C, km/h) et Impérial (°F, mph).
+- **Favoris** : Gestion d'une liste de villes préférées avec accès rapide.
 
 ---
 
-## 🧱 Architecture du projet
+## 🛠️ Stack Technique
 
-```txt
+- **Frontend** : HTML5, CSS3 (Grid/Flexbox), JavaScript (ES6+).
+- **Bibliothèques** :
+  - **jQuery** : Manipulation DOM simplifiée.
+  - **Chart.js** : Graphiques de données météo.
+  - **Leaflet** : Cartographie interactive.
+- **API** : [OpenWeatherMap API](https://openweathermap.org/api) (Météo, Pollution, Géocodage).
+- **Architecture** : Modulaire (fichiers JS séparés par fonctionnalité).
+- **PWA** : Service Worker (`sw.js`), Manifest (`manifest.json`).
+
+---
+
+## 🚀 Installation et Lancement
+
+1. **Cloner le projet** (ou télécharger les fichiers).
+2. **Configurer l'API Key** :
+   - Ouvrez `assets/js/modules/config.js` (si présent) ou vérifiez la variable `WEATHER_API_KEY` dans le code.
+3. **Lancer le serveur local** :
+   ```bash
+   node server.js
+   ```
+4. **Accéder à l'application** :
+   - Ouvrez votre navigateur sur `http://localhost:3000`.
+
+---
+
+## 🧱 Structure du Projet
+
+```text
 dashboard/
-├── index.html              # Structure du dashboard
-├── server.js               # Serveur Node.js (développement local)
-├── README.md               # Documentation du projet
-└── assets/
-    ├── css/
-    │   └── style.css       # Styles et responsive design
-    └── js/
-        └── app.js          # Logique applicative du dashboard
-
-````
----
-
-## 🛠️ Technologie sutilisées
-
-HTML5
-
-  - Structure sémantique du contenu
-  - Organisation claire de l’interface$
-  
-CSS3
-
-  - Mise en page avec Flexbox
-  
-  - Responsive design
-  
-  - Styles organisés et lisibles
-
-JavaScript
-
-  - Manipulation du DOM
-  - Gestion des événements
-  - Traitement et affichage dynamique des données
-
----
-
-## ⚙️ Fonctionnement général
-
-Le fonctionnement du dashboard repose sur les étapes suivantes :
-
- 1.  Le serveur Node.js sert les fichiers du projet
- 2.  La page index.html fournit la structure de l’interface
- 3.  Le fichier app.js initialise l’application au chargement
- 4.  Les données sont traitées et affichées dynamiquement
- 5.  L’interface se met à jour en fonction des interactions utilisateur
-
----
-
-## 📄 Rôle des fichiers principaux
-### index.html
-
-Contient la structure du dashboard :
-- zones d’affichage des données
-- éléments interactifs (boutons, filtres, etc.)
-
-### style.css
-
-Gère : 
-- la mise en page
-- le responsive design
-- la cohérence visuelle de l’interface
-
-### app.js
-
-Le fichier app.js est le point d’entrée JavaScript du projet.
-Il centralise la logique applicative du dashboard.
-
-Ses responsabilités principales sont :
-- l’initialisation du dashboard au chargement de la page
-- la récupération et le traitement des données
-- la mise à jour dynamique de l’interface (DOM)
-- la gestion des interactions utilisateur
-
-Ce choix permet une meilleure lisibilité du code et respecte les bonnes
-pratiques du développement web.
-
-### server.js
-
-Le fichier server.js met en place un serveur Node.js simple permettant :
-- de servir les fichiers du projet localement
-- d’éviter les limitations liées au chargement via file://
-- de simuler un environnement proche de la production
-
-
----
-## 🚀 Lancement du projet
-### Prérequis
-
-- Node.js installé sur la machine
-
-### Installation et démarrage
-
-```txt
-npm install
-node server.js
-
+├── index.html              # Point d'entrée PWA
+├── manifest.json           # Manifeste PWA
+├── sw.js                   # Service Worker (Cache & Offline)
+├── server.js               # Serveur Node.js simple
+├── assets/
+│   ├── css/
+│   │   ├── style.css       # Styles globaux
+│   │   └── components/     # Styles modulaires (weather, mountain, compare...)
+│   ├── js/
+│   │   ├── app.js          # Contrôleur principal (Routing)
+│   │   └── modules/        # Logique métier
+│   │       ├── weather.js  # Gestion météo & API
+│   │       ├── panorama.js # Logique Montagne/Ski
+│   │       ├── compare.js  # Comparateur
+│   │       ├── map.js      # Carte Leaflet
+│   │       ├── ui.js       # Gestion thème & UI
+│   │       └── favorites.js
+│   └── icons/              # Icônes PWA
+└── README.md
 ```
-Puis ouvrir le projet dans un navigateur via l’URL indiquée dans la console
+
+---
+
+## 📸 Aperçu
+
+L'application est entièrement **Responsive**, s'adaptant parfaitement des grands écrans de bureau aux smartphones. Le design met l'accent sur la lisibilité, l'esthétique "glassmorphism" et des animations fluides.
