@@ -43,6 +43,13 @@ main {
   border: none;
 }
 
+#playlist-select select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
 #playlist-select button {
   background: #ff2f92;
   color: white;
