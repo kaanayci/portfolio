@@ -353,7 +353,10 @@ main {
   }
 
   #playlist-select input,
+  #playlist-select select,
   #playlist-select button {
     width: 100%;
+    box-sizing: border-box; /* Important pour ne pas dépasser avec le padding */
+    margin-bottom: 0.5rem;
   }
 }
