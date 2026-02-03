@@ -18,6 +18,7 @@ const artistEl = document.getElementById("song-artist");
 const audioEl = document.getElementById("audio");
 const messageEl = document.getElementById("message");
 const hintEl = document.getElementById("card-hint");
+const audioLoader = document.getElementById("audio-loading");
 const currentCardEl = document.getElementById("current-card");
 const startBtn = document.getElementById("start-game");
 const playlistInput = document.getElementById("playlist-url");
@@ -30,6 +31,26 @@ const modalDifficultySelect = document.getElementById("modal-difficulty");
 const btnRestart = document.getElementById("btn-restart");
 const btnNewPlaylist = document.getElementById("btn-new-playlist");
 
+// Gestion du Loader Audio
+if (audioEl && audioLoader) {
+  audioEl.addEventListener("loadstart", () => {
+    audioLoader.classList.add("active");
+  });
+  audioEl.addEventListener("canplay", () => {
+    audioLoader.classList.remove("active");
+  });
+  audioEl.addEventListener("waiting", () => {
+    audioLoader.classList.add("active");
+  });
+  audioEl.addEventListener("playing", () => {
+    audioLoader.classList.remove("active");
+  });
+}
+
+/**
+ * Charge les chansons depuis le JSON
+ * @async
+ */
 async function loadSongs() {
   const ts = Date.now(); // cache-buster
   const res = await fetch(`assets/data/songs.json?v=${ts}`);
@@ -134,6 +155,10 @@ function startGame() {
   nextCard();
 }
 
+/**
+ * Passe à la carte suivante ou termine le jeu si plus de cartes.
+ */
+
 // Afficher la carte suivante
 function nextCard() {
   if (songs.length === 0) {
@@ -192,6 +217,11 @@ function nextCard() {
     messageEl.textContent = "⚠️ Aucun extrait audio disponible pour ce titre";
   }
 }
+
+/**
+ * Vérifie si la carte carte placement est correct.
+ * @param {number} position - Position cliquée dans la timeline (0 à timeline.length)
+ */
 
 // Vérifier le placement de la carte
 function checkPlacement(position) {
@@ -335,12 +365,18 @@ function addDropZone(position) {
 
   zone.ondrop = (e) => {
     e.preventDefault();
-    zone.classList.remove("drag-over");
-    checkPlacement(position);
   };
 
   timelineEl.appendChild(zone);
 }
+
+/**
+ * Algorithme de mélange de Fisher-Yates
+ * @param {Array} array - Le tableau à mélanger
+ * @returns {Array} Le tableau mélangé
+ */
+  timelineEl.appendChild(zone);
+
 
 // Mélanger un tableau (Fisher-Yates Shuffle)
 function shuffle(array) {
