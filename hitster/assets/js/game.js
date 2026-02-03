@@ -3,12 +3,14 @@ let songs = [];
 let timeline = [];
 let currentCard = null;
 let score = 0;
+let highScore = parseInt(localStorage.getItem("hitster_high_score")) || 0;
 let currentPlaylistId = localStorage.getItem("hitster_playlist_id");
 let difficulty = "normal";
 let lives = 3;
 
 // Éléments DOM
 const scoreEl = document.getElementById("score");
+const highScoreEl = document.getElementById("high-score");
 const livesEl = document.getElementById("lives");
 const timelineEl = document.getElementById("timeline");
 const titleEl = document.getElementById("song-title");
@@ -91,6 +93,17 @@ startBtn.addEventListener("click", async () => {
   startGame();
 });
 
+function renderLives(count) {
+  if (!livesEl) return;
+  livesEl.innerHTML = "";
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement("span");
+    span.textContent = "❤️";
+    span.className = "heart-icon";
+    livesEl.appendChild(span);
+  }
+}
+
 // Démarrer une nouvelle partie
 function startGame() {
   if (songs.length === 0) return;
@@ -106,8 +119,8 @@ function startGame() {
   } else {
     lives = 3;
     if (livesEl) {
-      livesEl.textContent = "❤️❤️❤️";
       livesEl.style.display = "block";
+      renderLives(lives);
     }
   }
 
@@ -115,7 +128,7 @@ function startGame() {
   timeline.push(songs.pop());
 
   score = 0;
-  scoreEl.textContent = "Score : 0";
+  updateScoreUI();
 
   renderTimeline();
   nextCard();
@@ -194,13 +207,20 @@ function checkPlacement(position) {
     score++;
     scoreEl.textContent = "Score : " + score;
     
+    // Update High Score
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem("hitster_high_score", highScore);
+    }
+    updateScoreUI();
+
     // Reset draggable after success (optional since nextCard resets it)
     if (currentCardEl) currentCardEl.setAttribute("draggable", "false");
 
     messageEl.textContent = "✅ Bien placé !";
     messageEl.className = "success";
 
-    renderTimeline();
+    renderTimeline(position); // Pass position for animation
     nextCard();
   } else {
     // Gestion des Vies
@@ -208,7 +228,28 @@ function checkPlacement(position) {
       endGame();
     } else {
       lives--;
-      if (livesEl) livesEl.textContent = "❤️".repeat(lives);
+      
+      // Animation Heart Loss
+      if (livesEl) {
+          const hearts = livesEl.querySelectorAll(".heart-icon");
+          // Si on a des cœurs affichés, on anime le dernier restant VISUELLEMENT avant suppression
+          // Note : lives a déjà été décrémenté, donc hearts.length = lives + 1 (ceux affichés avant redraw)
+          // MAIS ici on n'a pas encore redraw.
+          // Le DOM a encore "lives + 1" coeurs.
+          
+          if (hearts.length > 0) {
+              const lostHeart = hearts[hearts.length - 1];
+              lostHeart.classList.add("heart-lost");
+          }
+          livesEl.classList.add("lives-shake");
+          setTimeout(() => livesEl.classList.remove("lives-shake"), 500);
+      }
+
+      // Screen Damage Effect
+      document.body.classList.add("damage-vignette", "body-shake");
+      setTimeout(() => {
+        document.body.classList.remove("damage-vignette", "body-shake");
+      }, 800);
 
       if (lives > 0) {
         messageEl.textContent = `❌ Raté ! C'était en ${currentCard.year}. Il reste ${lives} vies.`;
@@ -219,8 +260,10 @@ function checkPlacement(position) {
 
         // On passe à la suivante après un court délai
         setTimeout(() => {
+            // Re-render clean lives count
+            if (livesEl && difficulty !== "hard") renderLives(lives);
             nextCard(); 
-        }, 2000);
+        }, 1500); // Un peu plus rapide pour garder le rythme
       } else {
         endGame();
       }
@@ -242,7 +285,7 @@ function endGame() {
 }
 
 // Afficher la timeline
-function renderTimeline() {
+function renderTimeline(newCardIndex = -1) {
   timelineEl.innerHTML = "";
 
   addDropZone(0);
@@ -250,6 +293,11 @@ function renderTimeline() {
   timeline.forEach((card, index) => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "timeline-card";
+    
+    // Si c'est la carte qu'on vient de placer, on ajoute la classe d'animation
+    if (index === newCardIndex) {
+      cardDiv.classList.add("newly-placed");
+    }
 
     cardDiv.innerHTML = `
       <div class="year">${card.year}</div>
@@ -260,6 +308,11 @@ function renderTimeline() {
     timelineEl.appendChild(cardDiv);
     addDropZone(index + 1);
   });
+}
+
+function updateScoreUI() {
+  scoreEl.textContent = "Score : " + score;
+  if (highScoreEl) highScoreEl.textContent = "Record : " + highScore;
 }
 
 // Ajouter une zone de dépôt
