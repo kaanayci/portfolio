@@ -5,3 +5,7 @@
 @import 'components/favorites.css';
 @import 'components/panorama.css';
 @import 'components/map-compare.css';
+
+/* Utility Class for View Switching */
+.hidden { display: none !important; }
+
