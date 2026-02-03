@@ -23,3 +23,6 @@ L.marker(city.coords).addTo(mapInstance)
 
 ### Gestion de l'Instance
 Pour éviter les fuites de mémoire ou les erreurs de ré-initialisation ("Map container is already initialized"), le code vérifie l'existence de `mapInstance` et appelle `.remove()` avant de recréer la carte si nécessaire.
+
+## Exemple de code
+![alt text](interactivite-carte.png)
