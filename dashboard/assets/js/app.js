@@ -493,8 +493,17 @@ function loadMountains() {
 let mapInstance = null;
 
 function initMap() {
+    // Sécurité: vérifier si le div existe
+    if (!document.getElementById('map')) return;
+    
+    // Fallback: Si le CSS n'a pas chargé la hauteur
+    if ($('#map').height() === 0) {
+        $('#map').css('height', '500px');
+    }
+
     if (mapInstance) {
-        mapInstance.remove(); // Clean up existing map instance
+        mapInstance.remove();
+        mapInstance = null;
     }
 
     // Coordonnées Suisse Centrale
@@ -503,6 +512,11 @@ function initMap() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(mapInstance);
+    
+    // IMPORTANT: Forcer le redessin pour éviter le bug d'affichage gris/blanc
+    setTimeout(() => {
+        mapInstance.invalidateSize();
+    }, 200);
 
     const mapCities = [
         {name: "Genève", coords: [46.2044, 6.1432]},
