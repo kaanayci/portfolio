@@ -45,12 +45,45 @@ const pages = {
     `,
     compare: `
       <h2>Comparateur de Villes</h2>
+      <p>Comparez la météo de 2 à 4 villes simultanément.</p>
+      
       <div class="comparison-inputs">
-          <input type="text" id="city1" placeholder="Ville 1 (ex: Paris)">
-          <input type="text" id="city2" placeholder="Ville 2 (ex: Londres)">
+          <input type="text" class="comp-input" placeholder="Ville 1 (ex: Paris)">
+          <input type="text" class="comp-input" placeholder="Ville 2 (ex: Londres)">
+          <input type="text" class="comp-input" placeholder="Ville 3 (Optionnel)">
+          <input type="text" class="comp-input" placeholder="Ville 4 (Optionnel)">
           <button onclick="compareCities()">Comparer</button>
       </div>
-      <div id="compare-result" class="comparison-grid"></div>
+
+      <div id="compare-loader" style="display:none; text-align:center; padding:2rem;">
+        <div class="loader-spinner"></div>
+      </div>
+
+      <div id="compare-result" class="comparison-container" style="display:none;">
+         <div id="compare-cards" class="comparison-cards-grid"></div>
+         
+         <div class="comparison-charts-section animate-pop" style="animation-delay: 0.2s; margin-top:2rem;">
+            <h3>📊 Analyse Comparée</h3>
+            <div style="height:300px; margin-bottom: 2rem;">
+                <canvas id="compareTempChart"></canvas>
+            </div>
+            
+            <h3>📋 Tableau Détaillé</h3>
+            <div class="table-container">
+                <table id="compare-table" class="compare-table">
+                    <thead>
+                        <tr id="table-head">
+                            <th>Donnée</th>
+                            <!-- Cities headers injected here -->
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Rows injected here -->
+                    </tbody>
+                </table>
+            </div>
+         </div>
+      </div>
     `, 
     settings: `
       <h2>Paramètres</h2>
