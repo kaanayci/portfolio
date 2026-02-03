@@ -6,6 +6,22 @@ Ce projet démontre des compétences avancées en intégration web (HTML/CSS/JS)
 
 ---
 
+## 🛠️ Installation et Configuration
+
+Pour faire fonctionner le tableau de bord météo, vous devez configurer votre clé API.
+
+1.  Clonez le projet.
+2.  Dans le dossier `assets/js/modules/`, dupliquez le fichier `config.example.js`.
+3.  Renommez la copie en `config.js`.
+4.  Ouvrez ce fichier et remplacez `VOTRE_CLE_API_ICI` par votre clé OpenWeatherMap valide.
+
+```javascript
+// config.js
+export const WEATHER_API_KEY = "8bf9317dd25811ccc3ea56b...";
+```
+
+*Note : Le fichier `config.js` est ignoré par Git pour des raisons de sécurité.*
+
 ## ✨ Fonctionnalités Principales
 
 ### 1. 🌍 Météo Détaillée
