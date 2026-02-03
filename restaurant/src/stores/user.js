@@ -14,14 +14,20 @@ export const useUserStore = defineStore('user', {
     },
     ordersUntilFreeItem: (state) => {
       return 10 - (state.orderCount % 10)
-    }
+    },
+    isAdmin: (state) => state.user?.role === 'admin'
   },
 
   actions: {
     login(email, password) {
       // Mock login implementation
       if (email && password) {
-        this.user = { email, name: email.split('@')[0] }
+        let role = 'user'
+        if (email === 'admin@coinregal.com' && password === 'admin123') {
+          role = 'admin'
+        }
+        
+        this.user = { email, name: email.split('@')[0], role }
         this.isAuthenticated = true
         this.saveState()
         return true
@@ -37,10 +43,10 @@ export const useUserStore = defineStore('user', {
     logout() {
       this.user = null
       this.isAuthenticated = false
-      this.orderCount = 0 // Optional: reset count or keep it? Keeping it in localStorage might be better if real app, but here we reset session but data is in localStorage usually.
-      // But for this simplifiction let's clear data on logout so another user can login
+      this.orderCount = 0 
       localStorage.removeItem('user')
-      localStorage.removeItem('orderCount')
+      // we keep orderCount for user convenience in this demo, but for admin logout consistency:
+      if (this.user?.role === 'admin') localStorage.removeItem('orderCount') 
     },
 
     incrementOrderCount() {
