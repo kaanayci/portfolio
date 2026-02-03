@@ -19,13 +19,13 @@ $(document).ready(function () {
 
             <ul>
             <li>🌍 Consulter la météo en temps réel pour une localisation précise</li>
-            <li>💬 Discuter des conditions météo chez vous</li>
+            <li>📢 Participer aux discussions régionales</li>
             <li>📊 Explorer des statistiques liées à l’activité</li>
             </ul>
 
             <p>
             Pour commencer, rendez-vous dans le salon
-            <strong>🌤 Météo</strong> et entrez une ville ou un code postal.
+            <strong>🌤 Météo</strong>.
             </p>
         </section>
     `,
@@ -56,20 +56,47 @@ $(document).ready(function () {
         </section>
     `,
     chat: `
-        <section class="chat">
-            <h2>Discussions</h2>
+        <section class="forum">
+            <div class="forum-header">
+                <h2>📢 Topics Régionaux</h2>
+                <div class="forum-controls">
+                    <select id="region-filter" class="form-select">
+                        <option value="all">🌍 Toutes les régions</option>
+                        <option value="idf">🗼 Île-de-France</option>
+                        <option value="paca">☀️ PACA</option>
+                        <option value="bretagne">🌧️ Bretagne</option>
+                        <option value="nord">🍺 Hauts-de-France</option>
+                    </select>
+                    <button id="btn-new-topic" class="btn-primary">➕ Nouveau Sujet</button>
+                </div>
+            </div>
 
-            <div id="messages" class="chat__messages"></div>
-
-            <form id="chat-form" class="chat__form">
-            <input
-                type="text"
-                id="chat-input"
-                placeholder="Écrire un message..."
-                required
-            >
-            <button type="submit">Envoyer</button>
+            <!-- Formulaire de création (masqué par défaut) -->
+            <form id="topic-form" class="topic__form" style="display:none;">
+                <h3>Nouveau sujet de discussion</h3>
+                <div class="form-group">
+                    <input type="text" id="topic-title" placeholder="Titre de votre sujet..." required>
+                </div>
+                <div class="form-group row">
+                    <select id="topic-region" required>
+                        <option value="" disabled selected>Choisir une région...</option>
+                        <option value="idf">Île-de-France</option>
+                        <option value="paca">PACA</option>
+                        <option value="bretagne">Bretagne</option>
+                        <option value="nord">Hauts-de-France</option>
+                    </select>
+                    <input type="text" id="topic-author" placeholder="Votre pseudo" required>
+                </div>
+                <textarea id="topic-content" placeholder="Racontez-nous ce qui se passe..." rows="3" required></textarea>
+                <div class="form-actions">
+                    <button type="button" id="btn-cancel-topic" class="btn-text">Annuler</button>
+                    <button type="submit" class="btn-primary">Publier</button>
+                </div>
             </form>
+
+            <div id="topics-list" class="forum__list">
+                <!-- Les topics s'afficheront ici -->
+            </div>
         </section>
     `,
     stats: `
@@ -79,7 +106,7 @@ $(document).ready(function () {
                 <canvas id="activityChart"></canvas>
             </div>
             <div class="stats__info">
-                <p><strong>Total Messages :</strong> <span id="total-messages">0</span></p>
+                <p><strong>Total Topics :</strong> <span id="total-messages">0</span></p>
                 <p><strong>Utilisateurs actifs :</strong> 12</p>
             </div>
         </section>
@@ -92,15 +119,106 @@ $(document).ready(function () {
     `,
   };
 
-  function loadMessages() {
-    const storedMessages =
-      JSON.parse(localStorage.getItem("chatMessages")) || [];
-    $("#messages").empty();
+  // --- Gestion du Forum (Topics) ---
 
-    storedMessages.forEach((message) => {
-      $("#messages").append(`<p class="chat__message">🧑 ${message}</p>`);
+  const defaultTopics = [
+    { title: "⚠️ Alerte Orages violents sur les Bouches-du-Rhône", region: "paca", author: "MétéoSud", content: "Vigilance orange déclarée pour ce soir. Grêle possible. Mettez vos voitures à l'abri !", upvotes: 156 },
+    { title: "Grand soleil à Lille, c'est un miracle !", region: "nord", author: "ChtiDu59", content: "J'ai vu une boule jaune dans le ciel, quelqu'un sait ce que c'est ? Profitez-en pour les barbecues !", upvotes: 42 },
+    { title: "Crue de la Seine : les voies sur berges fermées ?", region: "idf", author: "ParisienStressé", content: "Je dois rentrer en vélib ce soir, ça passe ou c'est mort au niveau des Tuileries ?", upvotes: 18 },
+    { title: "Photos de la tempête sur la côte de Granit Rose 🌊", region: "bretagne", author: "BreizhPhoto", content: "Les vagues étaient impressionnantes ce matin à Ploumanac'h. Voir le lien en commentaire.", upvotes: 89 },
+    { title: "Chaleur insupportable dans le RER B", region: "idf", author: "MetroBoulotDodo", content: "35 degrés dehors, 45 dedans. Courage à ceux qui rentrent du taf.", upvotes: 312 },
+    { title: "Le Mistral souffle à 110km/h !", region: "paca", author: "VentDuSud", content: "Attention aux chutes de branches, ça décoiffe sévère aujourd'hui vers Avignon.", upvotes: 24 },
+    { title: "Brouillard épais ce matin sur l'A1", region: "nord", author: "RouteInfo", content: "Visibilité réduite à 50m. Levez le pied.", upvotes: 15 },
+    { title: "Quelqu'un a un bon spot pour voir le coucher de soleil ?", region: "bretagne", author: "TouristeCurieux", content: "Je suis vers Saint-Malo pour le week-end.", upvotes: 7 }
+  ];
+
+  function loadTopics(filter = "all") {
+    let topics = JSON.parse(localStorage.getItem("forumTopics"));
+    
+    // Init with mock data if empty
+    if (!topics || topics.length === 0) {
+        topics = defaultTopics;
+        localStorage.setItem("forumTopics", JSON.stringify(topics));
+    }
+
+    const container = $("#topics-list");
+    container.empty();
+
+    const filteredTopics = filter === "all" ? topics : topics.filter(t => t.region === filter);
+
+    if (filteredTopics.length === 0) {
+        container.html(`<div class="empty-state"><p>Aucun sujet pour cette région.</p></div>`);
+        return;
+    }
+
+    filteredTopics.forEach((topic) => {
+      const regionLabels = { idf: "Île-de-France", paca: "PACA", bretagne: "Bretagne", nord: "Hauts-de-France" };
+      const regionName = regionLabels[topic.region] || topic.region;
+      
+      const html = `
+        <div class="topic-card">
+            <div class="topic-votes">
+                <button class="vote-btn up">▲</button>
+                <span class="vote-count">${topic.upvotes || 0}</span>
+                <button class="vote-btn down">▼</button>
+            </div>
+            <div class="topic-content">
+                <div class="topic-meta">
+                    <span class="region-tag region-${topic.region}">${regionName}</span>
+                    <span class="author">posté par u/${topic.author}</span>
+                </div>
+                <h3 class="topic-title">${topic.title}</h3>
+                <p class="topic-text">${topic.content}</p>
+                <div class="topic-footer">
+                    <button class="btn-action">💬 Commenter</button>
+                    <button class="btn-action">🔗 Partager</button>
+                </div>
+            </div>
+        </div>
+      `;
+      container.prepend(html); // Newest first
     });
   }
+
+  // Events Forum inside ready
+  $(document).on('click', '#btn-new-topic', function() {
+      $('#topic-form').slideDown();
+      $(this).hide();
+  });
+
+  $(document).on('click', '#btn-cancel-topic', function() {
+      $('#topic-form').slideUp();
+      $('#btn-new-topic').fadeIn();
+  });
+
+  $(document).on('change', '#region-filter', function() {
+      loadTopics($(this).val());
+  });
+
+  $(document).on('submit', '#topic-form', function(e) {
+      e.preventDefault();
+      
+      const newTopic = {
+          title: $('#topic-title').val().trim(),
+          region: $('#topic-region').val(),
+          author: $('#topic-author').val().trim(),
+          content: $('#topic-content').val().trim(),
+          upvotes: 0
+      };
+
+      if(!newTopic.title || !newTopic.region) return;
+
+      const topics = JSON.parse(localStorage.getItem("forumTopics")) || [];
+      topics.push(newTopic);
+      localStorage.setItem("forumTopics", JSON.stringify(topics));
+
+      loadTopics($('#region-filter').val()); // Refresh list
+      
+      // Reset & hide form
+      this.reset();
+      $('#topic-form').slideUp();
+      $('#btn-new-topic').fadeIn();
+  });
 
   // Clic sur un salon
   $(".sidebar li").on("click", function () {
@@ -117,18 +235,18 @@ $(document).ready(function () {
         .html(channels[channelKey])
         .fadeIn(200, function () {
           if (channelKey === "chat") {
-            loadMessages();
+            loadTopics();
           }
 
           if (channelKey === "meteo") {
             const savedLocation = localStorage.getItem("weatherLocation");
             if (savedLocation) {
+                fetchWeather(savedLocation);
+            }
+          }
 
           if (channelKey === "stats") {
             initStatsChart();
-          }
-              fetchWeather(savedLocation);
-            }
           }
         });
     });
@@ -269,42 +387,20 @@ $(document).on("submit", "#weather-form", function (e) {
   fetchWeather(location);
 });
 
-// Gestion du chat (délégation d'événement)
-$(document).on("submit", "#chat-form", function (e) {
-  e.preventDefault();
-
-  const input = $("#chat-input");
-  const message = input.val().trim();
-
-  if (message === "") return;
-
-  const storedMessages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-
-  storedMessages.push(message);
-  localStorage.setItem("chatMessages", JSON.stringify(storedMessages));
-
-  const newMessage = $(`<p class="chat__message">🧑 ${message}</p>`).hide();
-
-  $("#messages").append(newMessage);
-  newMessage.fadeIn(150);
-
-  input.val("");
-});
-
 function initStatsChart() {
   const ctx = document.getElementById('activityChart');
   if (!ctx) return;
 
-  // Récupérer le nombre de messages réel
-  const storedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-  $('#total-messages').text(storedMessages.length);
+  // Récupérer le nombre de topics réel
+  const topics = JSON.parse(localStorage.getItem('forumTopics')) || [];
+  $('#total-messages').text(topics.length);
 
-  // D�truire l'ancien graphique s'il existe pour �viter les conflits
+  // Détruire l'ancien graphique s'il existe pour éviter les conflits
   if (currentChart) {
     currentChart.destroy();
   }
 
-  // Cr�ation du graphique Chart.js
+  // Création du graphique Chart.js
   currentChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -317,8 +413,8 @@ function initStatsChart() {
         borderWidth: 1
       },
       {
-        label: 'Messages envoy�s',
-        data: [2, 5, 1, 8, 4, 0, storedMessages.length], // Int�gre les vraies donn�es pour 'Dim'
+        label: 'Topics créés',
+        data: [2, 5, 1, 8, 4, 0, topics.length], 
         backgroundColor: 'rgba(16, 185, 129, 0.6)',
         borderColor: 'rgba(16, 185, 129, 1)',
         borderWidth: 1
