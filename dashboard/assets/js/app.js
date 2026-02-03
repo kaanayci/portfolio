@@ -238,28 +238,30 @@ function renderAirQuality(aqi) {
 }
 
 function updateBackground(condition) {
-    $('body').removeClass('bg-clear bg-clouds bg-rain bg-snow bg-default');
+    const $card = $('.weather-card');
     
-    switch(condition.toLowerCase()) {
-        case 'clear':
-            $('body').addClass('bg-clear');
-            break;
-        case 'clouds':
-        case 'mist':
-        case 'fog':
-            $('body').addClass('bg-clouds');
-            break;
-        case 'rain':
-        case 'drizzle':
-        case 'thunderstorm':
-            $('body').addClass('bg-rain');
-            break;
-        case 'snow':
-            $('body').addClass('bg-snow');
-            break;
-        default:
-            $('body').addClass('bg-default');
+    // Reset classes
+    const classes = 'bg-clear bg-clouds bg-rain bg-snow bg-storm bg-mist bg-default';
+    $card.removeClass(classes);
+    
+    let themeClass = 'bg-default';
+    const cond = condition.toLowerCase();
+
+    if (cond === 'clear') {
+        themeClass = 'bg-clear';
+    } else if (cond.includes('clouds')) {
+        themeClass = 'bg-clouds';
+    } else if (cond.includes('rain') || cond.includes('drizzle')) {
+        themeClass = 'bg-rain';
+    } else if (cond.includes('thunderstorm')) {
+        themeClass = 'bg-storm';
+    } else if (cond.includes('snow')) {
+        themeClass = 'bg-snow';
+    } else if (['mist', 'fog', 'haze', 'smoke'].includes(cond)) {
+        themeClass = 'bg-mist';
     }
+
+    $card.addClass(themeClass);
 }
 
 function renderWeather(data) {
