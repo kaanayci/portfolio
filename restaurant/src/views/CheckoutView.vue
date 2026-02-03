@@ -32,9 +32,15 @@
       <!-- Order Summary (Mini) -->
       <div class="bg-white p-6 rounded-xl shadow-md mb-6 border-t-4 border-secondary">
         <h3 class="text-lg font-bold mb-4">Total à payer</h3>
+        
+        <div v-if="cartStore.loyaltyDiscount > 0" class="flex justify-between items-center mb-2 text-green-600">
+           <span>🎁 Réduction Fidélité</span>
+           <span>- {{ cartStore.loyaltyDiscount.toFixed(2) }} CHF</span>
+        </div>
+
         <div class="flex justify-between items-center text-3xl font-bold text-primary">
           <span>Total TTC</span>
-          <span>{{ cartStore.cartTotal.toFixed(2) }} CHF</span>
+          <span>{{ cartStore.finalTotal.toFixed(2) }} CHF</span>
         </div>
         <p class="text-gray-500 text-sm mt-2 text-right">TVA incluse</p>
       </div>
@@ -64,11 +70,13 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import { useOrderStore } from '@/stores/order'
+import { useUserStore } from '@/stores/user'
 import DeliveryForm from '@/components/checkout/DeliveryForm.vue'
 import PaymentMethods from '@/components/checkout/PaymentMethods.vue'
 
 const router = useRouter()
 const cartStore = useCartStore()
+const userStore = useUserStore()
 // const orderStore = useOrderStore() // Will be used later
 
 const orderData = ref({
@@ -93,11 +101,16 @@ const submitOrder = async () => {
 
     console.log('Order Submitted:', {
       items: cartStore.items,
-      total: cartStore.cartTotal,
+      total: cartStore.finalTotal,
       details: orderData.value,
       payment: paymentMethod.value,
       id: orderId
     })
+    
+    // Increment User Order Count if logged in
+    if (userStore.isAuthenticated) {
+      userStore.incrementOrderCount()
+    }
 
     // Success -> Clear Cart & Redirect
     cartStore.clearCart()
