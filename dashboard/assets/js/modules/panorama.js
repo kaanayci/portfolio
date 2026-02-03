@@ -24,24 +24,42 @@ function loadPanorama() {
 
 let allStationsData = [];
 
+// Images de fallback pour les stations sans image
+const fallbackImages = [
+    "https://images.unsplash.com/photo-1486496166122-a37f6dc2b8b9?w=600&q=80", // Neige + Soleil
+    "https://images.unsplash.com/photo-1551524559-8af4e6624178?w=600&q=80", // Skier
+    "https://images.unsplash.com/photo-1565538059049-76082989b142?w=600&q=80", // Montagne mystique
+    "https://images.unsplash.com/photo-1520448100688-34860d5b6a7a?w=600&q=80", // Village enneigé
+    "https://images.unsplash.com/photo-1482867996988-29bfffe79584?w=600&q=80", // Chalet
+    "https://images.unsplash.com/photo-1518182170546-0766ce6fabe4?w=600&q=80"  // Piste
+];
+
+function getFallbackImage(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return fallbackImages[Math.abs(hash) % fallbackImages.length];
+}
+
 function loadMountains() {
     const stations = [
-        {name: "Grindelwald-Wengen", q: "Grindelwald", region: "Bern", alt: 1034, lat: 46.624, lon: 8.041, img: "https://images.unsplash.com/photo-1596708304021-02685fb62c64?w=600&q=80"},
-        {name: "Les Diablerets", q: "Les Diablerets", region: "Vaud", alt: 1200, lat: 46.350, lon: 7.157, img: "https://images.unsplash.com/photo-1612966838337-184581177652?w=600&q=80"},
-        {name: "Andermatt", q: "Andermatt", region: "Uri", alt: 1444, lat: 46.635, lon: 8.594, img: "https://images.unsplash.com/photo-1614597029272-566089202683?w=600&q=80"},
-        {name: "Leysin", q: "Leysin", region: "Vaud", alt: 1260, lat: 46.3358, lon: 7.009, img: "https://images.unsplash.com/photo-1551524559-8af4e6624178?w=600&q=80"},
-        {name: "Champéry", q: "Champéry", region: "Valais", alt: 1050, lat: 46.176, lon: 6.871, img: "https://images.unsplash.com/photo-1518099307222-261556880098?w=600&q=80"},
-        {name: "Crans-Montana", q: "Crans-Montana", region: "Valais", alt: 1495, lat: 46.3117, lon: 7.4789, img: "https://images.unsplash.com/photo-1565538059049-76082989b142?w=600&q=80"},
-        {name: "Saas-Fee", q: "Saas-Fee", region: "Valais", alt: 1800, lat: 46.109, lon: 7.929, img: "https://images.unsplash.com/photo-1612863690623-286862590515?w=600&q=80"},
-        {name: "Gstaad", q: "Gstaad", region: "Bern", alt: 1050, lat: 46.4746, lon: 7.2863, img: "https://images.unsplash.com/photo-1482867996988-29bfffe79584?w=600&q=80"},
-        {name: "St. Moritz", q: "Saint-Moritz", region: "Grisons", alt: 1822, lat: 46.4908, lon: 9.8355, img: "https://images.unsplash.com/photo-1480497490787-505ec076689f?w=600&q=80"},
-        {name: "Verbier", q: "Bagnes", region: "Valais", alt: 1500, lat: 46.0968, lon: 7.2266, img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80"},
-        {name: "Davos", q: "Davos", region: "Grisons", alt: 1560, lat: 46.8027, lon: 9.8297, img: "https://images.unsplash.com/photo-1520448100688-34860d5b6a7a?w=600&q=80"},
-        {name: "Adelboden-Lenk", q: "Adelboden", region: "Bern", alt: 1350, lat: 46.491, lon: 7.558, img: "https://images.unsplash.com/photo-1530752490138-0ed4b2cd33c1?w=600&q=80"},
-        {name: "Laax", q: "Laax", region: "Grisons", alt: 1016, lat: 46.806, lon: 9.261, img: "https://images.unsplash.com/photo-1552597280-5a3d4653dd83?w=600&q=80"},
-        {name: "Engelberg", q: "Engelberg", region: "Obwald", alt: 1000, lat: 46.820, lon: 8.407, img: "https://images.unsplash.com/photo-1486496166122-a37f6dc2b8b9?w=600&q=80"},
-        {name: "Bugnenets-Sav.", q: "Saint-Imier", region: "Jura", alt: 1090, lat: 47.135, lon: 6.967, img: "https://images.unsplash.com/photo-1548777123-e216912df7d8?w=600&q=80"},
-        {name: "Les Paccots", q: "Châtel-Saint-Denis", region: "Fribourg", alt: 1061, lat: 46.527, lon: 6.969, img: "https://images.unsplash.com/photo-1518182170546-0766ce6fabe4?w=600&q=80"}
+        {name: "Grindelwald-Wengen", q: "Grindelwald", region: "Bern", alt: 1034, lat: 46.624, lon: 8.041, img: "https://media.jungfrau.ch/image/upload/ar_16:9,c_crop,f_auto,q_auto/c_scale,w_1213/v1728053574/Kleine-Scheidegg-Skifahren-eine-Person-vor-Eiger-Moench-Jungfrau-2.jpg"},
+        {name: "Les Diablerets", q: "Les Diablerets", region: "Vaud", alt: 1200, lat: 46.350, lon: 7.157, img: "https://ik.imagekit.io/spotlio/fetch/tr:w-1920,h-840,c-at_max/https://public-assets.spotliodata.com/8b90b259-bca9-4d2d-96c5-faadb71aa3cd.webp"},
+        {name: "Andermatt", q: "Andermatt", region: "Uri", alt: 1444, lat: 46.635, lon: 8.594, img: "https://images.contenthub.dev/u5sjtnkypgsp/9340b3f9fca92d8416c9c7bc98f9cf1c/Skiday_N%C3%A4tschen_2019_Valentin_Luthiger_08.jpg?fm=jpg&fl=progressive&f=center&fit=fill&q=80&h=1080&w=1920"},
+        {name: "Leysin", q: "Leysin", region: "Vaud", alt: 1260, lat: 46.3358, lon: 7.009, img: "https://cdn.loisirs.ch/media/cache/default_landscape/default/0001/13/12947_default_landscape.jpg"},
+        {name: "Champéry", q: "Champéry", region: "Valais", alt: 1050, lat: 46.176, lon: 6.871, img: "https://www.regiondentsdumidi.ch/files/1013737.jpg"},
+        {name: "Crans-Montana", q: "Crans-Montana", region: "Valais", alt: 1495, lat: 46.3117, lon: 7.4789},
+        {name: "Saas-Fee", q: "Saas-Fee", region: "Valais", alt: 1800, lat: 46.109, lon: 7.929, img: "https://web3.cdn-magicpass.ch/media/image/0/medium_16_9/saas-fee-hiver-9.jpg"},
+        {name: "Gstaad", q: "Gstaad", region: "Bern", alt: 1050, lat: 46.4746, lon: 7.2863, img: "https://cdn.indebergen.nl/media/0dnbyrom/chbeob004-gstaad.jpg"},
+        {name: "St. Moritz", q: "Saint-Moritz", region: "Grisons", alt: 1822, lat: 46.4908, lon: 9.8355, img: "https://www.stmoritzswitzerland.travel/assets/web_stmoritz/welcome/bg-hotel.jpg"},
+        {name: "Verbier", q: "Bagnes", region: "Valais", alt: 1500, lat: 46.0968, lon: 7.2266, img: "https://verbier4vallees.ch/V4V-Website/Ski-sectors/image-thumb__998__lightbox/DOMAINESKIABLE_HUB_VERBIER_TEXTE_2.webp"},
+        {name: "Davos", q: "Davos", region: "Grisons", alt: 1560, lat: 46.8027, lon: 9.8297, img: "https://cdn.indebergen.nl/media/lfbim4at/davos-by-night.jpg?anchor=center&mode=crop&width=1160&height=870&format=webp&quality=80"},
+        {name: "Adelboden-Lenk", q: "Adelboden", region: "Bern", alt: 1350, lat: 46.491, lon: 7.558, img: "https://www.adelboden-lenk.ch/Bilder_Winter/Gebiete/Hauptgebiet/Landschaft/840/image-thumb__840__lightbox/Landschaft_Adelboden-Lenk%20%281%29.jpg"},
+        {name: "Laax", q: "Laax", region: "Grisons", alt: 1016, lat: 46.806, lon: 9.261, img: "https://media.lematin.ch/4/image/2023/11/08/0fbe47e8-1b04-4dd5-a4d8-ffff01ab748c.jpeg?auto=format%2Ccompress%2Cenhance&fit=max&w=1200&h=1200&rect=0%2C0%2C1920%2C1279&fp-x=0.40677083333333336&fp-y=0.31821735731039874&s=cc3ad6772b68b4e11429954df8f592d5"},
+        {name: "Engelberg", q: "Engelberg", region: "Obwald", alt: 1000, lat: 46.820, lon: 8.407, img: "https://vcdn.bergfex.at/images/resized/cc/57314d78759f11cc_e28b7d54cef43495@2x.jpg"},
+        {name: "Bugnenets-Sav.", q: "Saint-Imier", region: "Jura", alt: 1090, lat: 47.135, lon: 6.967, img: "https://static.mycity.travel/manage/uploads/8/58/302109/1/dji-26830-mp4-00-00-09-01-still001-ret_800.jpg"},
+        {name: "Les Paccots", q: "Châtel-Saint-Denis", region: "Fribourg", alt: 1061, lat: 46.527, lon: 6.969, img: "https://fribourg.ch/wp-content/uploads/2021/11/paccots-102459-lespaccots2019-hiver-drone-ccreationphoto-5_3000.jpg"}
     ];
 
     // Inject Filter UI + Sections
@@ -97,6 +115,8 @@ function loadMountains() {
 
                 return {
                     ...st,
+                    // Si pas d'image, on en met une aléatoire cohérente
+                    img: st.img || getFallbackImage(st.name),
                     temp: Math.round(data.main.temp),
                     desc: data.weather[0].description,
                     icon: data.weather[0].icon,
