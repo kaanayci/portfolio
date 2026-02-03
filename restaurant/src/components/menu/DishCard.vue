@@ -33,9 +33,11 @@
 
       <button 
         @click="$emit('add-to-cart', product)"
-        class="w-full bg-secondary text-primary font-bold py-2 rounded-lg hover:bg-yellow-500 transition active:scale-95"
+        :disabled="!product.available"
+        class="w-full font-bold py-2 rounded-lg transition active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+        :class="product.available ? 'bg-secondary text-primary hover:bg-yellow-500' : 'bg-gray-300 text-gray-500'"
       >
-        Ajouter au panier
+        {{ product.available ? 'Ajouter au panier' : 'Indisponible' }}
       </button>
     </div>
   </div>
