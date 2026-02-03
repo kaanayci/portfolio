@@ -1,9 +1,22 @@
 /* Panorama & Mountain Grids */
 .panorama-grid, .mountain-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    /* 
+       Ajustement pour viser environ 8 cartes par ligne.
+       En supposant une largeur d'écran classique de desktop (ex: 1200-1400px),
+       1400 / 8 = 175px (avec les gaps). 
+       On réduit minmax pour permettre aux cartes de se serrer davantage.
+       Avant: minmax(280px, 1fr) ou valeur similaire
+    */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
     margin-top: 1.5rem;
+}
+
+@media (min-width: 1600px) {
+    .panorama-grid, .mountain-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
 }
 
 .city-card, .mountain-card {
