@@ -1,0 +1,461 @@
+{
+  "categories": [
+    { "id": "pizzas", "name": "Pizzas", "image": "pizza-category.jpg" },
+    { "id": "pides", "name": "Pides", "image": "pide-category.jpg" },
+    { "id": "sandwiches", "name": "Sandwiches", "image": "sandwich-category.jpg" },
+    { "id": "durum", "name": "Dürüm", "image": "durum-category.jpg" },
+    { "id": "box", "name": "Box", "image": "box-category.jpg" },
+    { "id": "assiettes", "name": "Assiettes", "image": "plate-category.jpg" },
+    { "id": "tacos_bowl", "name": "Tacos Bowl", "image": "bowl-category.jpg" },
+    { "id": "tacos", "name": "Tacos", "image": "tacos-category.jpg" },
+    { "id": "menus", "name": "Menus", "image": "menu-category.jpg" },
+    { "id": "salades", "name": "Salades", "image": "salad-category.jpg" },
+    { "id": "boissons", "name": "Boissons", "image": "drink-category.jpg" }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "categoryId": "pizzas",
+      "name": "Margherita",
+      "description": "Sauce tomate, mozzarella, origan",
+      "price": 12.00,
+      "isBestSeller": true,
+      "image": "pizza-margherita.jpg"
+    },
+    {
+      "id": 2,
+      "categoryId": "pizzas",
+      "name": "Funghi",
+      "description": "Sauce tomate, mozzarella, origan, champignons",
+      "price": 15.00,
+      "image": "pizza-funghi.jpg"
+    },
+    {
+      "id": 3,
+      "categoryId": "pizzas",
+      "name": "Jambon",
+      "description": "Sauce tomate, mozzarella, origan, jambon de dinde",
+      "price": 15.00,
+      "image": "pizza-jambon.jpg"
+    },
+    {
+      "id": 4,
+      "categoryId": "pizzas",
+      "name": "Capricciosa",
+      "description": "Sauce tomate, mozzarella, origan, jambon de dinde, champignons",
+      "price": 15.00,
+      "isBestSeller": true,
+      "image": "pizza-capricciosa.jpg"
+    },
+    {
+      "id": 5,
+      "categoryId": "pizzas",
+      "name": "Thon",
+      "description": "Sauce tomate, mozzarella, origan, thon, oignons",
+      "price": 15.00,
+      "image": "pizza-thon.jpg"
+    },
+    {
+      "id": 6,
+      "categoryId": "pizzas",
+      "name": "Hawaii",
+      "description": "Sauce tomate, mozzarella, origan, jambon de dinde, ananas",
+      "price": 16.00,
+      "image": "pizza-hawaii.jpg"
+    },
+    {
+      "id": 7,
+      "categoryId": "pizzas",
+      "name": "Quattro Formaggi",
+      "description": "Sauce tomate, mozzarella, origan, gorgonzola, gruyère, parmesan",
+      "price": 16.00,
+      "image": "pizza-4fromages.jpg"
+    },
+    {
+      "id": 8,
+      "categoryId": "pizzas",
+      "name": "Kebab",
+      "description": "Sauce tomate, mozzarella, origan, viande kebab",
+      "price": 16.00,
+      "hasSauceChoice": true,
+      "image": "pizza-kebab.jpg"
+    },
+    {
+      "id": 9,
+      "categoryId": "pizzas",
+      "name": "Végétarienne",
+      "description": "Sauce tomate, mozzarella, origan, champignons, olives, poivrons, œuf",
+      "price": 16.00,
+      "image": "pizza-nav.jpg"
+    },
+    {
+      "id": 15,
+      "categoryId": "pides",
+      "name": "Pide Kebab",
+      "description": "Viande de kebab, fromage",
+      "price": 15.00,
+      "image": "pide-kebab.jpg"
+    },
+    {
+      "id": 16,
+      "categoryId": "pides",
+      "name": "Pide Épinard",
+      "description": "Épinards, fromage, œuf",
+      "price": 15.00,
+      "image": "pide-epinard.jpg"
+    },
+    {
+      "id": 17,
+      "categoryId": "pides",
+      "name": "Pide Viande Hachée",
+      "description": "Viande hachée épicée, poivrons, tomates",
+      "price": 16.00,
+      "image": "pide-viande.jpg"
+    },
+    {
+      "id": 18,
+      "categoryId": "pides",
+      "name": "Pide Sucuk",
+      "description": "Saucisse turque à l'ail, fromage, œuf",
+      "price": 15.00,
+      "image": "pide-sucuk.jpg"
+    },
+    {
+      "id": 19,
+      "categoryId": "pides",
+      "name": "Pide Fromage",
+      "description": "Mélange de fromages turcs",
+      "price": 14.00,
+      "image": "pide-fromage.jpg"
+    },
+    {
+      "id": 30,
+      "categoryId": "sandwiches",
+      "name": "Sandwich Kebab",
+      "description": "Pain sésame, viande kebab, salade, sauce",
+      "price": 10.00,
+      "isBestSeller": true,
+      "hasSauceChoice": true,
+      "image": "sandwich-kebab.jpg"
+    },
+    {
+      "id": 31,
+      "categoryId": "sandwiches",
+      "name": "Sandwich Kebab XL",
+      "description": "Version extra large du sandwich kebab",
+      "price": 15.00,
+      "hasSauceChoice": true,
+      "image": "sandwich-kebab-xl.jpg"
+    },
+    {
+      "id": 32,
+      "categoryId": "sandwiches",
+      "name": "Sandwich Falafel",
+      "description": "Pain sésame, falafels, salade, sauce",
+      "price": 12.00,
+      "hasSauceChoice": true,
+      "image": "sandwich-falafel.jpg"
+    },
+    {
+      "id": 33,
+      "categoryId": "durum",
+      "name": "Dürüm Kebab",
+      "description": "Galette roulée, viande kebab, salade, sauce",
+      "price": 10.00,
+      "isBestSeller": true,
+      "hasSauceChoice": true,
+      "image": "durum-kebab.jpg"
+    },
+    {
+      "id": 34,
+      "categoryId": "durum",
+      "name": "Dürüm Kebab XL",
+      "description": "Version extra large du dürüm",
+      "price": 15.00,
+      "hasSauceChoice": true,
+      "image": "durum-kebab-xl.jpg"
+    },
+    {
+      "id": 35,
+      "categoryId": "durum",
+      "name": "Dürüm Falafel",
+      "description": "Galette roulée, falafels, salade, sauce",
+      "price": 12.00,
+      "hasSauceChoice": true,
+      "image": "durum-falafel.jpg"
+    },
+    {
+      "id": 36,
+      "categoryId": "box",
+      "name": "Kebab Box",
+      "description": "Viande kebab et frites dans une boîte",
+      "price": 10.00,
+      "hasSauceChoice": true,
+      "image": "box-kebab.jpg"
+    },
+    {
+      "id": 37,
+      "categoryId": "box",
+      "name": "Nuggets Box",
+      "description": "Nuggets et frites dans une boîte",
+      "price": 10.00,
+      "hasSauceChoice": true,
+      "image": "box-nuggets.jpg"
+    },
+    {
+      "id": 38,
+      "categoryId": "box",
+      "name": "Falafel Box",
+      "description": "Falafels et frites dans une boîte",
+      "price": 12.00,
+      "hasSauceChoice": true,
+      "image": "box-falafel.jpg"
+    },
+    {
+      "id": 39,
+      "categoryId": "box",
+      "name": "Cordon Bleu Box",
+      "description": "Morceaux de cordon bleu et frites",
+      "price": 12.00,
+      "hasSauceChoice": true,
+      "image": "box-cordon.jpg"
+    },
+    {
+      "id": 40,
+      "categoryId": "box",
+      "name": "Chicken Crispy Box",
+      "description": "Poulet croustillant et frites",
+      "price": 12.00,
+      "hasSauceChoice": true,
+      "image": "box-crispy.jpg"
+    },
+    {
+      "id": 20,
+      "categoryId": "assiettes",
+      "name": "Assiette Kebab",
+      "description": "Viande kebab, servi avec frites et salade",
+      "price": 16.00,
+      "hasSauceChoice": true,
+      "image": "assiette-kebab.jpg"
+    },
+    {
+      "id": 21,
+      "categoryId": "assiettes",
+      "name": "Assiette Falafel",
+      "description": "Falafels, servi avec frites et salade",
+      "price": 15.00,
+      "hasSauceChoice": true,
+      "image": "assiette-falafel.jpg"
+    },
+    {
+      "id": 22,
+      "categoryId": "assiettes",
+      "name": "Assiette Nuggets",
+      "description": "Nuggets, servi avec frites et salade",
+      "price": 15.00,
+      "hasSauceChoice": true,
+      "image": "assiette-nuggets.jpg"
+    },
+    {
+      "id": 23,
+      "categoryId": "assiettes",
+      "name": "Assiette Cordon Bleu",
+      "description": "Cordon bleu, servi avec frites et salade",
+      "price": 15.00,
+      "hasSauceChoice": true,
+      "image": "assiette-cordon.jpg"
+    },
+    {
+      "id": 41,
+      "categoryId": "tacos_bowl",
+      "name": "Tacos Bowl Kebab",
+      "description": "Frites, sauce fromagère, viande kebab",
+      "price": 15.00,
+      "hasTaosSauceChoice": true,
+      "image": "bowl-kebab.jpg"
+    },
+    {
+      "id": 42,
+      "categoryId": "tacos_bowl",
+      "name": "Tacos Bowl Viande Hachée",
+      "description": "Frites, sauce fromagère, viande hachée",
+      "price": 15.00,
+      "hasTaosSauceChoice": true,
+      "image": "bowl-hachee.jpg"
+    },
+    {
+      "id": 43,
+      "categoryId": "tacos_bowl",
+      "name": "Tacos Bowl Poulet",
+      "description": "Frites, sauce fromagère, poitrine de poulet",
+      "price": 15.00,
+      "hasTaosSauceChoice": true,
+      "image": "bowl-poulet.jpg"
+    },
+    {
+      "id": 45,
+      "categoryId": "tacos",
+      "name": "French Tacos M",
+      "description": "1 tortilla, 1 viande au choix, frites, sauce fromagère",
+      "price": 10.00,
+      "options": {
+        "meatCount": 1
+      },
+      "hasTacosOptions": true,
+      "image": "tacos-m.jpg"
+    },
+    {
+      "id": 46,
+      "categoryId": "tacos",
+      "name": "French Tacos L",
+      "description": "2 tortillas, 1 viande au choix (taille L), frites, sauce fromagère",
+      "price": 15.00,
+      "options": {
+        "meatCount": 1
+      },
+      "hasTacosOptions": true,
+      "image": "tacos-l.jpg"
+    },
+    {
+      "id": 47,
+      "categoryId": "tacos",
+      "name": "French Tacos XL",
+      "description": "3 tortillas, 1 viande au choix (taille XL), frites, sauce fromagère",
+      "price": 17.00,
+      "options": {
+        "meatCount": 1
+      },
+      "hasTacosOptions": true,
+      "image": "tacos-xl.jpg"
+    },
+    {
+      "id": 50,
+      "categoryId": "menus",
+      "name": "Menu Enfant",
+      "description": "4 Nuggets + Frites + Capri-Sun",
+      "price": 8.00,
+      "image": "menu-enfant.jpg"
+    },
+    {
+      "id": 51,
+      "categoryId": "menus",
+      "name": "Menu Étudiant Dürüm",
+      "description": "Dürüm + Boisson 0.33l (Uniquement midi)",
+      "price": 12.00,
+      "hasSauceChoice": true,
+      "hasDrinkChoice": true,
+      "image": "menu-etudiant.jpg"
+    },
+    {
+      "id": 52,
+      "categoryId": "menus",
+      "name": "Menu Étudiant Kebab",
+      "description": "Sandwich Kebab + Boisson 0.33l (Uniquement midi)",
+      "price": 12.00,
+      "hasSauceChoice": true,
+      "hasDrinkChoice": true,
+      "image": "menu-etudiant-kebab.jpg"
+    },
+    {
+      "id": 53,
+      "categoryId": "menus",
+      "name": "Menu Étudiant Tacos",
+      "description": "Tacos M + Boisson 0.33l (Uniquement midi)",
+      "price": 12.00,
+      "hasTacosOptions": true,
+      "hasDrinkChoice": true,
+      "image": "menu-etudiant-tacos.jpg"
+    },
+    {
+      "id": 60,
+      "categoryId": "salades",
+      "name": "Salade Mêlée",
+      "description": "Salade verte, tomates, concombres, maïs, carottes",
+      "price": 6.00,
+      "hasSaladSauce": true,
+      "image": "salade-melee.jpg"
+    },
+    {
+      "id": 70,
+      "categoryId": "boissons",
+      "name": "Coca Cola 0.33l",
+      "price": 3.00,
+      "image": "coca.jpg"
+    },
+    {
+      "id": 71,
+      "categoryId": "boissons",
+      "name": "Coca Cola Zéro 0.33l",
+      "price": 3.00,
+      "image": "coca-zero.jpg"
+    },
+    {
+      "id": 72,
+      "categoryId": "boissons",
+      "name": "Fanta 0.33l",
+      "price": 3.00,
+      "image": "fanta.jpg"
+    },
+    {
+      "id": 73,
+      "categoryId": "boissons",
+      "name": "Thé Froid 0.33l",
+      "price": 3.00,
+      "image": "icetea.jpg"
+    },
+    {
+      "id": 74,
+      "categoryId": "boissons",
+      "name": "Ayran 0.33l",
+      "price": 3.00,
+      "image": "ayran.jpg"
+    },
+    {
+      "id": 75,
+      "categoryId": "boissons",
+      "name": "Red Bull 0.25l",
+      "price": 5.00,
+      "image": "redbull.jpg"
+    },
+    {
+      "id": 76,
+      "categoryId": "boissons",
+      "name": "Bière Actuelle 0.5l",
+      "price": 4.00,
+      "image": "biere.jpg"
+    }
+  ],
+  "options": {
+    "bases": ["Yaourt", "Cocktail", "Piquante"],
+    "tacos_meats": ["Kebab", "Nuggets", "Cordon Bleu", "Viande hachée", "Poitrine poulet", "Falafel", "Tenders", "Jambon (Dinde)", "Merguez", "Thon"],
+    "tacos_sauces": ["Andalouse", "Algérien", "Barbecue", "Blanche", "Brazil", "Cheezy Easy", "Cocktail", "Curry", "Harissa", "Ketchup", "Marocaine", "Mayonnaise", "Biggy Burger"],
+    "extras": [
+        { "name": "Mozzarella", "price": 1.00 },
+        { "name": "Cheddar", "price": 1.00 },
+        { "name": "Gorgonzola", "price": 1.00 },
+        { "name": "Feta", "price": 1.00 },
+        { "name": "Oignon", "price": 1.00 },
+        { "name": "Olive", "price": 1.00 },
+        { "name": "Œuf", "price": 1.00 },
+        { "name": "Champignons", "price": 1.00 },
+        { "name": "Poivrons", "price": 1.00 },
+        { "name": "Tomate", "price": 1.00 }
+    ],
+     "pizza_extras": [
+        { "name": "Ananas", "price": 2.00 },
+        { "name": "Champignons", "price": 2.00 },
+        { "name": "Gorgonzola", "price": 2.00 },
+        { "name": "Gruyère", "price": 2.00 },
+        { "name": "Jambon de dinde", "price": 2.00 },
+        { "name": "Mozzarella", "price": 2.00 },
+        { "name": "Œuf", "price": 2.00 },
+        { "name": "Oignons", "price": 2.00 },
+        { "name": "Olives", "price": 2.00 },
+        { "name": "Parmesan", "price": 2.00 },
+        { "name": "Poivrons", "price": 2.00 },
+        { "name": "Thon", "price": 2.00 },
+        { "name": "Viande de kebab", "price": 2.00 }
+    ],
+    "salad_sauces": ["Italienne", "Française", "Sans sauce"]
+  }
+}
