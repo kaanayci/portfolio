@@ -457,6 +457,9 @@ body.dark .weather-card {
 }
 
 .topic-votes {
+    /* Styles for votes were possibly removed or incomplete here. Closing it cleanly. */
+}
+
 /* Forum Layout (List Style) */
 .topic-row {
     display: flex;
@@ -628,12 +631,53 @@ body.bg-rain {
     background: linear-gradient(135deg, #334155, #475569); /* Dark Blue Grey */
 }
 
+body.bg-storm {
+    background: linear-gradient(135deg, #4338ca, #312e81); /* Indigo Storm */
+}
+
+body.bg-mist {
+    background: linear-gradient(135deg, #cbd5e1, #64748b); /* Foggy */
+}
+
 body.bg-snow {
     background: linear-gradient(135deg, #e2e8f0, #f8fafc); /* Very light grey */
 }
 
 body.bg-default {
     background-color: #f1f5f9;
+}
+
+/* --- Weather Card Dynamic Backgrounds --- */
+.weather-card.bg-clear {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff;
+}
+.weather-card.bg-clouds {
+    background: linear-gradient(135deg, #64748b, #475569);
+    color: #fff;
+}
+.weather-card.bg-rain {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #fff;
+}
+.weather-card.bg-storm {
+    background: linear-gradient(135deg, #4c1d95, #2e1065);
+    color: #fff;
+}
+.weather-card.bg-mist {
+    background: linear-gradient(135deg, #94a3b8, #64748b);
+    color: #fff;
+}
+.weather-card.bg-snow {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0) !important;
+    color: #334155; /* Dark text for contrast */
+}
+.weather-card.bg-snow .country-badge {
+    background: rgba(0,0,0,0.1); /* Darker badge bg for contrast */
+}
+.weather-card.bg-default {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff;
 }
 
 /* Dark mode adjustments for Forecast */
