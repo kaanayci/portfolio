@@ -219,6 +219,7 @@ function renderWeather(data) {
                 <p class="weather-desc">${desc.charAt(0).toUpperCase() + desc.slice(1)}</p>
             </div>
             <div class="weather-actions">
+                <button class="icon-btn" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(city + ',' + country)}', '_blank')" title="Itinéraire vers ${city}">🚗</button>
                 <button class="icon-btn ${favClass}" id="btn-fav" data-city="${city}" title="Ajouter aux favoris">⭐</button>
                 <button class="icon-btn" id="btn-share" title="Partager">📤</button>
             </div>
