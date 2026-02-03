@@ -21,24 +21,43 @@
         <p class="text-gray-600 mb-6 italic">{{ product?.description }}</p>
         
         <!-- Sauces -->
-        <div v-if="product?.hasSauceChoice || product?.hasTaosSauceChoice" class="mb-6">
-          <h4 class="font-bold text-gray-800 mb-2">Sauce</h4>
+        <div v-if="availableSauces.length > 0" class="mb-6">
+          <h4 class="font-bold text-gray-800 mb-2">Sauces (choix multiple)</h4>
           <div class="grid grid-cols-2 gap-2">
             <label 
               v-for="sauce in availableSauces" 
               :key="sauce"
               class="flex items-center space-x-2 cursor-pointer p-2 border rounded-lg hover:bg-gray-50 border-gray-200"
-              :class="{'border-secondary ring-1 ring-secondary bg-yellow-50': selectedSauce === sauce}"
+              :class="{'border-secondary ring-1 ring-secondary bg-yellow-50': selectedSauces.includes(sauce)}"
             >
-              <input type="radio" v-model="selectedSauce" :value="sauce" class="text-secondary focus:ring-secondary">
+              <input type="checkbox" v-model="selectedSauces" :value="sauce" class="text-secondary rounded focus:ring-secondary">
               <span class="text-sm font-medium">{{ sauce }}</span>
             </label>
           </div>
         </div>
 
+        <!-- Meats Tacos -->
+        <div v-if="availableMeats.length > 0" class="mb-6">
+          <h4 class="font-bold text-gray-800 mb-2">Viandes</h4>
+          <p class="text-xs text-secondary mb-2">2 viandes = +1 CHF, 3 viandes = +2 CHF</p>
+          <div class="grid grid-cols-2 gap-2">
+             <label 
+               v-for="meat in availableMeats" 
+               :key="meat"
+               class="flex items-center justify-between cursor-pointer p-2 border rounded-lg hover:bg-gray-50 border-gray-200"
+               :class="{'border-secondary ring-1 ring-secondary bg-yellow-50': selectedMeats.includes(meat)}"
+             >
+               <div class="flex items-center space-x-2">
+                 <input type="checkbox" :value="meat" v-model="selectedMeats" class="text-secondary rounded focus:ring-secondary">
+                 <span class="text-sm font-medium">{{ meat }}</span>
+               </div>
+             </label>
+          </div>
+        </div>
+
         <!-- Extras -->
         <div class="mb-6">
-           <h4 class="font-bold text-gray-800 mb-2">Sippléments / Extras</h4>
+           <h4 class="font-bold text-gray-800 mb-2">Suppléments / Extras</h4>
            <div class="grid grid-cols-1 gap-2">
              <label 
                v-for="extra in availableExtras" 
@@ -58,6 +77,9 @@
 
       <!-- Footer -->
       <div class="p-4 border-t bg-gray-50">
+        <div v-if="errorMessage" class="mb-4 text-red-500 text-sm bg-red-50 p-2 rounded border border-red-200">
+          {{ errorMessage }}
+        </div>
         <div class="flex items-center justify-between mb-4">
           <span class="text-gray-600 font-medium">Quantité</span>
           <div class="flex items-center border rounded-lg bg-white">
@@ -100,15 +122,24 @@ const menuStore = useMenuStore()
 
 // State
 const quantity = ref(1)
-const selectedSauce = ref(null)
+const selectedSauces = ref([])
 const selectedExtras = ref([])
+const selectedMeats = ref([])
+const errorMessage = ref('')
 
 // Computed
 const availableSauces = computed(() => {
   if (!props.product) return []
   if (props.product.hasTaosSauceChoice) return menuStore.options.tacos_sauces
-  if (props.product.hasSauceChoice) return menuStore.options.bases
+  if (props.product.hasSauceChoice || props.product.hasTacosOptions) return menuStore.options.bases
   if (props.product.hasSaladSauce) return menuStore.options.salad_sauces
+  return []
+})
+
+const availableMeats = computed(() => {
+  if (props.product?.hasTacosOptions && menuStore.options.tacos_meats) {
+    return menuStore.options.tacos_meats
+  }
   return []
 })
 
@@ -125,18 +156,23 @@ const totalPrice = computed(() => {
   // Add extras price
   const extrasTotal = selectedExtras.value.reduce((acc, extra) => acc + extra.price, 0)
   
-  return (base + extrasTotal) * quantity.value
+  // Add meats price supplement for tacos
+  let meatsSupplement = 0
+  if (props.product.hasTacosOptions && selectedMeats.value.length > 1) {
+    if (selectedMeats.value.length === 2) meatsSupplement = 1
+    else if (selectedMeats.value.length >= 3) meatsSupplement = 2
+  }
+
+  return (base + extrasTotal + meatsSupplement) * quantity.value
 })
 
 // Setup/Reset when modal opens/product changes
 watch(() => props.product, () => {
   quantity.value = 1
   selectedExtras.value = []
-  if (availableSauces.value.length > 0) {
-    selectedSauce.value = availableSauces.value[0]
-  } else {
-    selectedSauce.value = null
-  }
+  selectedMeats.value = []
+  selectedSauces.value = []
+  errorMessage.value = ''
 })
 
 const close = () => {
@@ -144,12 +180,24 @@ const close = () => {
 }
 
 const confirm = () => {
+  if (availableSauces.value.length > 0 && selectedSauces.value.length === 0) {
+    errorMessage.value = "Veuillez choisir au moins une sauce."
+    return
+  }
+
+  if (availableMeats.value.length > 0 && selectedMeats.value.length === 0) {
+    errorMessage.value = "Veuillez choisir au moins une viande."
+    return
+  }
+  
+  errorMessage.value = ''
   emit('add', {
     product: props.product,
     quantity: quantity.value,
     options: {
-      sauce: selectedSauce.value,
-      extras: selectedExtras.value
+      sauces: selectedSauces.value,
+      extras: selectedExtras.value,
+      meats: selectedMeats.value
     }
   })
 }
