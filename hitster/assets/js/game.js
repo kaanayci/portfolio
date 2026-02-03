@@ -322,6 +322,14 @@ function checkPlacement(position) {
 
     messageEl.textContent = "✅ Bien placé !";
     messageEl.className = "success";
+    
+    // Confetti effect for correct placement
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#00ff00', '#ffffff', '#ffeb3b']
+    });
 
     renderTimeline(position); // Pass position for animation
     nextCard();
@@ -513,3 +521,43 @@ function showGameOver(isVictory) {
     window.location.reload();
   });
 }
+
+/* === Background Ambience === */
+function initBackgroundEffects() {
+  const container = document.getElementById('bg-effects');
+  if (!container) return;
+
+  const symbols = ["♪", "♫", "♬", "♩", "𝄢"];
+
+  function createNote() {
+    const note = document.createElement('div');
+    note.classList.add('floating-note');
+    note.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    
+    // Random position
+    note.style.left = Math.random() * 100 + '%';
+    
+    // Random size
+    const size = 1 + Math.random() * 2;
+    note.style.fontSize = size + 'rem';
+    
+    // Random duration 10s - 20s
+    const duration = 10 + Math.random() * 10;
+    note.style.animation = `floatUp ${duration}s linear forwards`;
+    
+    container.appendChild(note);
+
+    // Remove after animation
+    setTimeout(() => {
+      note.remove();
+    }, duration * 1000);
+  }
+
+  // Create initial batch
+  for(let i=0; i<5; i++) setTimeout(createNote, i * 500);
+
+  // Spawn loop
+  setInterval(createNote, 1500);
+}
+
+initBackgroundEffects();
