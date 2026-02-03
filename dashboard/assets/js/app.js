@@ -54,6 +54,31 @@ $(document).ready(function () {
             </div>
         </section>
     `,
+    map: `
+        <section class="map-section">
+            <h2>🗺️ Carte Interactive</h2>
+            <p>Météo en direct sur la Suisse.</p>
+            <div id="map"></div>
+        </section>
+    `,
+    compare: `
+        <section class="compare-section">
+            <h2>🆚 Comparateur de Villes</h2>
+            <p>Comparez la météo de deux villes en temps réel.</p>
+            
+            <div class="comparison-inputs">
+                <input type="text" id="city1" placeholder="Ville 1 (ex: Genève)" value="Genève">
+                <input type="text" id="city2" placeholder="Ville 2 (ex: Zurich)" value="Zurich">
+                <button onclick="compareCities()">Comparer</button>
+            </div>
+            
+            <div id="compare-result" class="comparison-grid">
+                <div class="empty-state" style="grid-column: span 2">
+                    Appuyez sur "Comparer" pour lancer le match !
+                </div>
+            </div>
+        </section>
+    `,
     settings: `
         <section class="settings">
             <h2>Paramètres</h2>
@@ -99,6 +124,9 @@ $(document).ready(function () {
             }
             if (pageKey === "mountain") {
                 loadMountains();
+            }
+            if (pageKey === "map") {
+                setTimeout(initMap, 100); // Slight delay for Leaflet to detect container size
             }
         });
     });
@@ -205,10 +233,33 @@ function renderWeather(data) {
     const city = data.name;
     const country = data.sys.country;
     const temp = Math.round(data.main.temp);
+    const feelsLike = Math.round(data.main.feels_like);
     const desc = data.weather[0].description;
     const icon = data.weather[0].icon;
     const humidity = data.main.humidity;
-    const wind = Math.round(data.wind.speed * 3.6);
+    const wind = Math.round(data.wind.speed * 3.6); // m/s to km/h
+
+    // Horaires Soleil
+    const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
+    const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
+
+    // Recommandation Vestimentaire (Simple logic)
+    let advice = "Profitez de votre journée !";
+    const mainCond = data.weather[0].main.toLowerCase();
+    
+    if (mainCond.includes("rain") || mainCond.includes("drizzle") || mainCond.includes("thunderstorm")) {
+        advice = "🌧️ Prenez un parapluie, ça mouille !";
+    } else if (mainCond.includes("snow")) {
+        advice = "🧥 Sortez couverts, il neige !";
+    } else if (temp < 0) {
+        advice = "🥶 Glacial ! Doudoune et gants obligatoires.";
+    } else if (temp < 10) {
+        advice = "🧣 Il fait frais, n'oubliez pas votre écharpe.";
+    } else if (temp > 30) {
+        advice = "🥵 Hydratez-vous et restez au frais !";
+    } else if (temp > 20 && mainCond.includes("clear")) {
+        advice = "😎 T-shirt et lunettes de soleil conseillés.";
+    }
 
     $("#weather-result").html(`
       <div class="weather-card animate-pop">
@@ -222,10 +273,29 @@ function renderWeather(data) {
                 ${temp}°
                 <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${desc}">
             </div>
+            <p class="feels-like">Ressenti ${feelsLike}°</p>
             
-            <div class="weather-details">
-                <div class="detail-pill">💧 ${humidity}%</div>
-                <div class="detail-pill">💨 ${wind} km/h</div>
+            <div class="weather-details-grid">
+                <div class="detail-item">
+                    <span>💧 Humidité</span>
+                    <strong>${humidity}%</strong>
+                </div>
+                <div class="detail-item">
+                    <span>💨 Vent</span>
+                    <strong>${wind} km/h</strong>
+                </div>
+                <div class="detail-item">
+                    <span>🌅 Lever</span>
+                    <strong>${sunrise}</strong>
+                </div>
+                <div class="detail-item">
+                    <span>🌇 Coucher</span>
+                    <strong>${sunset}</strong>
+                </div>
+            </div>
+
+            <div class="clothing-tip">
+                ${advice}
             </div>
         </div>
       </div>
@@ -417,4 +487,109 @@ function loadMountains() {
             $('#mountain-container').append(card);
         });
     });
+}
+
+// --- Carte Interactive (Leaflet) ---
+let mapInstance = null;
+
+function initMap() {
+    if (mapInstance) {
+        mapInstance.remove(); // Clean up existing map instance
+    }
+
+    // Coordonnées Suisse Centrale
+    mapInstance = L.map('map').setView([46.8182, 8.2275], 8);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(mapInstance);
+
+    const mapCities = [
+        {name: "Genève", coords: [46.2044, 6.1432]},
+        {name: "Zurich", coords: [47.3769, 8.5417]},
+        {name: "Bern", coords: [46.9480, 7.4474]},
+        {name: "Lugano", coords: [46.0037, 8.9511]},
+        {name: "Basel", coords: [47.5596, 7.5886]}
+    ];
+
+    mapCities.forEach(city => {
+        $.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${city.name},CH&units=metric&lang=fr&appid=${WEATHER_API_KEY}`)
+        .done(data => {
+            const temp = Math.round(data.main.temp);
+            const desc = data.weather[0].description;
+            const icon = data.weather[0].icon;
+
+            const popupContent = `
+                <div style="text-align:center">
+                    <b>${city.name}</b><br>
+                    <img src="https://openweathermap.org/img/wn/${icon}.png" style="width:30px;vertical-align:middle"> ${temp}°C<br>
+                    ${desc}
+                </div>
+            `;
+
+            L.marker(city.coords)
+                .addTo(mapInstance)
+                .bindPopup(popupContent);
+        });
+    });
+}
+
+// --- Comparateur ---
+function compareCities() {
+    const city1 = $('#city1').val();
+    const city2 = $('#city2').val();
+
+    if(!city1 || !city2) return alert("Veuillez entrer deux villes.");
+
+    const p1 = $.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${city1}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`);
+    const p2 = $.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${city2}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`);
+
+    $.when(p1, p2).done(function(r1, r2) {
+        const data1 = r1[0];
+        const data2 = r2[0];
+
+        renderComparison(data1, data2);
+    }).fail(function() {
+        alert("Erreur lors de la récupération des données. Vérifiez les noms des villes.");
+    });
+}
+
+function renderComparison(d1, d2) {
+    const tempwinner = d1.main.temp > d2.main.temp ? 1 : 2;
+    // const humwinner = d1.main.humidity < d2.main.humidity ? 1 : 2; // Less humidity is "better"? Subjective.
+
+    const html = `
+        ${createCompareCard(d1, tempwinner === 1)}
+        ${createCompareCard(d2, tempwinner === 2)}
+    `;
+
+    $('#compare-result').html(html);
+}
+
+function createCompareCard(data, isWarmer) {
+    const temp = Math.round(data.main.temp);
+    
+    return `
+        <div class="compare-card animate-pop">
+            <h3>${data.name}</h3>
+            <div class="compare-temp">${temp}°</div>
+            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="icon">
+            
+            <div class="compare-details">
+                <div class="compare-stat">
+                    <span>Ressenti</span>
+                    <span>${Math.round(data.main.feels_like)}°</span>
+                </div>
+                <div class="compare-stat">
+                    <span>Humidité</span>
+                    <span>${data.main.humidity}%</span>
+                </div>
+                <div class="compare-stat">
+                    <span>Vent</span>
+                    <span>${Math.round(data.wind.speed * 3.6)} km/h</span>
+                </div>
+            </div>
+            ${isWarmer ? '<p class="winner" style="margin-top:1rem">🔥 Le plus chaud</p>' : ''}
+        </div>
+    `;
 }
