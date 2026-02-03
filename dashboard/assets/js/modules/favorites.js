@@ -32,8 +32,8 @@ function loadFavoritesPage() {
             const desc = data.weather[0].description;
             const unit = getUnitLabel();
             
-            // Safe encoding for data attribute using the STORED name
-            const safeCity = storedName.replace(/"/g, '&quot;');
+            // Escaping simple mais robuste pour l'attribut onclick
+            const safeCityForClick = storedName.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
             const cardHtml = `
                 <div class="fav-card animate-pop">
@@ -48,8 +48,8 @@ function loadFavoritesPage() {
                     <p class="fav-desc">${desc.charAt(0).toUpperCase() + desc.slice(1)}</p>
                     
                     <div class="fav-footer">
-                        <button class="fav-btn fav-btn-view action-view-fav" data-city="${safeCity}">Voir détails</button>
-                        <button class="fav-btn fav-btn-remove action-remove-fav" data-city="${safeCity}">Supprimer</button>
+                        <button class="fav-btn fav-btn-view" onclick="viewFavorite('${safeCityForClick}')">Voir détails</button>
+                        <button class="fav-btn fav-btn-remove" onclick="removeFavorite('${safeCityForClick}')">Supprimer</button>
                     </div>
                 </div>
             `;
@@ -69,18 +69,11 @@ function viewFavorite(city) {
 }
 
 function removeFavorite(city) {
-    console.log('Executing removeFavorite for:', city);
-    if(!confirm(`Retirer ${city} des favoris ?`)) return;
-    
+    console.log('Deleting:', city);
     let favorites = JSON.parse(localStorage.getItem('weatherFavs') || '[]');
-    console.log('Current favorites before delete:', favorites);
-    
     favorites = favorites.filter(c => c !== city);
-    console.log('New favorites list:', favorites);
-    
     localStorage.setItem('weatherFavs', JSON.stringify(favorites));
-    
-    loadFavoritesPage(); // Reload current page
+    loadFavoritesPage();
 }
 
 // Global Event Listeners for Favorites Page Actions
