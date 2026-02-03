@@ -106,3 +106,5 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
 .mt-badge-open { background: rgba(34, 197, 94, 0.9); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
 .mt-badge-closed { background: rgba(239, 68, 68, 0.9); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
 
+
+.mt-card-header { background-color: #cbd5e1; }
