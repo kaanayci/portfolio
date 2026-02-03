@@ -32,7 +32,7 @@ function getMoonPhase(date) {
     return phases[b];
 }
 
-function fetchWeather(query) {
+function fetchWeather(query, displayName = null) {
     let urlCurrent = "";
     let urlForecast = "";
     
@@ -53,10 +53,11 @@ function fetchWeather(query) {
     // 1. Current Weather
     $.getJSON(urlCurrent)
       .done(function (data) {
-        renderWeather(data);
+        renderWeather(data, displayName);
         updateBackground(data.weather[0].main); // Clear, Rain, Clouds, Snow
         
         if (typeof query === "string") {
+            // Only update lastCity if it's a string query (not coords)
             localStorage.setItem("lastCity", query);
         }
   
@@ -153,8 +154,9 @@ function renderUV(uvIndex, isEstimated = false) {
      $(".weather-details-grid").append(uvHtml);
 }
 
-function renderWeather(data) {
-    const city = data.name;
+function renderWeather(data, displayName = null) {
+    // If displayName provided, use it. Otherwise default to API name.
+    const city = displayName || data.name;
     const country = data.sys.country;
     const temp = Math.round(data.main.temp);
     const feelsLike = Math.round(data.main.feels_like);
