@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useUserStore } from './user'
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
@@ -12,15 +13,34 @@ export const useCartStore = defineStore('cart', {
       return state.items.reduce((total, item) => {
         let itemPrice = item.product.price
         
-        // Ajouter le prix des extras
-        if (item.selectedExtras && item.selectedExtras.length > 0) {
-           item.selectedExtras.forEach(extra => {
+        // Extras
+        if (item.options?.extras && item.options.extras.length > 0) {
+           item.options.extras.forEach(extra => {
              itemPrice += extra.price || 0
            })
+        }
+
+        // Tacos Meats Supplements
+        if (item.options?.meats && item.options.meats.length > 1) {
+            if (item.options.meats.length === 2) itemPrice += 1
+            else if (item.options.meats.length >= 3) itemPrice += 2
         }
         
         return total + (itemPrice * item.quantity)
       }, 0)
+    },
+
+    loyaltyDiscount: (state) => {
+      const userStore = useUserStore()
+      if (!userStore.isEligibleForFreeItem) return 0
+      if (state.items.length === 0) return 0
+      
+      // Réduction de 10 CHF pour la 11ème commande
+      return Math.min(10, state.cartTotal)
+    },
+
+    finalTotal: (state) => {
+      return Math.max(0, state.cartTotal - state.loyaltyDiscount)
     }
   },
 
@@ -37,8 +57,7 @@ export const useCartStore = defineStore('cart', {
         this.items.push({
           product,
           quantity,
-          options, // Sauces, etc.
-          selectedExtras: options.extras || [],
+          options,
           timestamp: Date.now()
         })
       }
