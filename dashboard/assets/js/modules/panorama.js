@@ -137,24 +137,32 @@ function loadMountains() {
     });
 
     // Event Listener delegation (only once)
-    $('#mountain-container').off('click', '.filter-btn').on('click', '.filter-btn', function() {
-        $('.filter-btn').removeClass('active');
-        $(this).addClass('active');
-        const filter = $(this).data('filter');
-        
-        let filtered = allStationsData;
-        if (filter === 'fresh') {
-            filtered = allStationsData.filter(s => s.isSnowing || s.temp < 0);
-        } else if (filter !== 'all') {
-            filtered = allStationsData.filter(s => s.region === filter);
-        }
-        
-        // Hide/Show nearby section based on filter
-        if(filter === 'all') $('#nearby-section').show(); // Re-show if compatible? actually keep it simple:
-        else $('#nearby-section').hide(); // Hide nearby when filtering
-        
-        renderMountains(filtered, '#mountain-grid');
-    });
+    $('#mountain-container')
+        .off('click', '.filter-btn').on('click', '.filter-btn', function() {
+            $('.filter-btn').removeClass('active');
+            $(this).addClass('active');
+            const filter = $(this).data('filter');
+            
+            let filtered = allStationsData;
+            if (filter === 'fresh') {
+                filtered = allStationsData.filter(s => s.isSnowing || s.temp < 0);
+            } else if (filter !== 'all') {
+                filtered = allStationsData.filter(s => s.region === filter);
+            }
+            
+            // Hide/Show nearby section based on filter
+            if(filter === 'all') $('#nearby-section').show(); 
+            else $('#nearby-section').hide(); 
+            
+            renderMountains(filtered, '#mountain-grid');
+        })
+        .off('click', '.mt-card').on('click', '.mt-card', function() {
+            const city = $(this).data('city');
+            if(city) {
+                localStorage.setItem('lastCity', city);
+                $('.sidebar li[data-channel="meteo"]').click();
+            }
+        });
 }
 
 
@@ -238,7 +246,7 @@ function renderMountains(list, containerId, isNearby = false) {
             : '<span class="mt-badge-closed">❌ Fermé</span>';
 
         const card = `
-            <div class="mt-card animate-pop" style="animation-delay: ${i*0.05}s" onclick="localStorage.setItem('lastCity', '${st.q}'); $('.sidebar li[data-channel=meteo]').click();">
+            <div class="mt-card animate-pop" style="animation-delay: ${i*0.05}s" data-city="${st.q}">
                 <div class="mt-card-header" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('${st.img}');">
                     <div class="mt-badges">
                         <span class="mt-badge-region">${st.region}</span>
