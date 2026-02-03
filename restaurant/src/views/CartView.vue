@@ -42,13 +42,19 @@
               <span>Sous-total</span>
               <span>{{ cartStore.cartTotal.toFixed(2) }} CHF</span>
             </div>
+            
+            <div v-if="cartStore.loyaltyDiscount > 0" class="flex justify-between text-green-600 font-bold bg-green-50 p-2 rounded">
+               <span class="flex items-center">🎁 Fidélité (11ème gratuit)</span>
+               <span>- {{ cartStore.loyaltyDiscount.toFixed(2) }} CHF</span>
+            </div>
+
             <div class="flex justify-between text-gray-600">
               <span>Livraison (estimée)</span>
               <span class="text-sm italic">Calculé à l'étape suivante</span>
             </div>
             <div class="border-t pt-3 flex justify-between items-center text-lg font-bold text-primary">
               <span>Total</span>
-              <span>{{ cartStore.cartTotal.toFixed(2) }} CHF</span>
+              <span>{{ cartStore.finalTotal.toFixed(2) }} CHF</span>
             </div>
           </div>
 
