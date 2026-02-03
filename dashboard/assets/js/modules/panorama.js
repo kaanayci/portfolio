@@ -58,7 +58,7 @@ function loadMountains() {
         {name: "Adelboden-Lenk", q: "Adelboden", region: "Bern", alt: 1350, lat: 46.491, lon: 7.558, img: "https://www.adelboden-lenk.ch/Bilder_Winter/Gebiete/Hauptgebiet/Landschaft/840/image-thumb__840__lightbox/Landschaft_Adelboden-Lenk%20%281%29.jpg"},
         {name: "Laax", q: "Laax", region: "Grisons", alt: 1016, lat: 46.806, lon: 9.261, img: "https://media.lematin.ch/4/image/2023/11/08/0fbe47e8-1b04-4dd5-a4d8-ffff01ab748c.jpeg?auto=format%2Ccompress%2Cenhance&fit=max&w=1200&h=1200&rect=0%2C0%2C1920%2C1279&fp-x=0.40677083333333336&fp-y=0.31821735731039874&s=cc3ad6772b68b4e11429954df8f592d5"},
         {name: "Engelberg", q: "Engelberg", region: "Obwald", alt: 1000, lat: 46.820, lon: 8.407, img: "https://vcdn.bergfex.at/images/resized/cc/57314d78759f11cc_e28b7d54cef43495@2x.jpg"},
-        {name: "Bugnenets-Sav.", q: "Saint-Imier", region: "Jura", alt: 1090, lat: 47.135, lon: 6.967, img: "https://static.mycity.travel/manage/uploads/8/58/302109/1/dji-26830-mp4-00-00-09-01-still001-ret_800.jpg"},
+        {name: "Bugnenets-Savagnières", q: "Saint-Imier", region: "Jura", alt: 1090, lat: 47.135, lon: 6.967, img: "https://static.mycity.travel/manage/uploads/8/58/302109/1/dji-26830-mp4-00-00-09-01-still001-ret_800.jpg"},
         {name: "Les Paccots", q: "Châtel-Saint-Denis", region: "Fribourg", alt: 1061, lat: 46.527, lon: 6.969, img: "https://fribourg.ch/wp-content/uploads/2021/11/paccots-102459-lespaccots2019-hiver-drone-ccreationphoto-5_3000.jpg"}
     ];
 
@@ -158,8 +158,10 @@ function loadMountains() {
         })
         .off('click', '.mt-card').on('click', '.mt-card', function() {
             const city = $(this).data('city');
+            const name = $(this).find('h3').text(); // Retrieve the station name from the card
             if(city) {
                 localStorage.setItem('lastCity', city);
+                if(name) localStorage.setItem('lastCityName', name); // Override display name
                 $('.sidebar li[data-channel="meteo"]').click();
             }
         });
