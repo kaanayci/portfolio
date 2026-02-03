@@ -160,6 +160,13 @@ function loadMountains() {
 
 function checkUserLocationForMountains(stations) {
     if (navigator.geolocation) {
+        // Options pour récupérer la position plus rapidement
+        const options = {
+            enableHighAccuracy: false, // Plus rapide, moins précis (suffisant pour <50km)
+            timeout: 5000,
+            maximumAge: 300000 // Cache 5 min
+        };
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const userLat = position.coords.latitude;
@@ -170,18 +177,20 @@ function checkUserLocationForMountains(stations) {
                     const dist = getDistanceFromLatLonInKm(userLat, userLon, st.lat, st.lon);
                     return { ...st, distance: dist };
                 })
-                .filter(st => st.distance <= 50) // 50km radius (Swiss scale)
+                .filter(st => st.distance <= 50) // 50km radius
                 .sort((a,b) => a.distance - b.distance)
-                .slice(0, 3); // Top 3
+                .slice(0, 4); // Top 4 max pour garder un affichage propre
 
                 if(nearby.length > 0) {
                     $('#nearby-section').fadeIn();
+                    // On force le mode "nearby" pour ajuster l'affichage si besoin côté JS
                     renderMountains(nearby, '#nearby-grid', true);
                 }
             },
             (err) => {
                 console.log("Geo denied or error for mountains:", err);
-            }
+            },
+            options
         );
     }
 }
