@@ -289,9 +289,13 @@ function addDropZone(position) {
   timelineEl.appendChild(zone);
 }
 
-// Mélanger un tableau
+// Mélanger un tableau (Fisher-Yates Shuffle)
 function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 function showGameOver(isVictory) {
   // QR Code
