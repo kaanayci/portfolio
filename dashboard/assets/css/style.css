@@ -634,3 +634,21 @@ body.dark .forecast-item {
 
 body.dark .forecast-day { color: #cbd5e1; }
 
+
+/* --- Chart Section --- */
+.chart-container {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 2rem;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    height: 300px;
+}
+
+body.dark .chart-container {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(255,255,255,0.1);
+}
+
