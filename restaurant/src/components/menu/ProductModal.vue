@@ -73,6 +73,16 @@
              </label>
            </div>
         </div>
+
+        <!-- Commentaires -->
+        <div class="mb-6">
+          <h4 class="font-bold text-gray-800 mb-2">Instructions spéciales</h4>
+          <textarea 
+            v-model="comment" 
+            placeholder="Allergies, sans oignons, cuisson..." 
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent resize-none h-24 text-sm"
+          ></textarea>
+        </div>
       </div>
 
       <!-- Footer -->
@@ -125,6 +135,7 @@ const quantity = ref(1)
 const selectedSauces = ref([])
 const selectedExtras = ref([])
 const selectedMeats = ref([])
+const comment = ref('')
 const errorMessage = ref('')
 
 // Computed
@@ -172,6 +183,7 @@ watch(() => props.product, () => {
   selectedExtras.value = []
   selectedMeats.value = []
   selectedSauces.value = []
+  comment.value = ''
   errorMessage.value = ''
 })
 
@@ -197,7 +209,8 @@ const confirm = () => {
     options: {
       sauces: selectedSauces.value,
       extras: selectedExtras.value,
-      meats: selectedMeats.value
+      meats: selectedMeats.value,
+      comment: comment.value
     }
   })
 }
