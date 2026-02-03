@@ -62,3 +62,40 @@ body.dark .mt-temp { color: #f1f5f9; }
     text-transform: capitalize;
 }
 body.dark .mt-desc { color: #94a3b8; }
+
+
+/* New Mountain Page Styles */
+.mountain-filters-container { margin-bottom: 2rem; overflow-x: auto; padding-bottom: 0.5rem; }
+.mountain-filters { display: flex; gap: 0.5rem; flex-wrap: nowrap; }
+.filter-btn { padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #e2e8f0; background: white; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.filter-btn.active, .filter-btn:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
+.filter-btn.active { box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5); }
+
+.mt-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: transform 0.2s; border: 1px solid #e2e8f0; cursor: pointer; display: flex; flex-direction: column; }
+.mt-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+body.dark .mt-card { background: #1e293b; border-color: #334155; }
+
+.mt-card-header { height: 160px; background-size: cover; background-position: center; position: relative; color: white; }
+.mt-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 5px; }
+.mt-badge-region, .mt-badge-snow { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 500; }
+.mt-badge-snow { background: rgba(59, 130, 246, 0.8); }
+
+.mt-temp-overlay { position: absolute; bottom: 10px; right: 10px; display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 20px; backdrop-filter: blur(4px); font-weight: bold; }
+.mt-temp-overlay img { width: 30px; height: 30px; margin-left: 5px; }
+
+.mt-card-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+.mt-card-body h3 { margin: 0; font-size: 1.25rem; }
+.body.dark .mt-card-body h3 { color: #f1f5f9; }
+.mt-desc { color: #64748b; margin: 0.25rem 0 1rem 0; font-size: 0.9rem; flex: 1; }
+body.dark .mt-desc { color: #94a3b8; }
+
+.mt-details { display: flex; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; }
+body.dark .mt-details { border-color: #334155; }
+.mt-detail { display: flex; flex-direction: column; align-items: center; font-size: 0.85rem; }
+.mt-label { color: #94a3b8; font-size: 0.75rem; margin-bottom: 2px; }
+.mt-val { font-weight: 600; color: #334155; }
+body.dark .mt-val { color: #cbd5e1; }
+
+
+body.dark .filter-btn { background: #1e293b; color: #cbd5e1; border-color: #334155; }
+body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6; color: white; border-color: #3b82f6; }
