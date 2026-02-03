@@ -89,5 +89,4 @@ $(document).on('click', '#btn-fav', function() {
     }
     
     localStorage.setItem('weatherFavs', JSON.stringify(favorites));
-    if(typeof loadHistory === 'function') loadHistory();
 });
