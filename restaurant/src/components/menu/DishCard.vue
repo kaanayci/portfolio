@@ -2,10 +2,21 @@
   <div 
     class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-gray-100 flex flex-col h-full"
   >
-    <!-- Image Placeholder -->
-    <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-400 relative">
-      <span class="text-4xl">🍕</span>
-      <span v-if="product.isBestSeller" class="absolute top-2 right-2 bg-secondary text-primary text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+    <!-- Image -->
+    <div class="h-48 bg-gray-200 relative">
+      <img 
+        v-if="product.image"
+        :src="'./img/dishes/' + product.image" 
+        :alt="product.name"
+        class="w-full h-full object-cover"
+        @error="$event.target.style.display='none'"
+      />
+      <!-- Fallback / Placeholder (shown if no image or error hides the img) -->
+      <div class="absolute inset-0 flex items-center justify-center text-gray-400 -z-0">
+        <span class="text-4xl">🍕</span>
+      </div>
+
+      <span v-if="product.isBestSeller" class="absolute top-2 right-2 bg-secondary text-primary text-xs font-bold px-2 py-1 rounded-full shadow-sm z-10">
         Best-seller
       </span>
     </div>
