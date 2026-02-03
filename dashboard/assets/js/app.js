@@ -133,6 +133,7 @@ $(document).ready(function () {
 
 // --- Logic Météo ---
 const WEATHER_API_KEY = "8bf9317dd25811ccc3ea56a0309ffc5a";
+let weatherChart = null; // Instance globale du graphique
 
 function fetchWeather(query) {
   let urlCurrent = "";
@@ -222,16 +223,73 @@ function renderWeather(data) {
             </div>
         </div>
       </div>
+      
+      <div class="chart-container animate-pop">
+        <canvas id="tempChart"></canvas>
+      </div>
+
       <div id="forecast-container" class="forecast-container"></div>
     `);
 }
 
 function renderForecast(data) {
-    // Filter to get one forecast per day (around 12:00)
+    // 1. Chart Data (Next 24h -> 8 segments of 3h)
+    const chartData = data.list.slice(0, 9);
+    const labels = chartData.map(item => {
+        const date = new Date(item.dt * 1000);
+        return date.getHours() + 'h';
+    });
+    const temps = chartData.map(item => Math.round(item.main.temp));
+
+    const ctx = document.getElementById('tempChart');
+    if (ctx) {
+        if (weatherChart) {
+            weatherChart.destroy();
+        }
+        
+        weatherChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Température (°C)',
+                    data: temps,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    tension: 0.4,
+                    fill: true,
+                     pointBackgroundColor: '#fff',
+                    pointBorderColor: '#3b82f6',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        display: false // Minimalist look
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: document.body.classList.contains('dark') ? '#cbd5e1' : '#334155' }
+                    }
+                }
+            }
+        });
+    }
+
+    // 2. Daily Forecast List
     const dailyData = data.list.filter(item => item.dt_txt.includes("12:00:00"));
     
     let html = '';
-    
     dailyData.forEach(day => {
         const date = new Date(day.dt * 1000);
         const dayName = date.toLocaleDateString('fr-FR', { weekday: 'short' });
