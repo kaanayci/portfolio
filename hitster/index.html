@@ -21,15 +21,24 @@
               id="playlist-url"
               placeholder="Lien de playlist Spotify"
             />
+            <select id="difficulty-select">
+              <option value="easy">Facile (3 vies + indices)</option>
+              <option value="normal" selected>Normal (3 vies)</option>
+              <option value="hard">Difficile (Mort subite)</option>
+            </select>
             <button id="start-game">Démarrer la partie</button>
           </div>
 
-          <p id="score">Score : 0</p>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <p id="score">Score : 0</p>
+            <p id="lives" style="font-size: 1.2rem; display: none;">❤️❤️❤️</p>
+          </div>
 
           <section id="current-card">
             <p class="hint">
               🎧 Écoute la musique et place la carte dans la timeline
             </p>
+            <p id="card-hint" style="color: #3ec5ff; font-weight: bold; min-height: 1.5rem;"></p>
             <audio id="audio" controls></audio>
           </section>
         </section>
