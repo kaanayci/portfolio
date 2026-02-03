@@ -384,3 +384,190 @@ body.dark .weather-card {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     border: 1px solid #334155;
 }
+
+/* =========================================
+   Forum / Subreddit Styles
+========================================= */
+
+.forum-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.forum-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.topic__form {
+    background: #f1f5f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid #e2e8f0;
+}
+
+.topic__form .form-group {
+    margin-bottom: 1rem;
+}
+
+.topic__form input, 
+.topic__form select, 
+.topic__form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.topic__form .row {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Topic Card */
+.topic-card {
+    display: flex;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.topic-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.topic-votes {
+    background: #f8fafc;
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    gap: 0.25rem;
+    border-right: 1px solid #e2e8f0;
+}
+
+.vote-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #64748b;
+}
+
+.vote-btn:hover {
+    color: #ef4444; /* Reddit Orange/Red for upvote */
+}
+
+.vote-count {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.topic-content {
+    padding: 0.75rem 1rem;
+    flex: 1;
+}
+
+.topic-meta {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.region-tag {
+    background: #e0f2fe;
+    color: #0284c7;
+    padding: 0.1rem 0.5rem;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+/* Region Colors */
+.region-idf { background: #e0e7ff; color: #4338ca; }
+.region-paca { background: #fef3c7; color: #d97706; }
+.region-bretagne { background: #dcfce7; color: #15803d; }
+.region-nord { background: #fae8ff; color: #a21caf; }
+
+.topic-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #0f172a;
+}
+
+.topic-text {
+    font-size: 0.95rem;
+    color: #334155;
+    margin-bottom: 0.75rem;
+}
+
+.topic-footer {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-action {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+}
+
+.btn-action:hover {
+    background: #f1f5f9;
+}
+
+.btn-primary {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+}
+
+/* Dark Mode Adjustments */
+body.dark .topic-card {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+body.dark .topic-title { color: #f1f5f9; }
+body.dark .topic-text { color: #cbd5e1; }
+body.dark .topic-votes { background: #1e293b; border-color: #334155; }
+body.dark .topic__form { background: #1e293b; border-color: #334155; }
+body.dark .topic__form input, 
+body.dark .topic__form select, 
+body.dark .topic__form textarea {
+    background: #0f172a;
+    color: white;
+    border-color: #334155;
+}
