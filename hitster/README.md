@@ -13,9 +13,10 @@ Le but : Écouter un extrait, deviner son année de sortie et le placer correcte
     *   **Normal** : 3 Vies, gameplay "vanilla".
     *   **Difficile** : Mort subite (1 seule erreur fatale).
 *   **Score & Record** : Sauvegarde automatique du *High Score* via `localStorage`.
-*   **Animations Immersives** : Retournement des cartes, tremblement d'écran en cas de dégâts, cœurs qui se brisent.
+*   **Animations Immersives** : Retournement des cartes, tremblement d'écran en cas de dégâts, cœurs qui se brisent, **pluie de confettis** et ambiance de fond (particules notes de musique).
 
 ### 🎧 Expérience Audio & Spotify
+*   **Lecteur Custom** : Interface de lecteur audio stylisée (Neon) avec barre de progression interactive.
 *   **Import de Playlist** : Récupération automatique des morceaux (titre, artiste, preview MP3, année) depuis n'importe quelle playlist publique Spotify.
 *   **QR Code de fin** : Partage de la playlist jouée via un QR Code généré dynamiquement.
 *   **Feedback Audio** : Loader visuel pendant le chargement des extraits.
@@ -30,7 +31,7 @@ Le but : Écouter un extrait, deviner son année de sortie et le placer correcte
 
 *   **Frontend** : HTML5, CSS3 (Animations, Flexbox/Grid), JavaScript ES6+ (Modules, Async/Await).
 *   **Backend** : Node.js (Express) pour le scraping des métadonnées Spotify (via Puppeteer/Cheerio simulé ou API).
-*   **Librairies** : `qrcode.js` (génération client-side).
+*   **Librairies** : `qrcode.js` (génération QR), `canvas-confetti` (effets visuels).
 *   **Outils** : Système de *cache-buster* pour le JSON, gestionnaire de playlist personnalisé.
 
 ---
@@ -71,11 +72,15 @@ Le but : Écouter un extrait, deviner son année de sortie et le placer correcte
 
 ## 🏗️ Architecture du Code
 
-Le projet est structuré pour être maintenable et évolutif :
+Le projet a été refactorisé en **Modules ES6** pour garantir maintenabilité et évolutivité :
 
-*   `game.js` : Cœur logique (Boucle de jeu, Gestion d'état, Algorithme Fisher-Yates).
-*   `animations.css` : Bibliothèque d'effets visuels (Shake, Heart Break).
-*   `server.js` : Proxy API pour contourner les CORS et scrapper les données Spotify.
+*   `assets/js/game.js` : Point d'entrée et Orchestrateur (Game Loop, State Management).
+*   `assets/js/modules/` :
+    *   `audio.js` : Gestion du lecteur audio custom (Play, Pause, Progress Bar).
+    *   `ui.js` : Gestion du DOM, des affichages de score et des modales.
+    *   `effects.js` : Moteur de "Game Juice" (Confettis, Shake, Particules).
+    *   `utils.js` : Fonctions utilitaires pures (Shuffle, Time Format).
+*   `server.js` : Proxy API pour contourner les CORS et récupérer les données Spotify.
 
 ---
 
