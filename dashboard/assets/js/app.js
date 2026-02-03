@@ -1,157 +1,67 @@
-// HTML Templates for Pages
-const pages = {
-    home: `
-      <h2>Vue d'ensemble</h2>
-      <p>Aperçu rapide de la météo dans les grandes villes suisses.</p>
-      <div id="panorama-container" class="panorama-grid"></div>
-    `,
-    meteo: `
-      <h2>Météo Détaillée</h2>
-      <div class="weather__controls">
-          <form id="weather-form" class="weather__form">
-              <input type="text" id="weather-input" placeholder="Entrez une ville..." required />
-              <button type="submit">Rechercher</button>
-          </form>
-          <button id="btn-geo" class="btn-secondary" title="Ma position">📍</button>
-          
-          <div class="unit-toggle-container" id="unit-toggle" data-unit="metric" title="Changer d'unité">
-              <div class="toggle-pill"></div>
-              <div class="unit-option active" data-val="metric">°C</div>
-              <div class="unit-option" data-val="imperial">°F</div>
-          </div>
-      </div>
-      
-      <div id="weather-result" class="weather__result">
-          <p>Recherchez une ville pour afficher la météo.</p>
-      </div>
-    `,
-    favorites: `
-      <h2>Mes Villes Favorites</h2>
-      <div id="fav-empty-state" style="text-align:center; padding: 3rem; color: #64748b;">
-          <span style="font-size: 3rem;">⭐</span>
-          <p>Aucun favori pour le moment.<br>Ajoutez des villes depuis l'onglet recherche !</p>
-      </div>
-      <div id="favorites-grid" class="favorites-grid"></div>
-    `,
-    mountain: `
-      <h2>Météo des Montagnes / Ski 🎿</h2>
-      <p>Conditions actuelles dans les stations les plus populaires.</p>
-      <div id="mountain-container"></div>
-    `,
-    map: `
-      <h2>Carte Météo Interactive</h2>
-      <p>Températures en direct.</p>
-      <div id="map"></div>
-    `,
-    compare: `
-      <h2>Comparateur de Villes</h2>
-      <p>Comparez la météo de 2 à 4 villes simultanément.</p>
-      
-      <div class="comparison-inputs">
-          <input type="text" class="comp-input" placeholder="Ville 1 (ex: Paris)">
-          <input type="text" class="comp-input" placeholder="Ville 2 (ex: Londres)">
-          <input type="text" class="comp-input" placeholder="Ville 3 (Optionnel)">
-          <input type="text" class="comp-input" placeholder="Ville 4 (Optionnel)">
-          <button onclick="compareCities()">Comparer</button>
-      </div>
-
-      <div id="compare-loader" style="display:none; text-align:center; padding:2rem;">
-        <div class="loader-spinner"></div>
-      </div>
-
-      <div id="compare-result" class="comparison-container" style="display:none;">
-         <div id="compare-cards" class="comparison-cards-grid"></div>
-         
-         <div class="comparison-charts-section animate-pop" style="animation-delay: 0.2s; margin-top:2rem;">
-            <h3>📊 Analyse Comparée</h3>
-            <div style="height:300px; margin-bottom: 2rem;">
-                <canvas id="compareTempChart"></canvas>
-            </div>
-            
-            <h3>📋 Tableau Détaillé</h3>
-            <div class="table-container">
-                <table id="compare-table" class="compare-table">
-                    <thead>
-                        <tr id="table-head">
-                            <th>Donnée</th>
-                            <!-- Cities headers injected here -->
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <!-- Rows injected here -->
-                    </tbody>
-                </table>
-            </div>
-         </div>
-      </div>
-    `, 
-    settings: `
-      <h2>Paramètres</h2>
-      <div class="settings-panel topic__form">
-          <div class="form-group">
-              <label>Thème de l'application</label>
-              <button id="btn-theme-toggle" style="margin-top:0.5rem; display:block;">Changer le thème (Clair/Sombre)</button>
-          </div>
-          
-          <div class="form-group" style="margin-top:2rem;">
-              <label>Notifications & PWA</label>
-              <button id="btn-pwa-install" style="margin-top:0.5rem; display:none; background:#22c55e; border:none; color:white;">📲 Installer l'application</button>
-              <button id="btn-notifications" style="margin-top:0.5rem; display:block; background:#3b82f6; border:none; color:white;">🔔 Activer les notifications</button>
-          </div>
-
-          <div class="form-group" style="margin-top:2rem; border-top:1px solid #e2e8f0; padding-top:1rem;">
-              <label style="color:#ef4444;">Zone de danger</label>
-              <button id="btn-reset-app" style="background:#fee2e2; color:#ef4444; border:1px solid #ef4444; margin-top:0.5rem; display:block;">Réinitialiser l'application</button>
-              <small style="color:#ef4444;">Efface les favoris, l'historique et les préférences (sauf le thème).</small>
-          </div>
-      </div>
-    `
-};
-
-// Route Handler
-function loadChannel(channelName) {
-    $(".sidebar li").removeClass("active");
-    $(`.sidebar li[data-channel="${channelName}"]`).addClass("active");
-
-    const content = pages[channelName] || "<h2>Page non trouvée</h2>";
-    $(".content").html(content);
-    
-    // Reset background to default if not strict meteo page logic (which handles it itself)
-    if(channelName !== 'meteo') {
-        $('body').removeClass().addClass('bg-default');
-        if(localStorage.getItem('theme') === 'dark') $('body').addClass('dark');
-    }
-
-    // Module Initialization
-    if (channelName === "home") loadPanorama();
-    if (channelName === "mountain") loadMountains();
-    if (channelName === "meteo") {
-        const lastCity = localStorage.getItem("lastCity");
-        const lastCityName = localStorage.getItem("lastCityName");
-
-        updateUnitUI(); // Restore toggle state
-        
-        if (lastCity) {
-            $("#weather-input").val(lastCityName || lastCity); // Show nice name in input if available
-            fetchWeather(lastCity, lastCityName); 
-            // We keep lastCityName in localStorage until a new search overwrites context
-        }
-    }
-    if (channelName === "favorites") loadFavoritesPage();
-    if (channelName === "map") setTimeout(initMap, 100); 
-}
-
 // Initialization
 $(document).ready(function () {
-    // 1. Navigation Click
+    // 1. Navigation Logic (Switch Logic)
+    function switchChannel(channelName) {
+        // UI Tabs
+        $(".sidebar li").removeClass("active");
+        $(`.sidebar li[data-channel="${channelName}"]`).addClass("active");
+
+        // View Visibility
+        $(".view-section").addClass("hidden");
+        $(`#view-${channelName}`).removeClass("hidden");
+
+        // Background Logic
+        if(channelName !== 'meteo') {
+            $('body').removeClass().addClass('bg-default');
+            if(localStorage.getItem('theme') === 'dark') $('body').addClass('dark');
+        }
+
+        // Module Lazy Initialization / Refreshes
+        switch (channelName) {
+            case "home":
+                loadPanorama();
+                break;
+            case "mountain":
+                loadMountains();
+                break;
+            case "meteo":
+                // Restore search context or focus
+                const lastCity = localStorage.getItem("lastCity");
+                const lastCityName = localStorage.getItem("lastCityName");
+                updateUnitUI();
+                // If the user already searched, the DOM is still there, no need to refetch unless empty
+                // We check if result is empty ("Recherchez une ville...")
+                if (lastCity && $("#weather-result p").text().includes("Recherchez")) {
+                   $("#weather-input").val(lastCityName || lastCity);
+                   fetchWeather(lastCity, lastCityName);
+                }
+                break;
+            case "favorites":
+                loadFavoritesPage();
+                break;
+            case "map":
+                // Leaflet needs to know it has become visible to resize tiles
+                setTimeout(() => {
+                    if(mapInstance) mapInstance.invalidateSize();
+                    else initMap();
+                }, 100);
+                break;
+            case "settings":
+                if(window.deferredPrompt) {
+                     $('#btn-pwa-install').show();
+                }
+                break;
+        }
+    }
+
     $(".sidebar li").on("click", function () {
         const channel = $(this).data("channel");
-        $("#channel-title").text($(this).text().substring(2)); // Remove emoji
-        loadChannel(channel);
+        $("#channel-title").text($(this).text().substring(2));
+        switchChannel(channel);
     });
 
-    // 2. Search Event
-    $(document).on('submit', '#weather-form', function(e) {
+    // 2. Search Event (Delegated because why not, though DOM is static now so direct ID works too)
+    $('#weather-form').on('submit', function(e) {
         e.preventDefault();
         let city = $('#weather-input').val();
         if(city.trim() !== "") {
@@ -161,7 +71,7 @@ $(document).ready(function () {
     });
 
     // 3. Load Default Page
-    loadChannel("home"); 
+    switchChannel("home"); 
 
     // PWA & Notifications Logic
     if ('serviceWorker' in navigator) {
@@ -171,46 +81,30 @@ $(document).ready(function () {
     }
 
     // Install Prompt
-    let deferredPrompt;
+    window.deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
-        deferredPrompt = e;
-        // Show install button when available (checking periodically or when navigating to settings)
-        // Since button is in dynamic HTML (settings page), we might need to check visibility often or just global event
+        window.deferredPrompt = e;
     });
 
-    // Delegation for dynamic settings button
-    $(document).on('click', '#btn-pwa-install', async function() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to the install prompt: ${outcome}`);
-            deferredPrompt = null;
+    // Settings Buttons Handlers
+    // Since elements are now static in index.html, we can attach directly.
+    
+    // Install App
+    $('#btn-pwa-install').on('click', async function() {
+        if (window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            const { outcome } = await window.deferredPrompt.userChoice;
+            console.log(`User response: ${outcome}`);
+            window.deferredPrompt = null;
             $(this).hide();
         } else {
-            alert('L\'installation n\'est pas disponible pour le moment (déjà installé ou non supporté).');
+            alert('L\'installation n\'est pas disponible.');
         }
     });
 
-    // Handle button visibility when settings loaded
-    // We hook into loadChannel to check if we are on settings page.
-    // However, simplest is just: if deferredPrompt exists, show button when it appears.
-    // For now, let's keep it simple: button is hidden by default in HTML template.
-    // If user goes to settings, we might need to "show" it if deferredPrompt is != null.
-    // Let's modify loadChannel globally or just use a small interval or MutationObserver? 
-    // Easier: Add a check in the click handler for "settings" nav? No, "loadChannel" handles it.
-    
-    // We'll update the global click listener
-    const originalLoadChannel = loadChannel;
-    loadChannel = function(name) {
-        originalLoadChannel(name); // Call original
-        if(name === 'settings' && deferredPrompt) {
-            setTimeout(() => $('#btn-pwa-install').show(), 100);
-        }
-    };
-
-    // Notifications Request
-    $(document).on('click', '#btn-notifications', function() {
+    // Notifications
+    $('#btn-notifications').on('click', function() {
         if (!("Notification" in window)) {
             alert("Ce navigateur ne supporte pas les notifications desktop");
         } else if (Notification.permission === "granted") {
@@ -221,6 +115,29 @@ $(document).ready(function () {
                     new Notification("Merci ! Vous recevrez des alertes météo majeures. ⚡");
                 }
             });
+        }
+    });
+
+    // Reset App
+    $('#btn-reset-app').on('click', function() {
+        if(confirm("Voulez-vous vraiment tout réinitialiser ?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    });
+    
+    // Theme Toggle (Settings Panel)
+    $('#btn-theme-toggle').on('click', function() {
+        // This button in settings panel just triggers the same logic as the header button
+        const isDark = $('body').hasClass('dark');
+        if(isDark) {
+            $('body').removeClass('dark');
+            localStorage.setItem('theme', 'light');
+            $('#theme-toggle').text('🌙');
+        } else {
+            $('body').addClass('dark');
+            localStorage.setItem('theme', 'dark');
+            $('#theme-toggle').text('☀️');
         }
     });
 });
