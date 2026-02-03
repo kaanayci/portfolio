@@ -44,7 +44,7 @@
             </div>
             
             <div v-if="cartStore.loyaltyDiscount > 0" class="flex justify-between text-green-600 font-bold bg-green-50 p-2 rounded">
-               <span class="flex items-center">🎁 Fidélité (11ème gratuit)</span>
+               <span class="flex items-center">🎁 11ème commande (max 10.- offert)</span>
                <span>- {{ cartStore.loyaltyDiscount.toFixed(2) }} CHF</span>
             </div>
 
