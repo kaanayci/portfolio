@@ -332,9 +332,19 @@ body.dark .stats__container {
 
 .weather-main {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.temp-big {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 1rem 0;
 }
 
 .temp-box {
@@ -871,4 +881,94 @@ body.dark .compare-card {
 }
 body.dark .compare-card h3 { color: #f1f5f9; }
 body.dark .compare-stat { border-color: #334155; }
+
+
+/* --- 5-Day Forecast Grid --- */
+.forecast-container {
+    margin-top: 2rem;
+}
+
+.forecast-container h3 {
+    margin-bottom: 1rem;
+    color: #334155;
+    font-size: 1.25rem;
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.75rem;
+}
+
+.forecast-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.forecast-card:hover {
+    transform: translateY(-3px);
+    border-color: #3b82f6;
+    background: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.fc-day {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+}
+
+.fc-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0.25rem 0;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+}
+
+.fc-temp {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.fc-desc {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Dark Mode Forecast */
+body.dark .forecast-container h3 { color: #f1f5f9; }
+body.dark .forecast-card { background: #1e293b; border-color: #334155; }
+body.dark .fc-day { color: #94a3b8; }
+body.dark .fc-temp { color: #f1f5f9; }
+body.dark .forecast-card:hover { background: #334155; border-color: #60a5fa; }
+
+
+/* --- Fix Layout Layouts --- */
+.weather-details-grid {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.forecast-grid {
+    width: 100%;
+}
+
+.forecast-card {
+    min-width: 0; /* Prevents grid blowout */
+}
 
