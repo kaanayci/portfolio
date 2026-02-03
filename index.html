@@ -2,39 +2,68 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-
-  <!-- Responsive / Mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Portfolio – Projets</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Kaan's Portfolio</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <!-- Librairie légère pour convertir Markdown -> HTML -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
-  <main class="container">
-    <h1>Bienvenue 👋</h1>
-    <p>Choisissez un projet</p>
+  <nav>
+    <div class="logo">Kaan.Dev</div>
+    <ul>
+      <li><a href="#projets">Projets</a></li>
+      <li><a href="#docs">Base de Connaissances</a></li>
+      <li><a href="#about">À propos</a></li>
+    </ul>
+  </nav>
 
-    <div class="projects">
+  <header>
+    <h1>Portfolio Intégration Web</h1>
+    <p>Collection de projets interactifs et documentation technique.</p>
+  </header>
+
+  <section id="projets">
+    <h2>Mes Projets</h2>
+    <div class="projects-grid">
+      
+      <a href="/restaurant/dist/" class="card">
+        <div class="card-icon">🍔</div>
+        <h3>Coin Régal (PWA)</h3>
+        <p>WebApp complète de commande : Vue 3, Pinia, Impression thermique, QR Codes.</p>
+      </a>
+
       <a href="/hitster" class="card">
-        <span class="icon">🎵</span>
-        <h2>Music Quizz</h2>
-        <p>Jeu musical inspiré de Hitster (Spotify)</p>
+        <div class="card-icon">🎵</div>
+        <h3>Hitster Music</h3>
+        <p>Jeu de culture musicale interactif. Drag & Drop, API Audio, Highscores.</p>
       </a>
 
       <a href="/dashboard" class="card">
-        <span class="icon">🌦️</span>
-        <h2>SwissMétéo</h2>
-        <p>Météo Suisse & Historique</p>
+        <div class="card-icon">🌦️</div>
+        <h3>SwissMétéo</h3>
+        <p>Dashboard temps réel multi-API : Météo, Carte Leaflet, Stations de ski.</p>
       </a>
 
-      <a href="/restaurant/dist/" class="card">
-        <span class="icon">🍔</span>
-        <h2>Coin Régal</h2>
-        <p>Commande Fast-food (PWA)</p>
-      </a>
     </div>
-  </main>
+  </section>
 
+  <section id="docs">
+    <h2>Fiches Techniques</h2>
+    <div id="doc-list" class="doc-list">
+      <!-- Généré par JS -->
+    </div>
+  </section>
+
+  <!-- Modal pour lire les MD -->
+  <div id="doc-modal">
+    <div class="modal-content">
+      <button class="close-btn">✕</button>
+      <div id="markdown-content" class="markdown-body"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/portfolio.js"></script>
 </body>
 </html>
