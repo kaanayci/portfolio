@@ -1,70 +1,96 @@
-# Coin Régal - Restaurant PWA 🍔
+# Coin Régal - Plateforme de Commande Restaurant 🍔
 
-Une Application Progressive (PWA) de restauration rapide développée avec Vue 3 et Tailwind CSS.  
-Ce projet démontre la création d'une expérience de commande moderne, mobile-first et installable.
+Une application web progressive (PWA) de restauration complète, incluant prise de commande client, programme de fidélité, et interface d'administration avec gestion d'impression thermique.
 
-## 🌟 Fonctionnalités Clés
+Développé avec **Vue 3**, **Vite**, **Tailwind CSS** et **Pinia**.
 
-*   **Progressive Web App (PWA)** : Installable sur mobile/desktop, fonctionne hors-ligne.
-*   **Menu Dynamique** : Filtrage par catégorie, gestion des stocks et best-sellers.
-*   **Panier Intelligent** : Gestion des quantités, persistance (localStorage).
-*   **Personnalisation Avancée** : Options de sauces, suppléments, et variantes.
-*   **Checkout Complet** :
-    *   Validation intelligente des zones de livraison.
-    *   Calcul des montants minimums.
-    *   Choix Livraison vs À emporter.
-*   **Design Responsive** : Optimisé pour mobile avec une UI "App-like".
+## 🚀 Fonctionnalités
 
-## 🛠 Stack Technique
+### 📱 Pour les Clients (Web App / Mobile)
+*   **Menu Interactif** : Navigation fluide, filtres par catégorie, gestion des stocks et best-sellers.
+*   **Panier Intelligent** : Calcul automatique, gestion des quantités, et persistance des données.
+*   **Options de Commande** : "À emporter" ou "Livraison" (avec vérification de zone/NPA).
+*   **Programme de Fidélité** : 
+    *   Historique des commandes.
+    *   **11ème commande offerte** (réduction jusqu'à 10 CHF).
+    *   Fonction "Commander à nouveau" en un clic.
+*   **Installation (PWA)** : Peut être installée comme une application native sur Android/iOS.
 
-*   **Framework** : Vue 3 (Composition API)
-*   **Build Tool** : Vite
-*   **State Management** : Pinia
-*   **Router** : Vue Router
-*   **Styling** : Tailwind CSS
-*   **PWA** : Vite PWA Plugin (Service Worker, Manifest)
-*   **Icons** : SVG natifs
+### 👨‍🍳 Pour l'Administration (Dashboard)
+*   **Gestion des Stocks** : Activation/Désactivation rapide des plats en rupture de stock.
+*   **Suivi des Commandes** :
+    *   Vue temps réel des commandes (En attente, En préparation, Prêt, Livré).
+    *   Détails complets (Client, Adresse, Contenu).
+*   **Impression Thermique (Ticket de Caisse)** :
+    *   Format ticket optimisé (80mm).
+    *   Génération automatique de **QR Code de Livraison** (lance la navigation GPS vers le client).
+    *   Impression via le dialogue système (compatible imprimantes USB/Bluetooth).
 
-## 📁 Structure du Projet
+## 📂 Structure du Projet
+
+Le projet suit une architecture de composants Vue 3 standard et modulaire :
 
 ```
 src/
-├── components/
-│   ├── common/      # Boutons, Modals, InstallPrompt
-│   ├── menu/        # Cartes produits, Filtres
-│   ├── cart/        # Items panier
-│   └── checkout/    # Formulaires livraison/paiement
-├── stores/          # Logique métier (Panier, Menu, User)
-├── views/           # Pages (Accueil, Menu, Panier, Checkout)
-├── data/            # Mock data (produits, config)
-└── assets/          # Styles globaux
+├── assets/          # Images, CSS global, polices
+├── components/      # Composants UI réutilisables
+│   ├── admin/       # Composants spécifiques à l'admin (Tableau de bord, Tickets)
+│   ├── cart/        # Composants du panier
+│   ├── checkout/    # Formulaires de paiement et livraison
+│   ├── common/      # Composants génériques (InstallPrompt, Toasts)
+│   └── menu/        # Cartes produits, Modales de détails
+├── data/            # Données statiques (menu.json)
+├── router/          # Configuration des routes (Navigation)
+├── stores/          # Gestion d'état global avec Pinia (Panier, User, Admin)
+└── views/           # Pages principales (Home, Menu, Admin, Profile)
 ```
 
-## 🚀 Installation et Lancement
+**Pourquoi autant de fichiers ?**  
+Dans un projet Vue moderne, on découpe l'interface en petits morceaux (composants) indépendants. Cela permet de :
+1.  **Réutiliser le code** (ex: le bouton "Ajouter" est le même partout).
+2.  **Faciliter la maintenance** : Si le panier a un bug, on va voir le dossier `cart`, sans risquer de casser le menu.
+3.  **Travailler en équipe** : Chacun peut bosser sur un fichier différent.
 
-1.  **Prérequis**
-    *   Node.js (v16 ou supérieur)
+## 🛠 Installation et Démarrage
 
-2.  **Installation des dépendances**
-    ```bash
-    npm install
-    ```
+### Pré-requis
+*   Node.js (v16+)
+*   npm
 
-3.  **Lancement en développement**
-    ```bash
-    npm run dev
-    ```
-    L'application sera accessible sur `http://localhost:5173`.
+### Installation
 
-4.  **Production (Build)**
-    ```bash
-    npm run build
-    npm run preview
-    ```
+```bash
+# Installer les dépendances
+npm install
+```
 
-## 📸 Captures d'écran
+### Développement
 
-*(Insérer ici des captures d'écran de l'interface mobile et desktop)*
+```bash
+# Lancer le serveur local (hot-reload)
+npm run dev
+```
 
----
-Développé par Kaan Ayci - Portfolio Project 2026.
+### Production
+
+```bash
+# Construire pour la production (dossier dist/)
+npm run build
+```
+
+## 🖨 Configuration de l'Imprimante
+
+L'application utilise le driver d'impression natif du navigateur (`window.print()`) avec une feuille de style CSS spécifique (`@media print`).
+
+*   **Réglages recommandés** :
+    *   Format papier : 80mm (ou "Roll paper").
+    *   Marges : Aucune / Minimum.
+    *   Entêtes/Pieds de page : Désactivés.
+*   **QR Code** : Le QR code sur le ticket de livraison encode une URL `https://www.google.com/maps/search/?api=1&query=...` pour lancement rapide du GPS.
+
+## 👤 Compte de Test & Admin
+
+*   **Mode Admin** : 
+    *   Email : `admin@coinregal.com`
+    *   Mot de passe : `admin123`
+    *   Accès : `/admin` (Tableau de bord, Stocks)
