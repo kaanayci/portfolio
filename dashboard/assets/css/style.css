@@ -93,7 +93,7 @@ body {
 
 .content {
   padding: 1.5rem;
-  background-color: #ffffff;
+  background-color: #f1f5f9; /* Cloud gray instead of pure white */
 }
 
 .content h2 {
@@ -896,8 +896,15 @@ body.dark .compare-stat { border-color: #334155; }
 
 .forecast-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    grid-template-columns: repeat(5, 1fr); /* Force 5 colonnes pour alignement horizontal */
     gap: 0.75rem;
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .forecast-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Retour au wrap sur mobile */
+    }
 }
 
 .forecast-card {
@@ -910,6 +917,7 @@ body.dark .compare-stat { border-color: #334155; }
     flex-direction: column;
     align-items: center;
     transition: transform 0.2s;
+    min-width: 0;
 }
 
 .forecast-card:hover {
@@ -928,10 +936,18 @@ body.dark .compare-stat { border-color: #334155; }
 }
 
 .fc-icon {
-    width: 40px;
-    height: 40px;
-    margin: 0.25rem 0;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    width: 50px;
+    height: 50px;
+    margin: 0.5rem 0;
+    background: rgba(203, 213, 225, 0.4); /* Fond gris clair pour contraste */
+    border-radius: 50%;
+    padding: 2px;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));
+}
+
+/* Dark mode icon adjustment */
+body.dark .fc-icon {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .fc-temp {
@@ -1016,4 +1032,35 @@ body.dark .forecast-card:hover { background: #334155; border-color: #60a5fa; }
 /* --- Dark Mode Tweaks for Forecast --- */
 body.dark .fc-temp-range .max { color: #f87171; }
 body.dark .fc-temp-range .min { color: #60a5fa; }
+
+
+
+/* --- ULTIMATE FORCE ROW LAYOUT --- */
+.forecast-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    overflow-x: auto !important; /* Permet le scroll si l'écran est trop petit */
+    gap: 0.5rem !important;
+    padding-bottom: 0.5rem; /* Espace pour la scrollbar éventuelle */
+}
+
+.forecast-card {
+    flex: 1 0 auto !important; /* Reste flexible mais ne s'écrase pas à zéro */
+    width: auto !important;
+    min-width: 80px !important; /* Largeur min pour lisibilité */
+}
+
+/* Visibility fix for icons in light mode */
+.fc-icon {
+    background-color: #e2e8f0 !important; /* Gris plus soutenu */
+    border-radius: 50%;
+    padding: 4px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+body.dark .fc-icon {
+    background-color: rgba(255,255,255,0.1) !important;
+}
 
