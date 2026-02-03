@@ -1,26 +1,416 @@
 [
   {
-    "title": "Smells Like Teen Spirit",
+    "title": "greedy",
+    "artist": "Tate McRae",
+    "year": 2023,
+    "image": "https://i.scdn.co/image/ab67616d0000b2735f677b5d3b81f08badd0775b",
+    "spotifyUrl": "https://open.spotify.com/track/3rUGC1vUpkDG9CZFHMur1t",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/ff/fb/f0/fffbf047-d930-4f20-6b5d-17b9895b8052/mzaf_18081110782534090177.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/greedy/1719660855?i=1719661252&uo=4"
+  },
+  {
+    "title": "exes",
+    "artist": "Tate McRae",
+    "year": 2023,
+    "image": "https://i.scdn.co/image/ab67616d0000b273c4258b134ff5756932f9c46f",
+    "spotifyUrl": "https://open.spotify.com/track/4E63weMCaNZuGPEFMnuEi8",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/83/4a/5d/834a5d73-2409-3896-d994-0d6e96202f55/mzaf_14284763810125709949.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/exes/1716470298?i=1716470299&uo=4"
+  },
+  {
+    "title": "10:35",
+    "artist": "Tiësto, Tate McRae",
+    "year": 2022,
+    "image": "https://i.scdn.co/image/ab67616d0000b273999565cd8bea3f8f0985bb31",
+    "spotifyUrl": "https://open.spotify.com/track/6BePGk3eCan4FqaW2X8Qy3",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/b9/fc/12/b9fc12fa-ddbe-4968-7bc5-6cfa6bcd15f8/mzaf_16368146953799113466.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/10-35-tiestos-new-years-eve-vip-remix-feat-tate-mcrae/1720348060?i=1720348063&uo=4"
+  },
+  {
+    "title": "run for the hills",
+    "artist": "Tate McRae",
+    "year": 2023,
+    "image": "https://i.scdn.co/image/ab67616d0000b273c4258b134ff5756932f9c46f",
+    "spotifyUrl": "https://open.spotify.com/track/51hyZpbJlIgZIaX3TtMxmu",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/ac/67/71/ac677121-6762-62c0-48ee-9db33d241cb1/mzaf_8622125935170230766.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/run-for-the-hills/1719660855?i=1719661254&uo=4"
+  },
+  {
+    "title": "she's all i wanna be",
+    "artist": "Tate McRae",
+    "year": 2022,
+    "image": "https://i.scdn.co/image/ab67616d0000b2735889cc2a637ad87bcb142d45",
+    "spotifyUrl": "https://open.spotify.com/track/7l9IqDtVWJurTvkQHq1BGh",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4c/bb/35/4cbb35f6-38db-7548-4ab1-5fe4d3f12659/mzaf_11701790417244229973.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/shes-all-i-wanna-be/1606052727?i=1606052735&uo=4"
+  },
+  {
+    "title": "two",
+    "artist": "bbno$",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b27351c9a03736674f07f081d940",
+    "spotifyUrl": "https://open.spotify.com/track/6DRZmJa38MaMNthwG3fCBD",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/2e/6b/f7/2e6bf793-d629-227d-3b4a-c0c631088c1a/mzaf_2008896169266517357.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/edamame-feat-rich-brian/1683374308?i=1683374319&uo=4"
+  },
+  {
+    "title": "edamame",
+    "artist": "bbno$, Rich Brian",
+    "year": 2021,
+    "image": "https://i.scdn.co/image/ab67616d0000b27390e72fba2f3f0f9889091c15",
+    "spotifyUrl": "https://open.spotify.com/track/1golLrmqyxDWedF7YUHCOD",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/2e/6b/f7/2e6bf793-d629-227d-3b4a-c0c631088c1a/mzaf_2008896169266517357.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/edamame-feat-rich-brian/1683374308?i=1683374319&uo=4"
+  },
+  {
+    "title": "check",
+    "artist": "bbno$",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b2732d1a535077c529353d94756a",
+    "spotifyUrl": "https://open.spotify.com/track/02b35qI48b1RWhsFNKCb1Y",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/58/40/fa/5840fad0-51c5-31c9-20a8-ea5d755ce89d/mzaf_7884756728171808270.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/whip-a-tesla/1461435084?i=1461435188&uo=4"
+  },
+  {
+    "title": "boom",
+    "artist": "bbno$",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b27350e31d2d96c082fff778464a",
+    "spotifyUrl": "https://open.spotify.com/track/6zhyXTuRkMSabSHvmMchpp",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ff/02/d7/ff02d790-12ed-b763-c335-8cec74b147f7/mzaf_18121044292412812269.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/main-squeeze/1837988555?i=1837988861&uo=4"
+  },
+  {
+    "title": "it boy",
+    "artist": "bbno$",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b273560ae9d3c8e0d6ad03e7ab0d",
+    "spotifyUrl": "https://open.spotify.com/track/3X1LErJuyzAEjH6X11ooMS",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/2e/6b/f7/2e6bf793-d629-227d-3b4a-c0c631088c1a/mzaf_2008896169266517357.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/edamame-feat-rich-brian/1683374308?i=1683374319&uo=4"
+  },
+  {
+    "title": "meant to be",
+    "artist": "bbno$",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b273d87a223cc6c2917b0bc8a676",
+    "spotifyUrl": "https://open.spotify.com/track/7LJ5d17QjK4BpsosYu7VvL",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/66/26/d3/6626d3b0-747c-b704-4036-88c903e96479/mzaf_14674583573736079554.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/vi%24%24a-feat-bbno%24-lentra/1567276004?i=1567276009&uo=4"
+  },
+  {
+    "title": "C’est La Vie (with bbno$ & Rich Brian)",
+    "artist": "Yung Gravy, bbno$, Rich Brian",
+    "year": 2022,
+    "image": "https://i.scdn.co/image/ab67616d0000b2734684ae99ac25a39d60e0a23b",
+    "spotifyUrl": "https://open.spotify.com/track/3QqOcLtTU8zzlQRJCZzttP",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/62/fb/e8/62fbe8d4-74e0-e9d3-a794-a3742904d397/mzaf_5378412673633575005.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/cest-la-vie/1645427001?i=1645427014&uo=4"
+  },
+  {
+    "title": "Lalala",
+    "artist": "Y2K, bbno$",
+    "year": 2019,
+    "image": "https://i.scdn.co/image/ab67616d0000b2738a6ccb507dd6a66f7f6e2440",
+    "spotifyUrl": "https://open.spotify.com/track/51Fjme0JiitpyXKuyQiCDo",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/a0/f8/f0/a0f8f0f8-4481-c034-df2f-72b2625771a7/mzaf_410856654753842867.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/lalala-feat-y2k/1592525083?i=1592525084&uo=4"
+  },
+  {
+    "title": "Shameless",
+    "artist": "Camila Cabello",
+    "year": 2019,
+    "image": "https://i.scdn.co/image/ab67616d0000b273f8fc9e1b46c32dff21cede72",
+    "spotifyUrl": "https://open.spotify.com/track/2ogKhhoMClkFXek7ZgxAhN",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/1c/02/c2/1c02c22c-15ed-a237-e0a4-3c03329e9835/mzaf_18426823110261260943.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/shameless/1487577356?i=1487577364&uo=4"
+  },
+  {
+    "title": "JUMP",
+    "artist": "BLACKPINK",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b2736224d1236b0e0a0e1586efbb",
+    "spotifyUrl": "https://open.spotify.com/track/5H1sKFMzDeMtXwND3V6hRY",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/cb/b3/6b/cbb36b26-061d-af60-2cdf-353f3afa8463/mzaf_6164418099715201202.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/jump/1824672650?i=1824672652&uo=4"
+  },
+  {
+    "title": "Bottega",
+    "artist": "Eva",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b273a2ab84b679e5b371e1dbdeef",
+    "spotifyUrl": "https://open.spotify.com/track/5oc1MmKFXsjoGrhfa6WHsx",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/38/ba/07/38ba072d-8bdf-0d03-42e3-97c610c32291/mzaf_6075680380808303978.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/bottega/1730484490?i=1730484751&uo=4"
+  },
+  {
+    "title": "Tyler Herro",
+    "artist": "Jack Harlow",
+    "year": 2020,
+    "image": "https://i.scdn.co/image/ab67616d0000b273aeb14ead136118a987246b63",
+    "spotifyUrl": "https://open.spotify.com/track/3w1WjD2zJqjBjDz5fwqQPJ",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/93/24/b8/9324b803-d33c-eae8-1180-ee75936b04f3/mzaf_4864507379841103311.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/tyler-herro/1536650945?i=1536651336&uo=4"
+  },
+  {
+    "title": "Pancakes",
+    "artist": "LUCIE",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b27355a73c2e0fe7468a515f0ef0",
+    "spotifyUrl": "https://open.spotify.com/track/4i1G4XrTqHBan1LkJ8kLxN",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/97/84/3b/97843b26-516c-feae-0baf-2e1c8919d090/mzaf_8016748004908901093.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/pancakes-live/1747065026?i=1747065298&uo=4"
+  },
+  {
+    "title": "Soleil Bleu",
+    "artist": "Bleu Soleil, LUIZA",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b2735446164bb6862bb37594b5f6",
+    "spotifyUrl": "https://open.spotify.com/track/7xWvRVssTTECvWCDNgCzSH",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a4/72/3a/a4723a07-7139-c6f1-8e17-79e4be1deb38/mzaf_164964968241522203.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/soleil-bleu/1802209136?i=1802209140&uo=4"
+  },
+  {
+    "title": "Gata Only",
+    "artist": "FloyyMenor, Cris MJ",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b273c4583f3ad76630879a75450a",
+    "spotifyUrl": "https://open.spotify.com/track/6XjDF6nds4DE2BBbagZol6",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/67/67/c2/6767c2de-902d-33f7-9035-85df90bd7943/mzaf_16556504640805850472.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/gata-only/1761879839?i=1761879840&uo=4"
+  },
+  {
+    "title": "i'm yours",
+    "artist": "Isabel LaRosa",
+    "year": 2022,
+    "image": "https://i.scdn.co/image/ab67616d0000b273d69f41928b86ae348d9c34de",
+    "spotifyUrl": "https://open.spotify.com/track/37vVp2sWHuuIBOSl1NswP6",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e3/2c/dc/e32cdc6a-6b5b-12a5-0b2b-98e5f5db20c2/mzaf_11739008028995737621.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/im-yours/1651454482?i=1651454497&uo=4"
+  },
+  {
+    "title": "Mon roi",
+    "artist": "Camélia Jordana",
+    "year": 2022,
+    "image": "https://i.scdn.co/image/ab67616d0000b273b3ca344297ceba8b18504422",
+    "spotifyUrl": "https://open.spotify.com/track/3aiPORKoKzOdIyuRMq6mTj",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/0b/c5/21/0bc521c5-6700-c241-b00d-b2be0d700cef/mzaf_9581100367121885150.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/mon-roi/1616673197?i=1616673204&uo=4"
+  },
+  {
+    "title": "The Monster",
+    "artist": "Eminem, Rihanna",
+    "year": 2013,
+    "image": "https://i.scdn.co/image/ab67616d0000b2733c65085a58aae2cccd892cbe",
+    "spotifyUrl": "https://open.spotify.com/track/48RrDBpOSSl1aLVCalGl5C",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/85/66/ee/8566eefe-e06a-bd5b-3660-21727a09eeb3/mzaf_8363400647523138795.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/the-monster-feat-rihanna/1440858761?i=1440858784&uo=4"
+  },
+  {
+    "title": "Something In The Way",
     "artist": "Nirvana",
     "year": 1991,
-    "preview": "./assets/audio/nirvana.mp3"
+    "image": "https://i.scdn.co/image/ab67616d0000b273fbc71c99f9c1296c56dd51b6",
+    "spotifyUrl": "https://open.spotify.com/track/4gHnSNHs8RyVukKoWdS99f",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/cc/b5/cd/ccb5cdf2-26a1-7e4f-779c-98ea3095e1fb/mzaf_11306403304784547761.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/something-in-the-way/1440783617?i=1440783790&uo=4"
   },
   {
-    "title": "Californication",
-    "artist": "Red Hot Chili Peppers",
-    "year": 1999,
-    "preview": "./assets/audio/rhcp.mp3"
+    "title": "Polly",
+    "artist": "Nirvana",
+    "year": 1991,
+    "image": "https://i.scdn.co/image/ab67616d0000b273fbc71c99f9c1296c56dd51b6",
+    "spotifyUrl": "https://open.spotify.com/track/2SJ38LDlkNjwWSUq98r4Q5",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/a9/0c/d4/a90cd425-05e6-dd71-9e44-d8e17663b694/mzaf_9627485631151085620.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/polly/1440783617?i=1440783767&uo=4"
   },
   {
-    "title": "Seven Nation Army",
-    "artist": "The White Stripes",
-    "year": 2003,
-    "preview": "./assets/audio/white-stripes.mp3"
+    "title": "Come As You Are",
+    "artist": "Nirvana",
+    "year": 1991,
+    "image": "https://i.scdn.co/image/ab67616d0000b273fbc71c99f9c1296c56dd51b6",
+    "spotifyUrl": "https://open.spotify.com/track/2RsAajgo0g7bMCHxwH3Sk0",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f4/3e/86/f43e8664-bdd9-bc56-8d2b-76064c865920/mzaf_15456055651529260945.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/come-as-you-are/1440783617?i=1440783636&uo=4"
   },
   {
-    "title": "Take On Me",
-    "artist": "a-ha",
-    "year": 1985,
-    "preview": "./assets/audio/aha.mp3"
+    "title": "Devil in Disguise",
+    "artist": "Marino",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b273117ebf5e67defe3f175eaccc",
+    "spotifyUrl": "https://open.spotify.com/track/3MKhTroJs5GF9H7LqN9fiw",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/93/b0/d3/93b0d342-821b-99a2-0f53-994ee7460044/mzaf_14871909559880878959.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/devil-in-disguise/1826616307?i=1826616308&uo=4"
+  },
+  {
+    "title": "P*RNSTAR",
+    "artist": "Nessa Barrett",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b2738d345d8baf0c3899501a4bb3",
+    "spotifyUrl": "https://open.spotify.com/track/0IVAYMUDvpzFxIEuGc71SM",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/de/cc/98/decc985a-e78f-73f4-c245-2747ddd65fa9/mzaf_3079520906758457822.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/p-rnstar-instrumental/1811418798?i=1811418799&uo=4"
+  },
+  {
+    "title": "Too Much",
+    "artist": "Dove Cameron",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b273cad38423dbe84082c31e3d84",
+    "spotifyUrl": "https://open.spotify.com/track/6lKSOnC9iLGDonypMgvGrm",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4e/49/e6/4e49e642-a2d9-fb48-d77a-3e3787a583b0/mzaf_9174586949029220611.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/too-much/1797345120?i=1797345121&uo=4"
+  },
+  {
+    "title": "LABOUR - the cacophony",
+    "artist": "Paris Paloma",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b2733b2a31f7534446b89316bad7",
+    "spotifyUrl": "https://open.spotify.com/track/4B0cJGASxVICLW2AsBZhiE",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/f2/82/87/f28287f9-5a2a-16a3-35f6-e93a7e464deb/mzaf_693213580296322817.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/labour-clean/1684365937?i=1684365983&uo=4"
+  },
+  {
+    "title": "make you mine",
+    "artist": "Madison Beer",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b273e0fbdeed0ac9e8daca2d9bd1",
+    "spotifyUrl": "https://open.spotify.com/track/48vIfHaK7by6x0T6ucpODL",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/52/cb/36/52cb36f9-e0be-37d9-235c-328ee46d6820/mzaf_218426770219429576.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/make-you-mine/1729494487?i=1729494488&uo=4"
+  },
+  {
+    "title": "Bubblegum Bitch",
+    "artist": "MARINA",
+    "year": 2012,
+    "image": "https://i.scdn.co/image/ab67616d0000b273203e4c6a048df02a21cdd813",
+    "spotifyUrl": "https://open.spotify.com/track/6IbnUaczZBT34DhaD6S18F",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/5f/cd/d1/5fcdd1a2-7240-6fae-fd11-8c8594bd1bad/mzaf_17393769896896175577.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/bubblegum-bitch/1592967695?i=1592967847&uo=4"
+  },
+  {
+    "title": "Favorite",
+    "artist": "Isabel LaRosa",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b27390429c4d8eea9492808793e5",
+    "spotifyUrl": "https://open.spotify.com/track/4iuOodsAvCO3OJHZEbqrJp",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/cd/fa/82/cdfa82ff-c603-8569-5b1d-bf36cccca4b7/mzaf_15504386665701981920.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/favorite/1736608341?i=1736608352&uo=4"
+  },
+  {
+    "title": "Im Doing Fine",
+    "artist": "Marino, Promoting Sounds",
+    "year": 2024,
+    "image": "https://i.scdn.co/image/ab67616d0000b273a03158ed39ce7468e1637298",
+    "spotifyUrl": "https://open.spotify.com/track/3KR1JFRwYzha78aE9SpX3a",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/97/fa/da/97fada7f-e580-1199-bba3-373dbff84ec6/mzaf_12879073499565325787.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/im-doing-fine/1787070273?i=1787070274&uo=4"
+  },
+  {
+    "title": "Again (feat. XXXTENTACION)",
+    "artist": "Noah Cyrus, XXXTENTACION",
+    "year": 2017,
+    "image": "https://i.scdn.co/image/ab67616d0000b27349af7d5bfd29ae589a99e1cd",
+    "spotifyUrl": "https://open.spotify.com/track/2S2od3hT7ceytw7d1pTRuE",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6e/39/f5/6e39f53e-e63b-e366-0088-57f34b9628e4/mzaf_13349115391415143741.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/again-feat-xxxtentacion/1286870860?i=1286871115&uo=4"
+  },
+  {
+    "title": "jealousy, jealousy",
+    "artist": "Olivia Rodrigo",
+    "year": 2021,
+    "image": "https://i.scdn.co/image/ab67616d0000b273a91c10fe9472d9bd89802e5a",
+    "spotifyUrl": "https://open.spotify.com/track/0MMyJUC3WNnFS1lit5pTjk",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d9/22/93/d9229364-1e24-8c63-7e3e-6165a18656d5/mzaf_6536834655944482143.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/jealousy-jealousy/1560734944?i=1560735861&uo=4"
+  },
+  {
+    "title": "oops!",
+    "artist": "Yung Gravy",
+    "year": 2020,
+    "image": "https://i.scdn.co/image/ab67616d0000b273c5e844c860c9717785b7aaa2",
+    "spotifyUrl": "https://open.spotify.com/track/7L6G0wpIUiPXuvoo7qhb06",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/28/4c/b6/284cb604-2610-4bc6-f472-58e8dbc73dd4/mzaf_11264216031016987112.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/oops/1533424513?i=1533424528&uo=4"
+  },
+  {
+    "title": "You Need Jesus",
+    "artist": "BABY GRAVY, Yung Gravy, bbno$",
+    "year": 2023,
+    "image": "https://i.scdn.co/image/ab67616d0000b273560a43392fff47dfdd7519f1",
+    "spotifyUrl": "https://open.spotify.com/track/313j2aNbdQRcWZq7JOo0ro",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6f/6b/2d/6f6b2df2-9d9d-7928-ea7d-344d936e76f2/mzaf_6336487148512306671.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/you-need-jesus/1688085458?i=1688085465&uo=4"
+  },
+  {
+    "title": "Super Smash Bros.",
+    "artist": "BABY GRAVY, Yung Gravy, bbno$",
+    "year": 2023,
+    "image": "https://i.scdn.co/image/ab67616d0000b273560a43392fff47dfdd7519f1",
+    "spotifyUrl": "https://open.spotify.com/track/3SQ7A39UtrUO61jnICPImu",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/1b/07/bb/1b07bbd8-926a-ba70-404a-c0d2d6eecbbd/mzaf_10055664611281472004.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/super-smash-bros/1703679503?i=1703679517&uo=4"
+  },
+  {
+    "title": "Welcome to Chilis",
+    "artist": "BABY GRAVY, Yung Gravy, bbno$",
+    "year": 2020,
+    "image": "https://i.scdn.co/image/ab67616d0000b27315f04c6e3d7c57a5a4348bca",
+    "spotifyUrl": "https://open.spotify.com/track/3PdcxgzpWzAsUGgkmykIFc",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/4f/48/1e/4f481ebc-6911-b027-d198-342d5bdf1761/mzaf_12211060121920600396.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/welcome-to-chilis/1650503530?i=1650503695&uo=4"
+  },
+  {
+    "title": "Mr. Clean",
+    "artist": "Yung Gravy",
+    "year": 2018,
+    "image": "https://i.scdn.co/image/ab67616d0000b2735ca7079fad6246966d57dc2c",
+    "spotifyUrl": "https://open.spotify.com/track/5GxnROd93Y7NGt2ci0TwBw",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/8e/84/9d/8e849de7-c4bf-5f2b-10fa-03ab1bc66647/mzaf_12765950042534556432.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/mr-clean/1377358308?i=1377358556&uo=4"
+  },
+  {
+    "title": "Goodness Gracious",
+    "artist": "BABY GRAVY, Yung Gravy, bbno$",
+    "year": 2023,
+    "image": "https://i.scdn.co/image/ab67616d0000b273560a43392fff47dfdd7519f1",
+    "spotifyUrl": "https://open.spotify.com/track/3FwzAQ2kVYHhaACqh79trJ",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2b/f8/d4/2bf8d484-bc25-cce1-c189-aaf157113555/mzaf_17784822112714716726.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/goodness-gracious/1680810592?i=1680810595&uo=4"
+  },
+  {
+    "title": "SUPA GOOD!!! (from Dog Man)",
+    "artist": "Yung Gravy, James Brown",
+    "year": 2025,
+    "image": "https://i.scdn.co/image/ab67616d0000b27339578269e48f6a535c9ecce2",
+    "spotifyUrl": "https://open.spotify.com/track/5va6bVfelXkGBu4XnVzqGh",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/48/0e/f9/480ef966-aaab-8835-f039-a5b038ef2bfc/mzaf_13905091084195453891.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/supa-good-from-dog-man/1790763891?i=1790763895&uo=4"
+  },
+  {
+    "title": "Mexico",
+    "artist": "Shotgun Willy, Yung Craka",
+    "year": 2021,
+    "image": "https://i.scdn.co/image/ab67616d0000b273459a7d23c8f3f62be55e9d89",
+    "spotifyUrl": "https://open.spotify.com/track/56KAsTLcOQIVrcbfHrTua4",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/e1/cf/79/e1cf79b4-a901-d30a-7c90-f69ac060d8eb/mzaf_832947421091401937.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/seashores-of-old-mexico/192744059?i=192744068&uo=4"
+  },
+  {
+    "title": "Oreo",
+    "artist": "Shotgun Willy, Yung Craka",
+    "year": 2020,
+    "image": "https://i.scdn.co/image/ab67616d0000b273da711a94f3c4cf74215dfe9a",
+    "spotifyUrl": "https://open.spotify.com/track/6hhRhOIkpUIu1CFNNJfsnt",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/dc/3f/ac/dc3facc1-6d90-8f74-5296-0733f8ed42ec/mzaf_16949113244309482580.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/oreo/1532131811?i=1532132053&uo=4"
+  },
+  {
+    "title": "Cheat Codes for Hoes",
+    "artist": "Shotgun Willy, TRAQULA",
+    "year": 2018,
+    "image": "https://i.scdn.co/image/ab67616d0000b273375b1f02225f9435a574e5ec",
+    "spotifyUrl": "https://open.spotify.com/track/10iTEeb8hoM5jBGh0OxBOO",
+    "audio": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/16/c0/f4/16c0f4b2-0bf1-1f7d-b353-52b1dedf491f/mzaf_11954022137052759803.plus.aac.p.m4a",
+    "itunesUrl": "https://music.apple.com/us/album/cheat-codes-for-hoes/1771967936?i=1771967938&uo=4"
   }
 ]
