@@ -58,6 +58,15 @@
              <div id="qrcode"></div>
           </div>
 
+          <div style="margin-bottom: 1rem;">
+            <label for="modal-difficulty" style="display:block; margin-bottom: 0.5rem; color: #adb5bd;">Difficulté prochaine partie :</label>
+            <select id="modal-difficulty" style="padding: 0.5rem; border-radius: 6px; border:none; width: 100%; max-width: 250px;">
+              <option value="easy">Facile (3 vies + indices)</option>
+              <option value="normal" selected>Normal (3 vies)</option>
+              <option value="hard">Difficile (Mort subite)</option>
+            </select>
+          </div>
+
           <div class="modal-actions">
             <button id="btn-restart">🔄 Recommencer</button>
             <button id="btn-new-playlist">🎵 Changer de playlist</button>
