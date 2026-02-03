@@ -39,6 +39,126 @@
 
       <!-- Main content -->
       <main class="content" role="main">
+        
+        <!-- View: Home -->
+        <section id="view-home" class="view-section">
+            <h2>Vue d'ensemble</h2>
+            <p>Aperçu rapide de la météo dans les grandes villes suisses.</p>
+            <div id="panorama-container" class="panorama-grid"></div>
+        </section>
+
+        <!-- View: Meteo -->
+        <section id="view-meteo" class="view-section hidden">
+            <h2>Météo Détaillée</h2>
+            <div class="weather__controls">
+                <form id="weather-form" class="weather__form">
+                    <input type="text" id="weather-input" placeholder="Entrez une ville..." required />
+                    <button type="submit">Rechercher</button>
+                </form>
+                <button id="btn-geo" class="btn-secondary" title="Ma position">📍</button>
+                
+                <div class="unit-toggle-container" id="unit-toggle" data-unit="metric" title="Changer d'unité">
+                    <div class="toggle-pill"></div>
+                    <div class="unit-option active" data-val="metric">°C</div>
+                    <div class="unit-option" data-val="imperial">°F</div>
+                </div>
+            </div>
+            
+            <div id="weather-result" class="weather__result">
+                <p>Recherchez une ville pour afficher la météo.</p>
+            </div>
+        </section>
+
+        <!-- View: Favorites -->
+        <section id="view-favorites" class="view-section hidden">
+            <h2>Mes Villes Favorites</h2>
+            <div id="fav-empty-state" style="text-align:center; padding: 3rem; color: #64748b;">
+                <span style="font-size: 3rem;">⭐</span>
+                <p>Aucun favori pour le moment.<br>Ajoutez des villes depuis l'onglet recherche !</p>
+            </div>
+            <div id="favorites-grid" class="favorites-grid"></div>
+        </section>
+
+        <!-- View: Mountain -->
+        <section id="view-mountain" class="view-section hidden">
+            <h2>Météo des Montagnes / Ski 🎿</h2>
+            <p>Conditions actuelles dans les stations les plus populaires.</p>
+            <div id="mountain-container"></div>
+        </section>
+
+        <!-- View: Map -->
+        <section id="view-map" class="view-section hidden">
+            <h2>Carte Météo Interactive</h2>
+            <p>Températures en direct.</p>
+            <div id="map"></div>
+        </section>
+
+        <!-- View: Compare -->
+        <section id="view-compare" class="view-section hidden">
+            <h2>Comparateur de Villes</h2>
+            <p>Comparez la météo de 2 à 4 villes simultanément.</p>
+            
+            <div class="comparison-inputs">
+                <input type="text" class="comp-input" placeholder="Ville 1 (ex: Paris)">
+                <input type="text" class="comp-input" placeholder="Ville 2 (ex: Londres)">
+                <input type="text" class="comp-input" placeholder="Ville 3 (Optionnel)">
+                <input type="text" class="comp-input" placeholder="Ville 4 (Optionnel)">
+                <button onclick="compareCities()">Comparer</button>
+            </div>
+
+            <div id="compare-loader" style="display:none; text-align:center; padding:2rem;">
+                <div class="loader-spinner"></div>
+            </div>
+
+            <div id="compare-result" class="comparison-container" style="display:none;">
+               <div id="compare-cards" class="comparison-cards-grid"></div>
+               
+               <div class="comparison-charts-section animate-pop" style="animation-delay: 0.2s; margin-top:2rem;">
+                  <h3>📊 Analyse Comparée</h3>
+                  <div style="height:300px; margin-bottom: 2rem;">
+                      <canvas id="compareTempChart"></canvas>
+                  </div>
+                  
+                  <h3>📋 Tableau Détaillé</h3>
+                  <div class="table-container">
+                      <table id="compare-table" class="compare-table">
+                          <thead>
+                              <tr id="table-head">
+                                  <th>Donnée</th>
+                                  <!-- Cities headers injected here -->
+                              </tr>
+                          </thead>
+                          <tbody id="table-body">
+                              <!-- Rows injected here -->
+                          </tbody>
+                      </table>
+                  </div>
+               </div>
+            </div>
+        </section>
+
+        <!-- View: Settings -->
+        <section id="view-settings" class="view-section hidden">
+            <h2>Paramètres</h2>
+            <div class="settings-panel topic__form">
+                <div class="form-group">
+                    <label>Thème de l'application</label>
+                    <button id="btn-theme-toggle" style="margin-top:0.5rem; display:block;">Changer le thème (Clair/Sombre)</button>
+                </div>
+                
+                <div class="form-group" style="margin-top:2rem;">
+                    <label>Notifications & PWA</label>
+                    <button id="btn-pwa-install" style="margin-top:0.5rem; display:none; background:#22c55e; border:none; color:white;">📲 Installer l'application</button>
+                    <button id="btn-notifications" style="margin-top:0.5rem; display:block; background:#3b82f6; border:none; color:white;">🔔 Activer les notifications</button>
+                </div>
+
+                <div class="form-group" style="margin-top:2rem; border-top:1px solid #e2e8f0; padding-top:1rem;">
+                    <label style="color:#ef4444;">Zone de danger</label>
+                    <button id="btn-reset-app" style="background:#fee2e2; color:#ef4444; border:1px solid #ef4444; margin-top:0.5rem; display:block;">Réinitialiser l'application</button>
+                    <small style="color:#ef4444;">Efface les favoris, l'historique et les préférences (sauf le thème).</small>
+                </div>
+            </div>
+        </section>
       </main>
     </div>
 
