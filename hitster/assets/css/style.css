@@ -290,6 +290,23 @@ main {
   transform: scale(1.05);
 }
 
+/* Drag & Drop Feedback */
+.drop-zone.drag-over {
+  background: #3ec5ff;
+  color: #0b132b;
+  transform: scale(1.2);
+  transition: transform 0.2s;
+}
+
+#current-card[draggable="true"] {
+  cursor: grab;
+}
+
+#current-card.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
   .top-layout {
