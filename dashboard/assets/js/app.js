@@ -198,10 +198,43 @@ function fetchWeather(query) {
       $.getJSON(urlForecast).done(function(forecastData) {
           renderForecast(forecastData);
       });
+
+      // 3. Air Pollution (NEW)
+      // On utilise lat/lon de la réponse "current weather" pour être précis
+      const lat = data.coord.lat;
+      const lon = data.coord.lon;
+      $.getJSON(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`)
+          .done(function(airData) {
+              const aqi = airData.list[0].main.aqi; // 1 = Bon, 5 = Très mauvais
+              renderAirQuality(aqi);
+          });
     })
     .fail(function () {
       $("#weather-result").html("<div class='error'>❌ Ville introuvable.</div>");
     });
+}
+
+function renderAirQuality(aqi) {
+    const labels = {
+        1: { text: "Excellente", color: "#22c55e" },
+        2: { text: "Bonne", color: "#84cc16" },
+        3: { text: "Modérée", color: "#eab308" },
+        4: { text: "Mauvaise", color: "#f97316" },
+        5: { text: "Très Mauvaise", color: "#ef4444" }
+    };
+    
+    const info = labels[aqi] || { text: "Inconnue", color: "#94a3b8" };
+    
+    // On injecte le bloc Qualité de l'Air dans la carte principale (ou juste après)
+    // Ici, on va l'ajouter dynamiquement dans la grille de détails existante
+    const airHtml = `
+        <div class="detail-item">
+            <span>🍃 Qualité Air</span>
+            <strong style="color:${info.color}">${info.text}</strong>
+        </div>
+    `;
+    
+    $(".weather-details-grid").append(airHtml);
 }
 
 function updateBackground(condition) {
@@ -347,6 +380,18 @@ function renderForecast(data) {
                     tooltip: {
                         mode: 'index',
                         intersect: false,
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        titleColor: '#1e293b',
+                        bodyColor: '#334155',
+                        borderColor: '#e2e8f0',
+                        borderWidth: 1,
+                        padding: 10,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' °C';
+                            }
+                        }
                     }
                 },
                 scales: {
@@ -362,25 +407,31 @@ function renderForecast(data) {
         });
     }
 
-    // 2. Daily Forecast List
+    // 2. Daily Forecast List (5 jours)
+    // On extrait une entrée par jour (ex: à midi)
     const dailyData = data.list.filter(item => item.dt_txt.includes("12:00:00"));
     
-    let html = '';
+    let html = '<h3>📅 Prévisions 5 Jours</h3><div class="forecast-grid">';
+    
     dailyData.forEach(day => {
         const date = new Date(day.dt * 1000);
         const dayName = date.toLocaleDateString('fr-FR', { weekday: 'short' });
+        const dayNumber = date.getDate();
         const temp = Math.round(day.main.temp);
         const icon = day.weather[0].icon;
+        const desc = day.weather[0].description;
         
         html += `
-            <div class="forecast-item">
-                <div class="forecast-day">${dayName}</div>
-                <img src="https://openweathermap.org/img/wn/${icon}.png" alt="icon">
-                <div class="forecast-temp">${temp}°</div>
+            <div class="forecast-card animate-pop">
+                <div class="fc-day">${dayName} ${dayNumber}</div>
+                <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${desc}" class="fc-icon">
+                <div class="fc-temp">${temp}°</div>
+                <div class="fc-desc">${desc}</div>
             </div>
         `;
     });
     
+    html += '</div>';
     $('#forecast-container').html(html);
 }
 
