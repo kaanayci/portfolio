@@ -44,6 +44,11 @@
           <p id="modal-message">Bravo !</p>
           <p class="final-score" id="modal-score">Score final : 0</p>
 
+          <div id="styles-qrcode" style="margin: 1rem 0; display: flex; flex-direction: column; align-items: center;">
+             <p id="qrcode-mess" style="margin-bottom: 0.5rem; font-size: 0.9rem; color: #adb5bd;">Ajouter sur Spotify :</p>
+             <div id="qrcode"></div>
+          </div>
+
           <div class="modal-actions">
             <button id="btn-restart">🔄 Recommencer</button>
             <button id="btn-new-playlist">🎵 Changer de playlist</button>
@@ -52,6 +57,7 @@
       </div>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="assets/js/game.js"></script>
     
   </body>
