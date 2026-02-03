@@ -26,20 +26,22 @@ let allStationsData = [];
 
 function loadMountains() {
     const stations = [
-        {name: "Zermatt", q: "Zermatt", region: "Valais", alt: 1620, lat: 46.0207, lon: 7.7491, img: "https://images.unsplash.com/photo-1551524164-687a55dd1126?w=400&q=80"},
-        {name: "Verbier", q: "Bagnes", region: "Valais", alt: 1500, lat: 46.0968, lon: 7.2266, img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=80"},
-        {name: "Crans-Montana", q: "Crans-Montana", region: "Valais", alt: 1495, lat: 46.3117, lon: 7.4789, img: "https://images.unsplash.com/photo-1551524559-8af4e6624178?w=400&q=80"},
-        {name: "Davos", q: "Davos", region: "Grisons", alt: 1560, lat: 46.8027, lon: 9.8297, img: "https://images.unsplash.com/photo-1565538059049-76082989b142?w=400&q=80"},
-        {name: "St. Moritz", q: "Saint-Moritz", region: "Grisons", alt: 1822, lat: 46.4908, lon: 9.8355, img: "https://images.unsplash.com/photo-1519965042835-f0e7eb2de176?w=400&q=80"},
-        {name: "Gstaad", q: "Gstaad", region: "Bern", alt: 1050, lat: 46.4746, lon: 7.2863, img: "https://images.unsplash.com/photo-1520636830509-54d9c4902120?w=400&q=80"},
-        {name: "Jungfrau", q: "Lauterbrunnen", region: "Bern", alt: 796, lat: 46.598, lon: 7.907, img: "https://images.unsplash.com/photo-1465220183275-1faa863377e3?w=400&q=80"},
-        {name: "Leysin", q: "Leysin", region: "Vaud", alt: 1260, lat: 46.3358, lon: 7.009, img: "https://images.unsplash.com/photo-1456360699049-c1249b5ae489?w=400&q=80"},
-        {name: "Villars", q: "Villars-sur-Ollon", region: "Vaud", alt: 1300, lat: 46.298, lon: 7.057, img: "https://images.unsplash.com/photo-1530752490138-0ed4b2cd33c1?w=400&q=80"},
-        {name: "Engelberg", q: "Engelberg", region: "Obwald", alt: 1000, lat: 46.820, lon: 8.407, img: "https://images.unsplash.com/photo-1617196016335-5b8d23d8c21f?w=400&q=80"},
-        {name: "Adelboden", q: "Adelboden", region: "Bern", alt: 1350, lat: 46.491, lon: 7.558, img: "https://images.unsplash.com/photo-1516942111000-0925fb3568c4?w=400&q=80"},
-        {name: "Arosa", q: "Arosa", region: "Grisons", alt: 1775, lat: 46.779, lon: 9.678, img: "https://images.unsplash.com/photo-1548777123-e216912df7d8?w=400&q=80"},
-        {name: "Bugnenets-Sav.", q: "Saint-Imier", region: "Jura", alt: 1090, lat: 47.135, lon: 6.967, img: "https://images.unsplash.com/photo-1482867996988-29bfffe79584?w=400&q=80"},
-        {name: "Les Paccots", q: "Châtel-Saint-Denis", region: "Fribourg", alt: 1061, lat: 46.527, lon: 6.969, img: "https://images.unsplash.com/photo-1518182170546-0766ce6fabe4?w=400&q=80"}
+        {name: "Grindelwald-Wengen", q: "Grindelwald", region: "Bern", alt: 1034, lat: 46.624, lon: 8.041, img: "https://images.unsplash.com/photo-1596708304021-02685fb62c64?w=600&q=80"},
+        {name: "Les Diablerets", q: "Les Diablerets", region: "Vaud", alt: 1200, lat: 46.350, lon: 7.157, img: "https://images.unsplash.com/photo-1612966838337-184581177652?w=600&q=80"},
+        {name: "Andermatt", q: "Andermatt", region: "Uri", alt: 1444, lat: 46.635, lon: 8.594, img: "https://images.unsplash.com/photo-1614597029272-566089202683?w=600&q=80"},
+        {name: "Leysin", q: "Leysin", region: "Vaud", alt: 1260, lat: 46.3358, lon: 7.009, img: "https://images.unsplash.com/photo-1551524559-8af4e6624178?w=600&q=80"},
+        {name: "Champéry", q: "Champéry", region: "Valais", alt: 1050, lat: 46.176, lon: 6.871, img: "https://images.unsplash.com/photo-1518099307222-261556880098?w=600&q=80"},
+        {name: "Crans-Montana", q: "Crans-Montana", region: "Valais", alt: 1495, lat: 46.3117, lon: 7.4789, img: "https://images.unsplash.com/photo-1565538059049-76082989b142?w=600&q=80"},
+        {name: "Saas-Fee", q: "Saas-Fee", region: "Valais", alt: 1800, lat: 46.109, lon: 7.929, img: "https://images.unsplash.com/photo-1612863690623-286862590515?w=600&q=80"},
+        {name: "Gstaad", q: "Gstaad", region: "Bern", alt: 1050, lat: 46.4746, lon: 7.2863, img: "https://images.unsplash.com/photo-1482867996988-29bfffe79584?w=600&q=80"},
+        {name: "St. Moritz", q: "Saint-Moritz", region: "Grisons", alt: 1822, lat: 46.4908, lon: 9.8355, img: "https://images.unsplash.com/photo-1480497490787-505ec076689f?w=600&q=80"},
+        {name: "Verbier", q: "Bagnes", region: "Valais", alt: 1500, lat: 46.0968, lon: 7.2266, img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80"},
+        {name: "Davos", q: "Davos", region: "Grisons", alt: 1560, lat: 46.8027, lon: 9.8297, img: "https://images.unsplash.com/photo-1520448100688-34860d5b6a7a?w=600&q=80"},
+        {name: "Adelboden-Lenk", q: "Adelboden", region: "Bern", alt: 1350, lat: 46.491, lon: 7.558, img: "https://images.unsplash.com/photo-1530752490138-0ed4b2cd33c1?w=600&q=80"},
+        {name: "Laax", q: "Laax", region: "Grisons", alt: 1016, lat: 46.806, lon: 9.261, img: "https://images.unsplash.com/photo-1552597280-5a3d4653dd83?w=600&q=80"},
+        {name: "Engelberg", q: "Engelberg", region: "Obwald", alt: 1000, lat: 46.820, lon: 8.407, img: "https://images.unsplash.com/photo-1486496166122-a37f6dc2b8b9?w=600&q=80"},
+        {name: "Bugnenets-Sav.", q: "Saint-Imier", region: "Jura", alt: 1090, lat: 47.135, lon: 6.967, img: "https://images.unsplash.com/photo-1548777123-e216912df7d8?w=600&q=80"},
+        {name: "Les Paccots", q: "Châtel-Saint-Denis", region: "Fribourg", alt: 1061, lat: 46.527, lon: 6.969, img: "https://images.unsplash.com/photo-1518182170546-0766ce6fabe4?w=600&q=80"}
     ];
 
     // Inject Filter UI + Sections
@@ -51,7 +53,7 @@ function loadMountains() {
                 <button class="filter-btn" data-filter="Grisons">Grisons</button>
                 <button class="filter-btn" data-filter="Bern">Bern</button>
                 <button class="filter-btn" data-filter="Vaud">Vaud</button>
-                <button class="filter-btn" data-filter="Jura">Jura</button>
+                <button class="filter-btn" data-filter="Uri">Uri</button>
                 <button class="filter-btn" data-filter="fresh">❄️ Poudreuse</button>
             </div>
         </div>
