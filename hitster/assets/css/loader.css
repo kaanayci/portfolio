@@ -1,0 +1,36 @@
+
+/* Audio Loader */
+.audio-loader {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(62, 197, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #3ec5ff;
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 10rem; 
+  display: none; /* Caché par défaut */
+}
+
+.audio-loader.active {
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Amélioration Mobile : Zones de clic plus grandes */
+@media (max-width: 600px) {
+  .drop-zone {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem; /* Le "+" plus gros */
+    margin: 0 5px; /* Un peu d'espace */
+  }
+  
+  /* On s'assure que les boutons ne sont pas trop petits */
+  button {
+    min-height: 44px; 
+  }
+}
