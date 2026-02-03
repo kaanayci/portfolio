@@ -48,7 +48,14 @@
                 <p id="card-hint" style="color: #3ec5ff; font-weight: bold; min-height: 1.5rem; margin: 0;"></p>
                 <div id="audio-loading" class="audio-loader"></div>
             </div>
-            <audio id="audio" controls></audio>
+            <div id="custom-audio-player" class="player-container">
+              <button id="play-pause-btn" class="player-btn">▶</button>
+              <div class="progress-wrapper" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+              </div>
+              <span id="time-display">00:00</span>
+            </div>
+            <audio id="audio"></audio>
           </section>
         </section>
       </section>
