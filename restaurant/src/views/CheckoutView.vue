@@ -71,13 +71,17 @@ import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import { useOrderStore } from '@/stores/order'
 import { useUserStore } from '@/stores/user'
+import { useMenuStore } from '@/stores/menu' // Import Menu Store
+import { useToastStore } from '@/stores/toast' // Import Toast Store
 import DeliveryForm from '@/components/checkout/DeliveryForm.vue'
 import PaymentMethods from '@/components/checkout/PaymentMethods.vue'
 
 const router = useRouter()
 const cartStore = useCartStore()
 const userStore = useUserStore()
-// const orderStore = useOrderStore() // Will be used later
+const menuStore = useMenuStore()
+const orderStore = useOrderStore() 
+const toast = useToastStore()
 
 const orderData = ref({
   method: 'delivery', // 'delivery' | 'takeaway'
@@ -96,29 +100,28 @@ const submitOrder = async () => {
 
   // Simulate API call
   setTimeout(() => {
-    // Generate simulated Order ID
-    const orderId = 'CR-' + Math.floor(Math.random() * 1000000)
-
-    console.log('Order Submitted:', {
-      items: cartStore.items,
+    // 1. Create Order in Store (Persistence)
+    const newOrder = orderStore.createOrder({
+      items: [...cartStore.items], // Clone items
       total: cartStore.finalTotal,
       details: orderData.value,
-      payment: paymentMethod.value,
-      id: orderId
+      payment: paymentMethod.value
     })
+
+    console.log('Order Created:', newOrder)
     
-    // Increment User Order Count if logged in
+    // 2. Increment User Order Count if logged in
     if (userStore.isAuthenticated) {
       userStore.incrementOrderCount()
     }
 
-    // Success -> Clear Cart & Redirect
+    // 3. Clear Cart & Redirect
     cartStore.clearCart()
     isSubmitting.value = false
     
-    // In real app, redirect to confirmation page
-    router.push('/') 
-    alert(`Commande confirmée ! Numéro : ${orderId}`)
+    // 4. Toast & Redirect
+    toast.success(`Commande #${newOrder.id} validée !`)
+    router.push('/')
     
   }, 1500)
 }
