@@ -87,11 +87,14 @@ function loadChannel(channelName) {
     if (channelName === "mountain") loadMountains();
     if (channelName === "meteo") {
         const lastCity = localStorage.getItem("lastCity");
+        const lastCityName = localStorage.getItem("lastCityName");
+
         updateUnitUI(); // Restore toggle state
         
         if (lastCity) {
-            $("#weather-input").val(lastCity);
-            fetchWeather(lastCity);
+            $("#weather-input").val(lastCityName || lastCity); // Show nice name in input if available
+            fetchWeather(lastCity, lastCityName); 
+            // We keep lastCityName in localStorage until a new search overwrites context
         }
     }
     if (channelName === "favorites") loadFavoritesPage();
@@ -107,7 +110,17 @@ $(document).ready(function () {
         loadChannel(channel);
     });
 
-    // 2. Load Default Page
+    // 2. Search Event
+    $(document).on('submit', '#weather-form', function(e) {
+        e.preventDefault();
+        let city = $('#weather-input').val();
+        if(city.trim() !== "") {
+            localStorage.removeItem("lastCityName");
+            fetchWeather(city);
+        }
+    });
+
+    // 3. Load Default Page
     loadChannel("home"); 
 });
 
