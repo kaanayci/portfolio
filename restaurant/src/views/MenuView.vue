@@ -8,12 +8,12 @@
 
     <div v-else>
       <!-- Categories Filter -->
-      <div class="flex overflow-x-auto pb-4 mb-6 gap-2">
+      <div class="flex overflow-x-auto pb-4 mb-6 gap-2 no-scrollbar">
         <button 
           v-for="category in menuStore.categories" 
           :key="category.id"
-          class="px-4 py-2 rounded-full whitespace-nowrap transition-colors"
-          :class="selectedCategory === category.id ? 'bg-secondary text-primary font-bold' : 'bg-white text-gray-600 border hover:bg-gray-50'"
+          class="px-4 py-2 rounded-full whitespace-nowrap transition-colors border shadow-sm"
+          :class="selectedCategory === category.id ? 'bg-secondary text-primary font-bold border-secondary' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'"
           @click="selectedCategory = category.id"
         >
           {{ category.name }}
@@ -22,44 +22,52 @@
 
       <!-- Products Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div 
+        <DishCard 
           v-for="product in filteredProducts" 
           :key="product.id"
-          class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-gray-100"
-        >
-          <!-- Image Placeholder -->
-          <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-400">
-            <span class="text-4xl">🍕</span>
-          </div>
-
-          <div class="p-4">
-            <div class="flex justify-between items-start mb-2">
-              <h3 class="text-xl font-bold text-primary">{{ product.name }}</h3>
-              <span class="bg-primary text-white px-2 py-1 rounded text-sm font-bold">
-                {{ product.price.toFixed(2) }} CHF
-              </span>
-            </div>
-            
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ product.description }}</p>
-
-            <button class="w-full bg-secondary text-primary font-bold py-2 rounded-lg hover:bg-yellow-500 transition">
-              Ajouter au panier
-            </button>
-          </div>
-        </div>
+          :product="product"
+          @add-to-cart="openProductModal"
+        />
       </div>
     </div>
+
+    <!-- Product Modal -->
+    <ProductModal 
+      :is-open="isModalOpen"
+      :product="selectedProduct"
+      @close="isModalOpen = false"
+      @add="addToCart"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { useMenuStore } from '@/stores/menu'
+import { useCartStore } from '@/stores/cart'
+import DishCard from '@/components/menu/DishCard.vue'
+import ProductModal from '@/components/menu/ProductModal.vue'
 
 const menuStore = useMenuStore()
+const cartStore = useCartStore()
 const selectedCategory = ref('pizzas')
+
+// Modal State
+const isModalOpen = ref(false)
+const selectedProduct = ref(null)
 
 const filteredProducts = computed(() => {
   return menuStore.getProductsByCategory(selectedCategory.value)
 })
+
+const openProductModal = (product) => {
+  selectedProduct.value = product
+  isModalOpen.value = true
+}
+
+const addToCart = (payload) => {
+  cartStore.addItem(payload.product, payload.quantity, payload.options)
+  isModalOpen.value = false
+  // Optional: Show toast notification
+}
 </script>
