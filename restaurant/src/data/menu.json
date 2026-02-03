@@ -333,7 +333,7 @@
       "id": 50,
       "categoryId": "menus",
       "name": "Menu Enfant",
-      "description": "4 Nuggets + Frites + Capri-Sun",
+      "description": "4 Nuggets + Frites",
       "price": 8.00,
       "image": "menu-enfant.jpg"
     },
@@ -371,7 +371,7 @@
       "id": 60,
       "categoryId": "salades",
       "name": "Salade Mêlée",
-      "description": "Salade verte, tomates, concombres, maïs, carottes",
+      "description": "Salade verte, tomates, choux rouge, oignons, carottes",
       "price": 6.00,
       "hasSaladSauce": true,
       "image": "salade-melee.jpg"
