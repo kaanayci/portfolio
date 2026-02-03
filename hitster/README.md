@@ -1,52 +1,85 @@
-# 🎵 Music Quiz – Jeu Web Interactif
+# 🎵 Hitster – Timeline Musicale 
 
-Ce projet est un **jeu de quiz musical interactif** développé en HTML, CSS et
-JavaScript dans le cadre de mon portfolio d’intégration web 
-
-
-Inspiré du jeu Hitster, le joueur écoute des extraits musicaux et doit placer correctement la carte sur une timeline. Le jeu repose sur une logique dynamique, une gestion
-des données via JSON et une interaction en temps réel avec l’interface.
+**Un jeu de quiz musical interactif codé en Vanilla JS, inspiré du célèbre jeu de société Hitster.**  
+Le but : Écouter un extrait, deviner son année de sortie et le placer correctement dans votre timeline musicale personnelle.
 
 ---
 
-## 🎯 Objectifs du projet
+## 🚀 Fonctionnalités Clés
 
-- Créer un jeu web interactif sans framework
-- Manipuler des données externes (JSON)
-- Gérer de l’audio en JavaScript
-- Implémenter une logique de jeu (questions, score, progression)
-- Structurer un projet plus complexe avec séparation des responsabilités
-- Fournir une documentation utilisateur et technique
+### 🎮 Gameplay Riche
+*   **3 Modes de Difficulté** :
+    *   **Facile** : 3 Vies + Indices (nombre de mots dans le titre).
+    *   **Normal** : 3 Vies, gameplay "vanilla".
+    *   **Difficile** : Mort subite (1 seule erreur fatale).
+*   **Score & Record** : Sauvegarde automatique du *High Score* via `localStorage`.
+*   **Animations Immersives** : Retournement des cartes, tremblement d'écran en cas de dégâts, cœurs qui se brisent.
+
+### 🎧 Expérience Audio & Spotify
+*   **Import de Playlist** : Récupération automatique des morceaux (titre, artiste, preview MP3, année) depuis n'importe quelle playlist publique Spotify.
+*   **QR Code de fin** : Partage de la playlist jouée via un QR Code généré dynamiquement.
+*   **Feedback Audio** : Loader visuel pendant le chargement des extraits.
+
+### 📱 Interface Responsive
+*   **Drag & Drop** : Glisser la carte active directement sur la timeline.
+*   **Mobile Friendly** : Zones de clic élargies pour le placement tactile sur smartphone.
 
 ---
 
-## 🧱 Architecture du projet
+## 🛠️ Stack Technique
 
-```txt
-music-quizz/
-├── index.html              # Structure principale du jeu
-├── server.js               # Serveur Node.js (développement local)
-├── README.md               # Documentation du projet
-├── assets/
-│   ├── audio/              # Fichiers audio des extraits musicaux
-│   ├── css/
-│   │   └── style.css       # Styles et responsive design
-│   ├── data/
-│   │   └── songs.json      # Données du quiz (questions, réponses, audio)
-│   └── js/
-│       └── game.js         # Logique du jeu
-└── docs/
-    └── regle-du-jeu.md     # Règles du jeu (documentation utilisateur)
+*   **Frontend** : HTML5, CSS3 (Animations, Flexbox/Grid), JavaScript ES6+ (Modules, Async/Await).
+*   **Backend** : Node.js (Express) pour le scraping des métadonnées Spotify (via Puppeteer/Cheerio simulé ou API).
+*   **Librairies** : `qrcode.js` (génération client-side).
+*   **Outils** : Système de *cache-buster* pour le JSON, gestionnaire de playlist personnalisé.
 
-```
+---
 
---- 
-## 🛠️ Technologies utilisées
+## 📷 Aperçu
 
-### HTML5
+### Menu Principal
+*Importez votre playlist ou jouez avec la sélection par défaut.*
 
-- Structure sémantique de l’interface
-- Organisation claire des éléments du jeu
+### En Jeu
+*Écoutez l'extrait, observez l'indice (mode facile) et glissez la carte.*
+
+### Game Over
+*Visualisez votre score, scannez le QR Code pour retrouver les titres sur Spotify.*
+
+---
+
+## 💡 Installation Locale
+
+1.  **Cloner le projet**
+    ```bash
+    git clone https://github.com/votre-repo/portfolio.git
+    cd portfolio/hitster
+    ```
+
+2.  **Installer les dépendances Server (pour l'import Spotify)**
+    ```bash
+    npm install
+    ```
+
+3.  **Lancer le projet**
+    ```bash
+    node server.js
+    ```
+    Accédez à `http://localhost:3000`
+
+---
+
+## 🏗️ Architecture du Code
+
+Le projet est structuré pour être maintenable et évolutif :
+
+*   `game.js` : Cœur logique (Boucle de jeu, Gestion d'état, Algorithme Fisher-Yates).
+*   `animations.css` : Bibliothèque d'effets visuels (Shake, Heart Break).
+*   `server.js` : Proxy API pour contourner les CORS et scrapper les données Spotify.
+
+---
+
+*Projet réalisé dans le cadre d'un Portfolio Développeur Web.*
 
 ### CSS3
 
