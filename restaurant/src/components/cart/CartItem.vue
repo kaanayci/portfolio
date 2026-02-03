@@ -15,9 +15,23 @@
       
       <!-- Options details -->
       <div class="text-sm text-gray-500 mb-2">
-         <div v-if="item.options?.sauce">Sauce: {{ item.options.sauce }}</div>
+         <div v-if="item.options?.sauces && item.options.sauces.length > 0">
+           Sauce(s): {{ item.options.sauces.join(', ') }}
+         </div>
+         <div v-else-if="item.options?.sauce">
+           Sauce: {{ item.options.sauce }}
+         </div>
+
+         <div v-if="item.options?.meats && item.options.meats.length > 0">
+           Viandes: {{ item.options.meats.join(', ') }}
+         </div>
+
          <div v-if="item.options?.extras && item.options.extras.length > 0">
-           + {{ item.options.extras.map(e => e.name).join(', ') }}
+           Suppléments: {{ item.options.extras.map(e => e.name).join(', ') }}
+         </div>
+
+         <div v-if="item.options?.comment" class="mt-1 text-orange-600 italic border-l-2 border-orange-300 pl-2">
+           Note: {{ item.options.comment }}
          </div>
       </div>
 
