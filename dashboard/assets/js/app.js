@@ -92,6 +92,13 @@ const pages = {
               <label>Thème de l'application</label>
               <button id="btn-theme-toggle" style="margin-top:0.5rem; display:block;">Changer le thème (Clair/Sombre)</button>
           </div>
+          
+          <div class="form-group" style="margin-top:2rem;">
+              <label>Notifications & PWA</label>
+              <button id="btn-pwa-install" style="margin-top:0.5rem; display:none; background:#22c55e; border:none; color:white;">📲 Installer l'application</button>
+              <button id="btn-notifications" style="margin-top:0.5rem; display:block; background:#3b82f6; border:none; color:white;">🔔 Activer les notifications</button>
+          </div>
+
           <div class="form-group" style="margin-top:2rem; border-top:1px solid #e2e8f0; padding-top:1rem;">
               <label style="color:#ef4444;">Zone de danger</label>
               <button id="btn-reset-app" style="background:#fee2e2; color:#ef4444; border:1px solid #ef4444; margin-top:0.5rem; display:block;">Réinitialiser l'application</button>
@@ -155,5 +162,66 @@ $(document).ready(function () {
 
     // 3. Load Default Page
     loadChannel("home"); 
+
+    // PWA & Notifications Logic
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(() => console.log('Service Worker Registered'))
+            .catch(err => console.log('SW Registration Failed', err));
+    }
+
+    // Install Prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show install button when available (checking periodically or when navigating to settings)
+        // Since button is in dynamic HTML (settings page), we might need to check visibility often or just global event
+    });
+
+    // Delegation for dynamic settings button
+    $(document).on('click', '#btn-pwa-install', async function() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            deferredPrompt = null;
+            $(this).hide();
+        } else {
+            alert('L\'installation n\'est pas disponible pour le moment (déjà installé ou non supporté).');
+        }
+    });
+
+    // Handle button visibility when settings loaded
+    // We hook into loadChannel to check if we are on settings page.
+    // However, simplest is just: if deferredPrompt exists, show button when it appears.
+    // For now, let's keep it simple: button is hidden by default in HTML template.
+    // If user goes to settings, we might need to "show" it if deferredPrompt is != null.
+    // Let's modify loadChannel globally or just use a small interval or MutationObserver? 
+    // Easier: Add a check in the click handler for "settings" nav? No, "loadChannel" handles it.
+    
+    // We'll update the global click listener
+    const originalLoadChannel = loadChannel;
+    loadChannel = function(name) {
+        originalLoadChannel(name); // Call original
+        if(name === 'settings' && deferredPrompt) {
+            setTimeout(() => $('#btn-pwa-install').show(), 100);
+        }
+    };
+
+    // Notifications Request
+    $(document).on('click', '#btn-notifications', function() {
+        if (!("Notification" in window)) {
+            alert("Ce navigateur ne supporte pas les notifications desktop");
+        } else if (Notification.permission === "granted") {
+            new Notification("Notifications déjà actives ! 🌤️");
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    new Notification("Merci ! Vous recevrez des alertes météo majeures. ⚡");
+                }
+            });
+        }
+    });
 });
 
