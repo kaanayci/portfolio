@@ -1,8 +1,10 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useMenuStore } from '@/stores/menu'
+import { useCartStore } from '@/stores/cart'
 
 const menuStore = useMenuStore()
+const cartStore = useCartStore()
 
 onMounted(() => {
   menuStore.fetchMenu()
@@ -11,14 +13,42 @@ onMounted(() => {
 
 <template>
   <div class="min-h-screen flex flex-col">
-    <!-- Header Placeholder -->
-    <header class="bg-primary text-white p-4 shadow-md">
+    <!-- Header -->
+    <header class="bg-primary text-white p-4 shadow-md sticky top-0 z-40">
       <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-xl font-bold text-secondary">Coin Régal</h1>
-        <nav>
-          <RouterLink to="/" class="mr-4 hover:text-secondary">Accueil</RouterLink>
-          <RouterLink to="/menu" class="hover:text-secondary">Menu</RouterLink>
+        <!-- Logo -->
+        <RouterLink to="/" class="flex items-center space-x-2 group">
+          <span class="text-2xl pt-1">🍔</span>
+          <span class="text-xl font-bold text-secondary group-hover:text-white transition">Coin Régal</span>
+        </RouterLink>
+
+        <!-- Nav Desktop -->
+        <nav class="hidden md:flex items-center space-x-6">
+          <RouterLink to="/" class="hover:text-secondary font-medium transition">Accueil</RouterLink>
+          <RouterLink to="/menu" class="hover:text-secondary font-medium transition">Menu</RouterLink>
+          
+          <!-- Cart Icon -->
+          <RouterLink to="/panier" class="relative group">
+            <div class="p-2 rounded-full bg-white/10 group-hover:bg-white/20 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span v-if="cartStore.itemCount > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-primary">
+                {{ cartStore.itemCount }}
+              </span>
+            </div>
+          </RouterLink>
         </nav>
+
+        <!-- Mobile Menu Button (Placeholder) -->
+         <RouterLink to="/panier" class="md:hidden relative p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span v-if="cartStore.itemCount > 0" class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+              {{ cartStore.itemCount }}
+            </span>
+         </RouterLink>
       </div>
     </header>
 
