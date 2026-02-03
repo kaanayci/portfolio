@@ -13,7 +13,10 @@ export const useUserStore = defineStore('user', {
       return state.isAuthenticated && state.orderCount > 0 && state.orderCount % 10 === 0
     },
     ordersUntilFreeItem: (state) => {
-      return 10 - (state.orderCount % 10)
+      const remainder = state.orderCount % 10
+      // Si on a un multiple de 10 (et > 0), c'est qu'on est au stade du cadeau, donc 0 restant
+      if (remainder === 0 && state.orderCount > 0) return 0
+      return 10 - remainder
     },
     isAdmin: (state) => state.user?.role === 'admin'
   },
