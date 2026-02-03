@@ -3,6 +3,7 @@ let songs = [];
 let timeline = [];
 let currentCard = null;
 let score = 0;
+let currentPlaylistId = localStorage.getItem("hitster_playlist_id");
 
 // Éléments DOM
 const scoreEl = document.getElementById("score");
@@ -13,6 +14,12 @@ const audioEl = document.getElementById("audio");
 const messageEl = document.getElementById("message");
 const startBtn = document.getElementById("start-game");
 const playlistInput = document.getElementById("playlist-url");
+const modal = document.getElementById("game-over-modal");
+const modalTitle = document.getElementById("modal-title");
+const modalMessage = document.getElementById("modal-message");
+const modalScore = document.getElementById("modal-score");
+const btnRestart = document.getElementById("btn-restart");
+const btnNewPlaylist = document.getElementById("btn-new-playlist");
 
 async function loadSongs() {
   const ts = Date.now(); // cache-buster
@@ -56,6 +63,11 @@ startBtn.addEventListener("click", async () => {
       return;
     }
 
+    if (result.playlistId) {
+      currentPlaylistId = result.playlistId;
+      localStorage.setItem("hitster_playlist_id", currentPlaylistId);
+    }
+
     // Recharge songs.json APRES génération
     await loadSongs();
 
@@ -89,12 +101,9 @@ function startGame() {
 // Afficher la carte suivante
 function nextCard() {
   if (songs.length === 0) {
-    messageEl.textContent = "🎉 Partie terminée !";
+    // VICTOIRE : Plus de cartes à piocher
     audioEl.pause();
-    audioEl.currentTime = 0;
-    console.log("AUDIO URL:", currentCard.audio);
-    audioEl.src = currentCard?.audio || "";
-    audioEl.load();
+    showGameOver(true); // <--- On appelle la modale en mode victoire
     return;
   }
 
@@ -149,13 +158,15 @@ function checkPlacement(position) {
 
 // Fin du jeu en cas de mauvais placement
 function endGame() {
-  messageEl.textContent = `❌ Mauvais placement – Année réelle : ${currentCard.year}`;
-  messageEl.className = "error";
+  // DÉFAITE
   audioEl.pause();
 
+  // On désactive le jeu en arrière-plan
   document
     .querySelectorAll(".drop-zone")
     .forEach((zone) => zone.classList.add("disabled"));
+
+  showGameOver(false); // <--- On appelle la modale en mode défaite
 }
 
 // Afficher la timeline
@@ -191,4 +202,49 @@ function addDropZone(position) {
 // Mélanger un tableau
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
+}
+function showGameOver(isVictory) {
+  // QR Code
+  const qrDiv = document.getElementById("qrcode");
+  const qrMess = document.getElementById("qrcode-mess");
+  if (qrDiv) qrDiv.innerHTML = "";
+
+  if (currentPlaylistId && typeof QRCode !== "undefined") {
+    if (qrMess) qrMess.style.display = "block";
+    new QRCode(qrDiv, {
+      text: `https://open.spotify.com/playlist/${currentPlaylistId}`,
+      width: 128,
+      height: 128,
+    });
+  } else {
+    if (qrMess) qrMess.style.display = "none";
+  }
+
+  modal.classList.remove("hidden"); // On affiche la modale
+
+  // Mise à jour du score
+  modalScore.textContent = `Score final : ${score}`;
+
+  if (isVictory) {
+    modalTitle.textContent = "🎉 Victoire !";
+    modalMessage.textContent = "Incroyable ! Tu as placé toutes les musiques !";
+    // Petit son de victoire optionnel ici
+  } else {
+    modalTitle.textContent = "💀 Perdu !";
+    modalMessage.textContent = `C'était "${currentCard.title}" de ${currentCard.artist} (${currentCard.year})`;
+  }
+
+  btnRestart.addEventListener("click", async () => {
+    modal.classList.add("hidden"); // On cache la modale
+    messageEl.className = ""; // On enlève les couleurs d'erreur/succès
+    messageEl.textContent = "";
+
+    // On recharge les chansons (important car on les a "pop" du tableau)
+    await loadSongs();
+    startGame();
+  });
+
+  btnNewPlaylist.addEventListener("click", () => {
+    window.location.reload();
+  });
 }
