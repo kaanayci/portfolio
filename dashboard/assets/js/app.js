@@ -36,7 +36,7 @@ const pages = {
     mountain: `
       <h2>Météo des Montagnes / Ski 🎿</h2>
       <p>Conditions actuelles dans les stations les plus populaires.</p>
-      <div id="mountain-container" class="mountain-grid"></div>
+      <div id="mountain-container"></div>
     `,
     map: `
       <h2>Carte Météo Interactive</h2>
