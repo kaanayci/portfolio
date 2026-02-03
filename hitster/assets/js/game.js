@@ -24,6 +24,7 @@ const modal = document.getElementById("game-over-modal");
 const modalTitle = document.getElementById("modal-title");
 const modalMessage = document.getElementById("modal-message");
 const modalScore = document.getElementById("modal-score");
+const modalDifficultySelect = document.getElementById("modal-difficulty");
 const btnRestart = document.getElementById("btn-restart");
 const btnNewPlaylist = document.getElementById("btn-new-playlist");
 
@@ -311,6 +312,11 @@ function showGameOver(isVictory) {
 
   modal.classList.remove("hidden"); // On affiche la modale
 
+  // Synchro selecteur modale avec difficulté actuelle
+  if (modalDifficultySelect) {
+    modalDifficultySelect.value = difficulty;
+  }
+
   // Mise à jour du score
   modalScore.textContent = `Score final : ${score}`;
 
@@ -324,6 +330,11 @@ function showGameOver(isVictory) {
   }
 
   btnRestart.addEventListener("click", async () => {
+    // Appliquer la difficulté choisie dans la modale
+    if (modalDifficultySelect && difficultySelect) {
+      difficultySelect.value = modalDifficultySelect.value;
+    }
+    
     modal.classList.add("hidden"); // On cache la modale
     messageEl.className = ""; // On enlève les couleurs d'erreur/succès
     messageEl.textContent = "";
@@ -331,7 +342,7 @@ function showGameOver(isVictory) {
     // On recharge les chansons (important car on les a "pop" du tableau)
     await loadSongs();
     startGame();
-  });
+  }, { once: true });
 
   btnNewPlaylist.addEventListener("click", () => {
     window.location.reload();
