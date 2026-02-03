@@ -270,13 +270,16 @@ function renderWeather(data) {
     const desc = data.weather[0].description;
     const icon = data.weather[0].icon;
     const humidity = data.main.humidity;
-    const wind = Math.round(data.wind.speed * 3.6); // m/s to km/h
+    const windSpeed = Math.round(data.wind.speed * 3.6);
+    const windDeg = data.wind.deg; // Direction du vent
+    const pressure = data.main.pressure;
+    const visibility = (data.visibility / 1000).toFixed(1); // mètres -> km
 
     // Horaires Soleil
     const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
     const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
 
-    // Recommandation Vestimentaire (Simple logic)
+    // Recommandation Vestimentaire
     let advice = "Profitez de votre journée !";
     const mainCond = data.weather[0].main.toLowerCase();
     
@@ -304,7 +307,7 @@ function renderWeather(data) {
         <div class="weather-main">
             <div class="temp-big">
                 ${temp}°
-                <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${desc}">
+                <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${desc}" class="floating-icon">
             </div>
             <p class="feels-like">Ressenti ${feelsLike}°</p>
             
@@ -315,7 +318,18 @@ function renderWeather(data) {
                 </div>
                 <div class="detail-item">
                     <span>💨 Vent</span>
-                    <strong>${wind} km/h</strong>
+                    <div class="wind-compass">
+                        <span style="transform: rotate(${windDeg}deg); display:inline-block; font-size: 1.2rem;">➤</span>
+                        <strong>${windSpeed} km/h</strong>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span>👁️ Visibilité</span>
+                    <strong>${visibility} km</strong>
+                </div>
+                <div class="detail-item">
+                    <span>⏲️ Pression</span>
+                    <strong>${pressure} hPa</strong>
                 </div>
                 <div class="detail-item">
                     <span>🌅 Lever</span>
@@ -342,91 +356,117 @@ function renderWeather(data) {
 }
 
 function renderForecast(data) {
-    // 1. Chart Data (Next 24h -> 8 segments of 3h)
-    const chartData = data.list.slice(0, 9);
-    const labels = chartData.map(item => {
-        const date = new Date(item.dt * 1000);
-        return date.getHours() + 'h';
-    });
-    const temps = chartData.map(item => Math.round(item.main.temp));
+    // 1. Chart Data (Mixed: Line Temp + Bar Rain)
+    const chartSlice = data.list.slice(0, 9); // Next 24h approx
+    const labels = chartSlice.map(item => new Date(item.dt * 1000).getHours() + 'h');
+    const temps = chartSlice.map(item => Math.round(item.main.temp));
+    const rains = chartSlice.map(item => item.rain ? (item.rain['3h'] || 0) : 0);
 
     const ctx = document.getElementById('tempChart');
     if (ctx) {
-        if (weatherChart) {
-            weatherChart.destroy();
-        }
+        if (weatherChart) weatherChart.destroy();
         
         weatherChart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar', // Base type
             data: {
                 labels: labels,
-                datasets: [{
-                    label: 'Température (°C)',
-                    data: temps,
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                    tension: 0.4,
-                    fill: true,
-                     pointBackgroundColor: '#fff',
-                    pointBorderColor: '#3b82f6',
-                    pointRadius: 4
-                }]
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Température (°C)',
+                        data: temps,
+                        borderColor: '#fbbf24', // Jaune soleil
+                        backgroundColor: 'rgba(251, 191, 36, 0.2)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        yAxisID: 'y',
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#fbbf24',
+                        pointRadius: 4
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Pluie (mm)',
+                        data: rains,
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)', // Bleu pluie
+                        yAxisID: 'y1',
+                        barPercentage: 0.5,
+                        categoryPercentage: 1.0
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
                 plugins: {
-                    legend: { display: false },
+                    legend: { display: true, labels: { color: document.body.classList.contains('dark') ? '#cbd5e1' : '#334155' } },
                     tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                        titleColor: '#1e293b',
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#0f172a',
                         bodyColor: '#334155',
                         borderColor: '#e2e8f0',
                         borderWidth: 1,
-                        padding: 10,
-                        displayColors: false,
-                        callbacks: {
-                            label: function(context) {
-                                return context.parsed.y + ' °C';
-                            }
-                        }
+                        padding: 10
                     }
                 },
                 scales: {
-                    y: {
-                        display: false // Minimalist look
+                    x: { grid: { display: false }, ticks: { color: document.body.classList.contains('dark') ? '#cbd5e1' : '#334155' } },
+                    y: { 
+                        display: false, 
+                        position: 'left',
+                        suggestedMin: Math.min(...temps) - 5,
+                        suggestedMax: Math.max(...temps) + 5
                     },
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: document.body.classList.contains('dark') ? '#cbd5e1' : '#334155' }
+                    y1: {
+                        display: false,
+                        position: 'right',
+                        suggestedMax: 10, // Scale rain bars reasonably
+                        grid: { display: false }
                     }
                 }
             }
         });
     }
 
-    // 2. Daily Forecast List (5 jours)
-    // On extrait une entrée par jour (ex: à midi)
-    const dailyData = data.list.filter(item => item.dt_txt.includes("12:00:00"));
+    // 2. Daily Forecast (Processing Min/Max)
+    // Group by Day
+    const dailyGroups = {};
+    data.list.forEach(item => {
+        const day = new Date(item.dt * 1000).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' });
+        if (!dailyGroups[day]) {
+            dailyGroups[day] = { temps: [], icons: [], descs: [] };
+        }
+        dailyGroups[day].temps.push(item.main.temp);
+        // Prefer midday icon/desc if available, else take first
+        if (item.dt_txt.includes("12:00:00") || dailyGroups[day].icons.length === 0) {
+            dailyGroups[day].icon = item.weather[0].icon;
+            dailyGroups[day].desc = item.weather[0].description;
+        }
+    });
+
+    const days = Object.keys(dailyGroups).slice(0, 5); // Take 5 days
     
-    let html = '<h3>📅 Prévisions 5 Jours</h3><div class="forecast-grid">';
+    let html = '<h3>📅 Prévisions 5 Jours (Min / Max)</h3><div class="forecast-grid">';
     
-    dailyData.forEach(day => {
-        const date = new Date(day.dt * 1000);
-        const dayName = date.toLocaleDateString('fr-FR', { weekday: 'short' });
-        const dayNumber = date.getDate();
-        const temp = Math.round(day.main.temp);
-        const icon = day.weather[0].icon;
-        const desc = day.weather[0].description;
+    days.forEach(dayName => {
+        const dayData = dailyGroups[dayName];
+        const minTemp = Math.round(Math.min(...dayData.temps));
+        const maxTemp = Math.round(Math.max(...dayData.temps));
+        const icon = dayData.icon;
         
         html += `
             <div class="forecast-card animate-pop">
-                <div class="fc-day">${dayName} ${dayNumber}</div>
-                <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${desc}" class="fc-icon">
-                <div class="fc-temp">${temp}°</div>
-                <div class="fc-desc">${desc}</div>
+                <div class="fc-day">${dayName}</div>
+                <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="icon" class="fc-icon">
+                <div class="fc-temp-range">
+                    <span class="max">${maxTemp}°</span>
+                    <span class="min">${minTemp}°</span>
+                </div>
+                <div class="fc-desc">${dayData.desc}</div>
             </div>
         `;
     });
