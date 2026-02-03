@@ -19,7 +19,7 @@ onMounted(() => {
       <div class="container mx-auto flex justify-between items-center">
         <!-- Logo -->
         <RouterLink to="/" class="flex items-center space-x-2 group">
-          <span class="text-2xl pt-1">🍔</span>
+          <img src="@/assets/logo.svg" alt="Logo" class="h-10 w-10 object-contain" />
           <span class="text-xl font-bold text-secondary group-hover:text-white transition">Coin Régal</span>
         </RouterLink>
 
