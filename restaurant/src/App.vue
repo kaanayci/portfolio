@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { useMenuStore } from '@/stores/menu'
 import { useCartStore } from '@/stores/cart'
+import InstallPrompt from '@/components/common/InstallPrompt.vue'
 
 const menuStore = useMenuStore()
 const cartStore = useCartStore()
@@ -61,5 +62,7 @@ onMounted(() => {
     <footer class="bg-dark text-white p-4 text-center mt-auto">
       <p>&copy; 2026 Coin Régal. Tous droits réservés.</p>
     </footer>
+
+    <InstallPrompt />
   </div>
 </template>
