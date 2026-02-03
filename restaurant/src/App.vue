@@ -1,4 +1,12 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useMenuStore } from '@/stores/menu'
+
+const menuStore = useMenuStore()
+
+onMounted(() => {
+  menuStore.fetchMenu()
+})
 </script>
 
 <template>
