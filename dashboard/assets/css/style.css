@@ -724,3 +724,151 @@ body.dark .city-card, body.dark .mountain-card {
 body.dark .city-temp, body.dark .mt-temp { color: #f1f5f9; }
 body.dark .mt-desc { color: #94a3b8; }
 
+
+/* --- Enhanced Weather Details --- */
+.feels-like {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.weather-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.detail-item {
+    background: #f1f5f9;
+    padding: 0.75rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    color: #475569;
+    text-align: center;
+}
+
+.detail-item strong {
+    font-size: 1.1rem;
+    color: #1e293b;
+    margin-top: 0.25rem;
+}
+
+.clothing-tip {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 1rem;
+    color: #1e40af;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Dark Mode Adjustments - Enhanced */
+body.dark .feels-like { color: #94a3b8; }
+body.dark .detail-item { background: #334155; color: #cbd5e1; }
+body.dark .detail-item strong { color: #f1f5f9; }
+body.dark .clothing-tip { background: #1e3a8a; border-color: #60a5fa; color: #bfdbfe; }
+
+
+/* --- Map --- */
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 12px;
+    z-index: 1;
+    margin-top: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Comparison --- */
+.comparison-inputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.comparison-inputs input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.comparison-inputs button {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.compare-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.compare-card h3 {
+    margin-top: 0;
+    color: #1e293b;
+    font-size: 1.5rem;
+}
+
+.compare-temp {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #3b82f6;
+    margin: 1rem 0;
+}
+
+.compare-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.95rem;
+}
+
+.compare-stat:last-child {
+    border-bottom: none;
+}
+
+.winner {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+/* Dark Mode Compare */
+body.dark .compare-card {
+    background: #1e293b;
+    color: #f1f5f9;
+}
+body.dark .compare-card h3 { color: #f1f5f9; }
+body.dark .compare-stat { border-color: #334155; }
+
