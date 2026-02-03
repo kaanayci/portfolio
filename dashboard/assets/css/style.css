@@ -565,3 +565,72 @@ body.dark .topic-last-activity strong { color: #e2e8f0; }
 body.dark .topic-stats { border-color: #334155; }
 
 /* --- End Forum Layout --- */
+
+/* --- Forecast Section --- */
+.forecast-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+.forecast-item {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1rem;
+    min-width: 100px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.forecast-day {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #334155;
+}
+
+.forecast-temp {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0.5rem 0;
+}
+
+/* --- Dynamic Backgrounds --- */
+body {
+    transition: background 1s ease;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+body.bg-clear {
+    background: linear-gradient(135deg, #60a5fa, #3b82f6); /* Blue Sky */
+}
+
+body.bg-clouds {
+    background: linear-gradient(135deg, #94a3b8, #cbd5e1); /* Greyish */
+}
+
+body.bg-rain {
+    background: linear-gradient(135deg, #334155, #475569); /* Dark Blue Grey */
+}
+
+body.bg-snow {
+    background: linear-gradient(135deg, #e2e8f0, #f8fafc); /* Very light grey */
+}
+
+body.bg-default {
+    background-color: #f1f5f9;
+}
+
+/* Dark mode adjustments for Forecast */
+body.dark .forecast-item {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(255,255,255,0.1);
+}
+
+body.dark .forecast-day { color: #cbd5e1; }
+
