@@ -135,26 +135,63 @@ $(document).ready(function () {
 const WEATHER_API_KEY = "8bf9317dd25811ccc3ea56a0309ffc5a";
 
 function fetchWeather(query) {
-  let url = "";
+  let urlCurrent = "";
+  let urlForecast = "";
+  
   if (typeof query === "object" && query.lat) {
-      url = `https://api.openweathermap.org/data/2.5/weather?lat=${query.lat}&lon=${query.lon}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
+      urlCurrent = `https://api.openweathermap.org/data/2.5/weather?lat=${query.lat}&lon=${query.lon}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
+      urlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${query.lat}&lon=${query.lon}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
   } else {
-      url = `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
+      urlCurrent = `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
+      urlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&lang=fr&appid=${WEATHER_API_KEY}`;
   }
 
   $("#weather-result").html("<div class='loading'>⏳ Chargement...</div>");
 
-  $.getJSON(url)
+  // 1. Current Weather
+  $.getJSON(urlCurrent)
     .done(function (data) {
       renderWeather(data);
+      updateBackground(data.weather[0].main); // Clear, Rain, Clouds, Snow
+      
       if (typeof query === "string") {
           localStorage.setItem("lastCity", query);
           addToHistory(query);
       }
+
+      // 2. Forecast (only if current succeeded)
+      $.getJSON(urlForecast).done(function(forecastData) {
+          renderForecast(forecastData);
+      });
     })
     .fail(function () {
       $("#weather-result").html("<div class='error'>❌ Ville introuvable.</div>");
     });
+}
+
+function updateBackground(condition) {
+    $('body').removeClass('bg-clear bg-clouds bg-rain bg-snow bg-default');
+    
+    switch(condition.toLowerCase()) {
+        case 'clear':
+            $('body').addClass('bg-clear');
+            break;
+        case 'clouds':
+        case 'mist':
+        case 'fog':
+            $('body').addClass('bg-clouds');
+            break;
+        case 'rain':
+        case 'drizzle':
+        case 'thunderstorm':
+            $('body').addClass('bg-rain');
+            break;
+        case 'snow':
+            $('body').addClass('bg-snow');
+            break;
+        default:
+            $('body').addClass('bg-default');
+    }
 }
 
 function renderWeather(data) {
@@ -166,7 +203,6 @@ function renderWeather(data) {
     const humidity = data.main.humidity;
     const wind = Math.round(data.wind.speed * 3.6);
 
-    // Simplifié et élégant
     $("#weather-result").html(`
       <div class="weather-card animate-pop">
         <div class="weather-header">
@@ -186,7 +222,32 @@ function renderWeather(data) {
             </div>
         </div>
       </div>
+      <div id="forecast-container" class="forecast-container"></div>
     `);
+}
+
+function renderForecast(data) {
+    // Filter to get one forecast per day (around 12:00)
+    const dailyData = data.list.filter(item => item.dt_txt.includes("12:00:00"));
+    
+    let html = '';
+    
+    dailyData.forEach(day => {
+        const date = new Date(day.dt * 1000);
+        const dayName = date.toLocaleDateString('fr-FR', { weekday: 'short' });
+        const temp = Math.round(day.main.temp);
+        const icon = day.weather[0].icon;
+        
+        html += `
+            <div class="forecast-item">
+                <div class="forecast-day">${dayName}</div>
+                <img src="https://openweathermap.org/img/wn/${icon}.png" alt="icon">
+                <div class="forecast-temp">${temp}°</div>
+            </div>
+        `;
+    });
+    
+    $('#forecast-container').html(html);
 }
 
 // --- Historique ---
