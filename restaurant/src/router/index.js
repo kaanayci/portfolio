@@ -25,6 +25,11 @@ const router = createRouter({
       path: '/checkout',
       name: 'checkout',
       component: () => import('../views/CheckoutView.vue') // Lazy load
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue')
     }
   ]
 })
