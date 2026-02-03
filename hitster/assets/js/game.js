@@ -4,17 +4,22 @@ let timeline = [];
 let currentCard = null;
 let score = 0;
 let currentPlaylistId = localStorage.getItem("hitster_playlist_id");
+let difficulty = "normal";
+let lives = 3;
 
 // Éléments DOM
 const scoreEl = document.getElementById("score");
+const livesEl = document.getElementById("lives");
 const timelineEl = document.getElementById("timeline");
 const titleEl = document.getElementById("song-title");
 const artistEl = document.getElementById("song-artist");
 const audioEl = document.getElementById("audio");
 const messageEl = document.getElementById("message");
+const hintEl = document.getElementById("card-hint");
 const currentCardEl = document.getElementById("current-card");
 const startBtn = document.getElementById("start-game");
 const playlistInput = document.getElementById("playlist-url");
+const difficultySelect = document.getElementById("difficulty-select");
 const modal = document.getElementById("game-over-modal");
 const modalTitle = document.getElementById("modal-title");
 const modalMessage = document.getElementById("modal-message");
@@ -89,6 +94,22 @@ startBtn.addEventListener("click", async () => {
 function startGame() {
   if (songs.length === 0) return;
 
+  // Initialisation Difficulté
+  if (difficultySelect) {
+    difficulty = difficultySelect.value;
+  }
+
+  if (difficulty === "hard") {
+    lives = 1;
+    if (livesEl) livesEl.style.display = "none";
+  } else {
+    lives = 3;
+    if (livesEl) {
+      livesEl.textContent = "❤️❤️❤️";
+      livesEl.style.display = "block";
+    }
+  }
+
   timeline = [];
   timeline.push(songs.pop());
 
@@ -110,6 +131,17 @@ function nextCard() {
   }
 
   currentCard = songs.pop();
+
+  // Reset hint
+  if (hintEl) hintEl.textContent = "";
+
+  // Afficher l'indice si mode facile
+  if (difficulty === "easy" && hintEl) {
+    const wordCount = currentCard.title ? currentCard.title.split(" ").length : 0;
+    // On peut aussi afficher la décennie pour aider encore plus
+    // const decade = Math.floor(currentCard.year / 10) * 10;
+    hintEl.textContent = `💡 ${wordCount} mot(s) dans le titre`;
+  }
 
   // Setup draggable
   if (currentCardEl) {
@@ -160,16 +192,38 @@ function checkPlacement(position) {
     timeline.splice(position, 0, currentCard);
     score++;
     scoreEl.textContent = "Score : " + score;
+    
+    // Reset draggable after success (optional since nextCard resets it)
+    if (currentCardEl) currentCardEl.setAttribute("draggable", "false");
 
     messageEl.textContent = "✅ Bien placé !";
-  if (currentCardEl) currentCardEl.setAttribute("draggable", "false");
-
     messageEl.className = "success";
 
     renderTimeline();
     nextCard();
   } else {
-    endGame();
+    // Gestion des Vies
+    if (difficulty === "hard") {
+      endGame();
+    } else {
+      lives--;
+      if (livesEl) livesEl.textContent = "❤️".repeat(lives);
+
+      if (lives > 0) {
+        messageEl.textContent = `❌ Raté ! C'était en ${currentCard.year}. Il reste ${lives} vies.`;
+        messageEl.className = "error";
+        
+        // Pause audio et attente
+        audioEl.pause();
+
+        // On passe à la suivante après un court délai
+        setTimeout(() => {
+            nextCard(); 
+        }, 2000);
+      } else {
+        endGame();
+      }
+    }
   }
 }
 
