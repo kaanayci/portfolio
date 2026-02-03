@@ -12,6 +12,7 @@ const titleEl = document.getElementById("song-title");
 const artistEl = document.getElementById("song-artist");
 const audioEl = document.getElementById("audio");
 const messageEl = document.getElementById("message");
+const currentCardEl = document.getElementById("current-card");
 const startBtn = document.getElementById("start-game");
 const playlistInput = document.getElementById("playlist-url");
 const modal = document.getElementById("game-over-modal");
@@ -103,11 +104,25 @@ function nextCard() {
   if (songs.length === 0) {
     // VICTOIRE : Plus de cartes à piocher
     audioEl.pause();
+    if (currentCardEl) currentCardEl.setAttribute("draggable", "false");
     showGameOver(true); // <--- On appelle la modale en mode victoire
     return;
   }
 
   currentCard = songs.pop();
+
+  // Setup draggable
+  if (currentCardEl) {
+    currentCardEl.setAttribute("draggable", "true");
+    currentCardEl.ondragstart = (e) => {
+      e.dataTransfer.setData("text/plain", "card");
+      e.dataTransfer.effectAllowed = "move";
+      currentCardEl.classList.add("dragging");
+    };
+    currentCardEl.ondragend = () => {
+      currentCardEl.classList.remove("dragging");
+    };
+  }
 
   messageEl.textContent = "❓ Place la carte dans la timeline";
 
@@ -147,6 +162,8 @@ function checkPlacement(position) {
     scoreEl.textContent = "Score : " + score;
 
     messageEl.textContent = "✅ Bien placé !";
+  if (currentCardEl) currentCardEl.setAttribute("draggable", "false");
+
     messageEl.className = "success";
 
     renderTimeline();
@@ -196,6 +213,24 @@ function addDropZone(position) {
   zone.className = "drop-zone";
   zone.textContent = "+";
   zone.onclick = () => checkPlacement(position);
+
+  // Drag listeners
+  zone.ondragover = (e) => {
+    e.preventDefault(); // Necessary to allow dropping
+    zone.classList.add("drag-over");
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  zone.ondragleave = () => {
+    zone.classList.remove("drag-over");
+  };
+
+  zone.ondrop = (e) => {
+    e.preventDefault();
+    zone.classList.remove("drag-over");
+    checkPlacement(position);
+  };
+
   timelineEl.appendChild(zone);
 }
 
