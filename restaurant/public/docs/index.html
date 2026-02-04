@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant - Documentation Technique</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; background: #f3f4f6; color: #1f2937; margin:0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; display: grid; grid-template-columns: 300px 1fr; gap: 2rem; }
+        .sidebar { background: white; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); height: fit-content; }
+        .sidebar h2 { margin-top: 0; font-size: 1.25rem; color: #ea580c; }
+        .nav-btn { display: block; width: 100%; text-align: left; padding: 0.75rem; border: 1px solid #e5e7eb; background: none; margin-bottom: 0.5rem; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; }
+        .nav-btn:hover { background: #fff7ed; border-color: #ea580c; }
+        .nav-btn.active { background: #ea580c; color: white; border-color: #ea580c; }
+        .content { background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-height: 80vh; }
+        a.back-btn { display: inline-flex; align-items: center; text-decoration: none; color: #4b5563; margin-bottom: 1rem; font-weight: 500; }
+        a.back-btn:hover { color: #ea580c; }
+        /* Markdown Styles */
+        h1, h2, h3 { color: #111827; }
+        code { background: #f3f4f6; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875em; color: #ea580c; }
+        pre { background: #1f2937; color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+        pre code { background: transparent; color: inherit; padding: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <a href="/" class="back-btn">← Retour à l'App</a>
+            <h2>Documentation</h2>
+            <nav id="nav-list"></nav>
+        </aside>
+        <main class="content" id="viewer">
+            <div style="text-align:center; color:#6b7280; margin-top:20vh;">
+                Sélectionnez un document à gauche
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const docs = [
+            { title: "Architecture Composants", file: "architecture-composants.md" },
+            { title: "Gestion État (Pinia)", file: "gestion-etat-pinia.md" },
+            { title: "Algorithme Fidélité", file: "fidelite-algorithme.md" },
+            { title: "Génération QR Code", file: "generation-qr-code.md" },
+            { title: "Impression Thermique", file: "impression-thermique.md" },
+            { title: "Mode Hors-Ligne (PWA)", file: "pwa-offline.md" }
+        ];
+
+        const nav = document.getElementById('nav-list');
+        const viewer = document.getElementById('viewer');
+
+        // Init Layout
+        docs.forEach(doc => {
+            const btn = document.createElement('button');
+            btn.className = 'nav-btn';
+            btn.textContent = doc.title;
+            btn.onclick = () => loadDoc(doc.file, btn);
+            nav.appendChild(btn);
+        });
+
+        async function loadDoc(file, btn) {
+            // Update Active State
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+
+            try {
+                viewer.innerHTML = '<p>Chargement...</p>';
+                const res = await fetch(file);
+                if(!res.ok) throw new Error('Document introuvable');
+                const text = await res.text();
+                viewer.innerHTML = marked.parse(text);
+            } catch (err) {
+                viewer.innerHTML = `<div style="color:red; padding:1rem; border:1px solid red; border-radius:0.5rem;">Erreur: ${err.message}</div>`;
+            }
+        }
+        
+        // Auto-load first
+        if(docs.length) loadDoc(docs[0].file, nav.firstChild);
+    </script>
+</body>
+</html>
