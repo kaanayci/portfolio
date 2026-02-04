@@ -31,6 +31,9 @@ onMounted(() => {
         <nav class="hidden md:flex items-center space-x-6">
           <RouterLink to="/" class="hover:text-secondary font-medium transition">Accueil</RouterLink>
           <RouterLink to="/menu" class="hover:text-secondary font-medium transition">Menu</RouterLink>
+          <a href="/docs/index.html" class="hover:text-secondary font-medium transition flex items-center gap-1 opacity-80" target="_blank">
+             <span>📚 Tech</span>
+          </a>
           
           <!-- Cart Icon -->
           <RouterLink to="/panier" class="relative group">
