@@ -51,6 +51,7 @@ export const WEATHER_API_KEY = "8bf9317dd25811ccc3ea56b...";
 - **Installable** : Fonctionne comme une application native sur Mobile et Desktop.
 - **Offline First** : L'interface reste accessible sans connexion internet (Service Worker).
 - **Notifications** : Support des notifications push pour les alertes.
+- **Mise à jour (Cache)** : Le Service Worker met en cache les fichiers pour la performance. Si vous modifiez le code, le changement n'apparaîtra qu'après une mise à jour du numéro de version dans `sw.js` (ex: `v1` -> `v2`) ou un "Hard Refresh" (Ctrl+F5) pour forcer le nettoyage du cache.
 
 ### 6. ⚙️ Personnalisation
 - **Thèmes** : Mode Clair / Mode Sombre (Dark Mode).
