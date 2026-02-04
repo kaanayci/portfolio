@@ -51,6 +51,55 @@ $(document).ready(function () {
                      $('#btn-pwa-install').show();
                 }
                 break;
+            case "docs":
+                loadDashboardDocs();
+                break;
+        }
+    }
+
+    function loadDashboardDocs() {
+        const docs = [
+            { title: "Service Worker (PWA)", path: "fiches-techniques/pwa-service-worker.md" },
+            { title: "Architecture SPA", path: "fiches-techniques/architecture.md" },
+            { title: "Intégration Leaflet", path: "fiches-techniques/interactivite-carte.md" },
+            { title: "API Météo & Clés", path: "fiches-techniques/api-externe.md" },
+            { title: "Persistance Données", path: "fiches-techniques/persistance-donnee.md" },
+            { title: "Manipulation DOM (Refactor)", path: "fiches-techniques/manipulation-DOM.md" }
+        ];
+
+        const list = $('#docs-list');
+        if(list.children().length === 0) {
+            docs.forEach(doc => {
+                const btn = $(`<button class="doc-btn" style="
+                    display:block; 
+                    width:100%; 
+                    text-align:left; 
+                    padding:10px; 
+                    margin-bottom:5px; 
+                    border:1px solid #ddd; 
+                    background:#f8fafc;
+                    cursor:pointer;
+                    border-radius:4px;
+                ">${doc.title}</button>`);
+                
+                btn.on('click', async () => {
+                    try {
+                        const response = await fetch(doc.path);
+                        if(!response.ok) throw new Error("Fiche introuvable");
+                        const text = await response.text();
+                        $('#markdown-viewer').html(marked.parse(text));
+                        // Highlight active
+                        $('.doc-btn').css('background', '#f8fafc').css('font-weight', 'normal');
+                        btn.css('background', '#e0f2fe').css('font-weight', 'bold');
+                    } catch(e) {
+                         $('#markdown-viewer').html(`<p style="color:red">Erreur : ${e.message}</p>`);
+                    }
+                });
+                
+                list.append(btn);
+            });
+            // Click first one
+            $('.doc-btn').first().click();
         }
     }
 
