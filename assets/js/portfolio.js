@@ -1,12 +1,8 @@
-// Liste des fiches techniques
+// Liste des documents transversaux (Analyses & Veille)
 const documents = [
-  { title: "Service Worker & PWA", category: "Dashboard", path: "dashboard/fiches-techniques/pwa-service-worker.md" },
-  { title: "Intégration Leaflet", category: "Dashboard", path: "dashboard/fiches-techniques/interactivite-carte.md" },
-  { title: "Architecture API Audio", category: "Hitster", path: "hitster/fiches-techniques/controle-audio.md" },
-  { title: "Boucle de Jeu (Game Loop)", category: "Hitster", path: "hitster/fiches-techniques/boucle-de-jeu.md" },
-  { title: "Architecture Vue 3 / Pinia", category: "Restaurant", path: "restaurant/fiches-techniques/gestion-etat-pinia.md" },
-  { title: "Impression Thermique & QR", category: "Restaurant", path: "restaurant/fiches-techniques/impression-thermique.md" },
-  { title: "Algorithme de Fidélité", category: "Restaurant", path: "restaurant/fiches-techniques/fidelite-algorithme.md" }
+  { title: "Analyse UX/Tech : CFF.ch", category: "Analyse", path: "analyses/site-cff.md" },
+  { title: "Analyse UX/Tech : Qoqa.ch", category: "Analyse", path: "analyses/site-qoqa.md" },
+  { title: "Veille Technologique 2026", category: "Veille", path: "analyses/veille-technologique.md" }
 ];
 
 // Rendu de la liste
@@ -32,18 +28,23 @@ async function loadMarkdown(path) {
     if (!response.ok) throw new Error("Fichier introuvable");
     const text = await response.text();
     
-    // Conversion simple MD -> HTML (Pour éviter une lib lourde, on fait du basic regex ou on injecte texte brut)
-    // Pour l'évaluation, afficher le texte proprement formatted est suffisant ou utiliser une lib légère comme marked via CDN
-    // Ici on va utiliser marked.js via CDN dans le HTML
-    
+    // Utilisation de marked.js (chargé via CDN dans index.html)
     document.getElementById('markdown-content').innerHTML = marked.parse(text);
     document.getElementById('doc-modal').classList.add('active');
-  } catch (e) {
-    alert("Erreur de chargement de la fiche : " + e.message);
+  } catch (error) {
+    console.error(error);
+    alert("Erreur lors du chargement du document.");
   }
 }
 
-// Fermeture modal
-document.querySelector('.close-btn').onclick = () => {
+// Fermeture de la modale
+document.querySelector('.close-modal').onclick = () => {
   document.getElementById('doc-modal').classList.remove('active');
 };
+
+// Fermeture avec Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('doc-modal').classList.remove('active');
+  }
+});
