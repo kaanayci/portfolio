@@ -10,6 +10,10 @@ const menuStore = useMenuStore()
 const cartStore = useCartStore()
 const userStore = useUserStore()
 
+// Detect correct path logic for Portfolio back button
+const isDist = window.location.pathname.includes('/dist/');
+const portfolioUrl = isDist ? '../../index.html' : '../index.html';
+
 onMounted(() => {
   menuStore.fetchMenu()
 })
@@ -31,8 +35,13 @@ onMounted(() => {
         <nav class="hidden md:flex items-center space-x-6">
           <RouterLink to="/" class="hover:text-secondary font-medium transition">Accueil</RouterLink>
           <RouterLink to="/menu" class="hover:text-secondary font-medium transition">Menu</RouterLink>
+          
+          <!-- Liens Externes -->
           <a href="/docs/index.html" class="hover:text-secondary font-medium transition flex items-center gap-1 opacity-80" target="_blank">
              <span>📚 Tech</span>
+          </a>
+          <a :href="portfolioUrl" class="hover:text-secondary font-medium transition flex items-center gap-1 opacity-80 border-l border-white/20 pl-4">
+             <span>⬅ Portfolio</span>
           </a>
           
           <!-- Cart Icon -->
