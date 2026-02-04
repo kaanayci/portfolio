@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitster - Documentation Technique</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .docs-container { max-width: 1200px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+        .sidebar { background: rgba(0,0,0,0.8); padding: 20px; border-radius: 10px; height: fit-content; }
+        .sidebar button { display: block; width: 100%; padding: 10px; margin-bottom: 5px; background: rgba(255,255,255,0.1); color: white; border: none; cursor: pointer; text-align: left; }
+        .sidebar button:hover, .sidebar button.active { background: #eab308; color: black; }
+        .content { background: white; padding: 40px; border-radius: 10px; color: #333; line-height: 1.6; }
+        .content img { max-width: 100%; }
+        .content pre { background: #f1f5f9; padding: 15px; overflow-x: auto; border-radius: 5px; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #eab308; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div style="padding:20px;">
+        <a href="index.html" class="back-link">← Retour au Jeu</a>
+        <div class="docs-container">
+            <div class="sidebar">
+                <h3>Fiches Techniques</h3>
+                <div id="file-list"></div>
+            </div>
+            <div class="content" id="markdown-viewer">
+                Sélectionnez une fiche technique pour l'afficher.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const files = [
+            { title: "Boucle de Jeu (Game Loop)", file: "boucle-de-jeu.md" },
+            { title: "Contrôle Audio API", file: "controle-audio.md" },
+            { title: "Zones Cliquables (Droppable)", file: "interaction-zone-cliquable.md" },
+            { title: "Base de Données JSON", file: "JSON-BDD.md" },
+            { title: "Logique Temporelle", file: "placement-chronologique.md" },
+            { title: "Algorithme de Randomisation", file: "randomisation.md" }
+        ];
+
+        const list = document.getElementById('file-list');
+        files.forEach(f => {
+            const btn = document.createElement('button');
+            btn.textContent = f.title;
+            btn.onclick = () => loadDoc(f.file, btn);
+            list.appendChild(btn);
+        });
+
+        async function loadDoc(filename, activeBtn) {
+            try {
+                // Reset buttons
+                document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
+                if(activeBtn) activeBtn.classList.add('active');
+
+                const response = await fetch('fiches-techniques/' + filename);
+                if(!response.ok) throw new Error("Fichier non trouvé");
+                const text = await response.text();
+                document.getElementById('markdown-viewer').innerHTML = marked.parse(text);
+            } catch (e) {
+                document.getElementById('markdown-viewer').innerHTML = `<p style="color:red">Erreur: ${e.message}</p>`;
+            }
+        }
+        
+        // Load first by default
+        if(files.length > 0) loadDoc(files[0].file, list.firstChild);
+    </script>
+</body>
+</html>
