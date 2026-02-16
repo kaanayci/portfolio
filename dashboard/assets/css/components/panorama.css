@@ -1,4 +1,51 @@
 /* Panorama & Mountain Grids */
+
+/* Nearby Section */
+.nearby-section {
+    display: none;
+    margin-bottom: 2.5rem;
+}
+
+.nearby-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.nearby-header h3 {
+    margin: 0;
+}
+
+.badge-new {
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.section-title {
+    margin-bottom: 1rem;
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 2rem;
+}
+
+body.dark .section-divider {
+    border-color: #334155;
+}
+
+body.dark .badge-new {
+    background: #1e3a5f;
+    color: #93c5fd;
+}
+
 .panorama-grid, .mountain-grid {
     display: grid;
     /* 
