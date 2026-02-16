@@ -79,3 +79,27 @@ body.dark .fav-btn-view { background: #172554; color: #60a5fa; }
 .fav-btn-remove { background: #fef2f2; color: #ef4444; }
 .fav-btn-remove:hover { background: #fee2e2; }
 body.dark .fav-btn-remove { background: #450a0a; color: #f87171; }
+
+/* =========================================
+   Favorites Responsive
+========================================= */
+@media (max-width: 768px) {
+  .favorites-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .fav-card {
+    padding: 1rem;
+  }
+
+  .fav-temp {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .fav-footer {
+    flex-direction: column;
+  }
+}
