@@ -20,6 +20,7 @@
   <body>
     <!-- Header -->
     <header class="header">
+      <button id="burger-toggle" class="burger-toggle" aria-label="Ouvrir le menu">☰</button>
       <h1 id="channel-title">Météo</h1>
       <button id="theme-toggle" aria-label="Changer de thème">🌙</button>
     </header>
@@ -27,7 +28,8 @@
     <!-- Main layout -->
     <div class="layout">
       <!-- Sidebar navigation -->
-      <nav class="sidebar" aria-label="Navigation des salons">
+      <div id="sidebar-overlay" class="sidebar-overlay"></div>
+      <nav class="sidebar" id="sidebar" aria-label="Navigation des salons">
         <ul>
           <li onclick="window.location.href='../index.html'" style="background: #cbd5e1; font-weight: bold; color: #0f172a; margin-bottom: 10px; border: 1px solid #94a3b8;">⬅ Portfolio</li>
           <li data-channel="home" class="active">🏠 Panorama</li>
@@ -165,14 +167,14 @@
         </section>
         <!-- View: Docs -->
         <section id="view-docs" class="view-section hidden">
-            <div class="docs-container" style="padding: 20px; max-width: 1200px; margin: 0 auto; display:flex; gap:20px;">
+            <div class="docs-container">
                 <!-- List -->
-                <div class="docs-sidebar" style="flex:1; max-width: 300px; border-right: 1px solid #ccc; padding-right: 20px;">
+                <div class="docs-sidebar">
                   <h3 style="margin-bottom:1rem;">Fiches Techniques</h3>
                   <div id="docs-list"></div>
                 </div>
                 <!-- Content -->
-                <div class="docs-content" style="flex:3; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
+                <div class="docs-content">
                   <div id="markdown-viewer">Select a document to read...</div>
                 </div>
             </div>
