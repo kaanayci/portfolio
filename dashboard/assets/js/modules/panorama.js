@@ -9,7 +9,7 @@ function loadPanorama() {
             const icon = data.weather[0].icon;
             
             const card = `
-                <div class="city-card animate-pop" onclick="localStorage.setItem('lastCity', '${city}'); $('.sidebar li[data-channel=meteo]').click();">
+                <div class="city-card animate-pop" onclick="localStorage.setItem('lastCity', '${city}'); localStorage.setItem('forceWeather','1'); $('.sidebar li[data-channel=meteo]').click();">
                     <h3>${city}</h3>
                     <div class="city-temp">
                         ${temp}° 
