@@ -107,6 +107,22 @@ $(document).ready(function () {
         const channel = $(this).data("channel");
         $("#channel-title").text($(this).text().substring(2));
         switchChannel(channel);
+
+        // Close mobile sidebar on navigation
+        $('#sidebar').removeClass('open');
+        $('#sidebar-overlay').removeClass('active');
+    });
+
+    // Burger menu toggle
+    $('#burger-toggle').on('click', function () {
+        $('#sidebar').toggleClass('open');
+        $('#sidebar-overlay').toggleClass('active');
+    });
+
+    // Close sidebar when clicking overlay
+    $('#sidebar-overlay').on('click', function () {
+        $('#sidebar').removeClass('open');
+        $(this).removeClass('active');
     });
 
     // 2. Search Event (Delegated because why not, though DOM is static now so direct ID works too)
