@@ -25,15 +25,17 @@ $(document).ready(function () {
                 loadMountains();
                 break;
             case "meteo":
-                // Restore search context or focus
                 const lastCity = localStorage.getItem("lastCity");
                 const lastCityName = localStorage.getItem("lastCityName");
+                const forceLoad = localStorage.getItem("forceWeather");
                 updateUnitUI();
-                // If the user already searched, the DOM is still there, no need to refetch unless empty
-                // We check if result is empty ("Recherchez une ville...")
-                if (lastCity && $("#weather-result p").text().includes("Recherchez")) {
-                   $("#weather-input").val(lastCityName || lastCity);
-                   fetchWeather(lastCity, lastCityName);
+                if (lastCity) {
+                    const currentCity = $("#weather-result").attr("data-city") || "";
+                    if (forceLoad || currentCity !== lastCity) {
+                        localStorage.removeItem("forceWeather");
+                        $("#weather-input").val(lastCityName || lastCity);
+                        fetchWeather(lastCity, lastCityName);
+                    }
                 }
                 break;
             case "favorites":
