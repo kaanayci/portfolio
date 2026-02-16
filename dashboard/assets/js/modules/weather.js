@@ -1,5 +1,3 @@
-import { WEATHER_API_KEY } from './config.js';
-
 // Helper to get Moon Phase Icon and Name
 function getMoonPhase(date) {
     let year = date.getFullYear();
