@@ -138,10 +138,32 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
 /* =========================================
    Panorama & Mountain Responsive
 ========================================= */
-@media (max-width: 768px) {
+
+/* --- Tablet (≤ 1024px) --- */
+@media (max-width: 1024px) {
   .panorama-grid, .mountain-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  #nearby-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* --- Mobile (≤ 768px) --- */
+@media (max-width: 768px) {
+  .panorama-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .mountain-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 0.75rem;
+  }
+
+  #nearby-grid {
+    grid-template-columns: 1fr;
   }
 
   .city-card, .mountain-card {
@@ -156,8 +178,129 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
     width: 32px;
   }
 
+  /* Mountain cards */
+  .mt-card {
+    border-radius: 12px;
+  }
+
   .mt-card-header {
-    height: 120px;
+    height: 140px;
+  }
+
+  .mt-badges {
+    flex-wrap: wrap;
+    gap: 4px;
+    max-width: calc(100% - 20px);
+  }
+
+  .mt-badge-region,
+  .mt-badge-snow,
+  .mt-badge-open,
+  .mt-badge-closed,
+  .mt-badge-dist {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+
+  .mt-temp-overlay {
+    font-size: 0.9rem;
+    padding: 3px 8px;
+  }
+
+  .mt-temp-overlay img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mt-card-body {
+    padding: 0.75rem;
+  }
+
+  .mt-card-body h3 {
+    font-size: 1.05rem;
+  }
+
+  .mt-desc {
+    font-size: 0.8rem;
+    margin: 0.25rem 0 0.75rem 0;
+  }
+
+  .mt-details {
+    gap: 0.5rem;
+  }
+
+  .mt-detail {
+    font-size: 0.8rem;
+  }
+
+  .mt-label {
+    font-size: 0.65rem;
+  }
+
+  /* Filters: scrollable horizontally */
+  .mountain-filters-container {
+    margin-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mountain-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .filter-btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.75rem;
+    flex-shrink: 0;
+  }
+
+  /* Section titles from JS */
+  #mountain-container h3 {
+    font-size: 1.05rem;
+  }
+
+  #nearby-section {
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+/* --- Small Mobile (≤ 480px) --- */
+@media (max-width: 480px) {
+  .panorama-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+  }
+
+  .city-card {
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+
+  .city-card h3 {
+    font-size: 0.85rem;
+  }
+
+  .city-temp {
+    font-size: 1rem;
+  }
+
+  .city-temp img {
+    width: 28px;
+  }
+
+  /* Mountain cards: full width on very small screens */
+  .mountain-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  #nearby-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mt-card-header {
+    height: 130px;
   }
 
   .mt-card-body h3 {
@@ -165,25 +308,12 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
   }
 
   .mt-details {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .mountain-filters {
     flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    justify-content: space-around;
   }
 
   .filter-btn {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .panorama-grid, .mountain-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.35rem 0.6rem;
   }
 }
