@@ -304,3 +304,86 @@ body.dark .unit-toggle-container { background: #334155; }
     transition: transform 0.3s;
 }
 .unit-toggle-container[data-unit="imperial"] .toggle-pill { transform: translateX(100%); }
+
+/* =========================================
+   Weather Responsive
+========================================= */
+@media (max-width: 768px) {
+  .weather__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .weather__form {
+    width: 100%;
+  }
+
+  .weather__form input {
+    min-width: 0;
+  }
+
+  .unit-toggle-container {
+    margin-left: 0;
+    align-self: flex-start;
+  }
+
+  .weather-card {
+    max-width: 100%;
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .weather-header h3 {
+    font-size: 1.4rem;
+  }
+
+  .temp-big {
+    font-size: 2.5rem;
+  }
+
+  .weather-details-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .chart-container {
+    height: 220px;
+    padding: 0.75rem;
+  }
+
+  .forecast-grid {
+    gap: 0.4rem !important;
+  }
+
+  .forecast-card {
+    min-width: 65px !important;
+    padding: 0.75rem 0.25rem;
+  }
+
+  .fc-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .fc-day {
+    font-size: 0.7rem;
+  }
+
+  .fc-temp-range {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .weather-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .temp-big {
+    font-size: 2rem;
+  }
+
+  .weather-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
