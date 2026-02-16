@@ -144,3 +144,56 @@ body.dark .compare-stat { border-color: #334155; }
 .compare-stat:last-child { border-bottom: none; }
 
 .winner { color: #22c55e; font-weight: bold; }
+
+/* =========================================
+   Map & Compare Responsive
+========================================= */
+@media (max-width: 768px) {
+  #map {
+    height: 350px;
+  }
+
+  .comparison-inputs {
+    flex-direction: column;
+  }
+
+  .comparison-inputs input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .comparison-inputs button {
+    padding: 0.75rem;
+    width: 100%;
+  }
+
+  .comparison-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .compare-temp {
+    font-size: 2.5rem;
+  }
+
+  .compare-details {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .compare-table {
+    min-width: 400px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #map {
+    height: 280px;
+    border-radius: 8px;
+  }
+
+  .comparison-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
