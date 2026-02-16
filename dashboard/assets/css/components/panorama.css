@@ -205,7 +205,7 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
   }
 
   .mountain-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: 1fr;
     gap: 0.75rem;
   }
 
@@ -228,10 +228,12 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
   /* Mountain cards */
   .mt-card {
     border-radius: 12px;
+    max-width: 100%;
+    overflow: hidden;
   }
 
   .mt-card-header {
-    height: 140px;
+    height: 160px;
   }
 
   .mt-badges {
@@ -264,24 +266,35 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
   }
 
   .mt-card-body h3 {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .mt-desc {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     margin: 0.25rem 0 0.75rem 0;
   }
 
   .mt-details {
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+    text-align: center;
   }
 
   .mt-detail {
     font-size: 0.8rem;
+    min-width: 0;
   }
 
   .mt-label {
     font-size: 0.65rem;
+  }
+
+  .mt-val {
+    font-size: 0.85rem;
   }
 
   /* Filters: scrollable horizontally */
@@ -310,6 +323,17 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
   #nearby-section {
     margin-bottom: 1.5rem !important;
   }
+
+  /* Prevent paragraph text overflow */
+  .content p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .view-section {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
 }
 
 /* --- Small Mobile (≤ 480px) --- */
@@ -336,7 +360,7 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
     width: 28px;
   }
 
-  /* Mountain cards: full width on very small screens */
+  /* Mountain cards: still full width */
   .mountain-grid {
     grid-template-columns: 1fr;
     gap: 0.75rem;
@@ -347,7 +371,7 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
   }
 
   .mt-card-header {
-    height: 130px;
+    height: 140px;
   }
 
   .mt-card-body h3 {
@@ -355,8 +379,8 @@ body.dark .filter-btn:hover, body.dark .filter-btn.active { background: #3b82f6;
   }
 
   .mt-details {
-    flex-wrap: nowrap;
-    justify-content: space-around;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.2rem;
   }
 
   .filter-btn {
