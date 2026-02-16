@@ -76,16 +76,16 @@ function loadMountains() {
             </div>
         </div>
 
-        <div id="nearby-section" style="display:none; margin-bottom: 2.5rem;">
-            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
-                <h3 style="margin:0;">📍 Stations à proximité (< 50km)</h3>
-                <span style="background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:10px; font-size:0.8rem; font-weight:bold;">Nouveau</span>
+        <div id="nearby-section" class="nearby-section">
+            <div class="nearby-header">
+                <h3>📍 Stations à proximité (< 50km)</h3>
+                <span class="badge-new">Nouveau</span>
             </div>
             <div id="nearby-grid" class="mountain-grid"></div>
-            <hr style="border:0; border-top:1px solid #e2e8f0; margin-top:2rem;">
+            <hr class="section-divider">
         </div>
 
-        <h3 id="all-title" style="margin-bottom:1rem;">⛷️ Top Stations Suisses</h3>
+        <h3 id="all-title" class="section-title">⛷️ Top Stations Suisses</h3>
         <div id="mountain-grid" class="mountain-grid">
             <div class="loader-spinner"></div>
         </div>
