@@ -33,8 +33,9 @@ $(document).ready(function () {
                     const currentCity = $("#weather-result").attr("data-city") || "";
                     if (forceLoad || currentCity !== lastCity) {
                         localStorage.removeItem("forceWeather");
-                        $("#weather-input").val(lastCityName || lastCity);
-                        fetchWeather(lastCity, lastCityName);
+                        const nameToUse = forceLoad ? null : lastCityName;
+                        $("#weather-input").val(nameToUse || lastCity);
+                        fetchWeather(lastCity, nameToUse);
                     }
                 }
                 break;
