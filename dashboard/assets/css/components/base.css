@@ -73,18 +73,113 @@
     font-size: 0.875rem;
   }
   
-  /* Responsive */
+  /* =========================================
+     Burger Toggle (hidden on desktop)
+  ========================================= */
+  .burger-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .sidebar-overlay {
+    display: none;
+  }
+
+  /* =========================================
+     Responsive – Tablet (≤ 1024px)
+  ========================================= */
+  @media (max-width: 1024px) {
+    .layout {
+      grid-template-columns: 200px 1fr;
+    }
+
+    .sidebar li {
+      font-size: 0.85rem;
+      padding: 0.6rem 0.75rem;
+    }
+  }
+
+  /* =========================================
+     Responsive – Mobile (≤ 768px)
+  ========================================= */
   @media (max-width: 768px) {
+    .burger-toggle {
+      display: block;
+    }
+
     .layout {
       grid-template-columns: 1fr;
     }
-  
+
+    /* Sidebar: hidden off-screen, slides in */
     .sidebar {
-      order: 2;
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 260px;
+      height: 100vh;
+      z-index: 1000;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+      padding-top: 1rem;
     }
-  
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    /* Dark overlay behind sidebar */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .sidebar-overlay.active {
+      display: block;
+    }
+
+    .header h1 {
+      font-size: 1.15rem;
+    }
+
     .content {
-      order: 1;
+      padding: 1rem;
+    }
+
+    .content h2 {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* =========================================
+     Responsive – Small Mobile (≤ 480px)
+  ========================================= */
+  @media (max-width: 480px) {
+    .header {
+      padding: 0.75rem 1rem;
+    }
+
+    .header h1 {
+      font-size: 1rem;
+    }
+
+    .content {
+      padding: 0.75rem;
+    }
+
+    .content h2 {
+      font-size: 1.1rem;
     }
   }
 
