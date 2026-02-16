@@ -56,6 +56,9 @@ function fetchWeather(query, displayName = null) {
         renderWeather(data, displayName);
         updateBackground(data.weather[0].main); // Clear, Rain, Clouds, Snow
         
+        // Marquer la ville actuellement affichée pour éviter les rechargements inutiles
+        $("#weather-result").attr("data-city", typeof query === "string" ? query : (data.name || ""));
+
         if (typeof query === "string") {
             // Only update lastCity if it's a string query (not coords)
             localStorage.setItem("lastCity", query);
