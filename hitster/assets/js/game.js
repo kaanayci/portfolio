@@ -1,6 +1,7 @@
 import { shuffle } from './modules/utils.js';
 import { AudioPlayer } from './modules/audio.js';
 import { initBackgroundEffects, triggerConfetti, triggerHeartLoss, triggerDamageEffect } from './modules/effects.js';
+import { initWaveform } from './modules/waveform.js';
 import { UIElements, renderLives, renderTimeline, updateScoreUI, updateProgress, flashTimeline, showGameOverModal } from './modules/ui.js';
 
 // --- State ---
@@ -17,6 +18,9 @@ let songsPlayed = 0;
 
 // --- Init Player ---
 const player = new AudioPlayer(UIElements.audioEl, UIElements);
+
+// --- Init Waveform (desktop only) ---
+initWaveform(UIElements.audioEl);
 
 // --- Init Effects ---
 initBackgroundEffects();
