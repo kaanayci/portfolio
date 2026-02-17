@@ -7,8 +7,45 @@
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/animations.css" />
     <link rel="stylesheet" href="assets/css/loader.css" />
+    <link rel="stylesheet" href="assets/css/splash.css" />
   </head>
   <body>
+    <!-- Splash / Loading Screen -->
+    <div id="splash-screen">
+      <div class="splash-center">
+        <!-- Carré central qui s'ouvre -->
+        <div class="splash-box">
+          <div class="box-side side-top"></div>
+          <div class="box-side side-right"></div>
+          <div class="box-side side-bottom"></div>
+          <div class="box-side side-left"></div>
+        </div>
+        <!-- Notes de musique qui sortent du centre -->
+        <div class="splash-notes">
+          <span class="splash-note n1 small c1">♪</span>
+          <span class="splash-note n2 big c2">♫</span>
+          <span class="splash-note n3 c1">♩</span>
+          <span class="splash-note n4 small c3">♬</span>
+          <span class="splash-note n5 c2">♪</span>
+          <span class="splash-note n6 big c1">♫</span>
+          <span class="splash-note n7 c3">♩</span>
+          <span class="splash-note n8 small c2">♬</span>
+          <span class="splash-note n9 small c1">♪</span>
+          <span class="splash-note n10 c3">♫</span>
+          <span class="splash-note n11 small c2">♩</span>
+          <span class="splash-note n12 big c1">♬</span>
+          <span class="splash-note n13 c3">♪</span>
+          <span class="splash-note n14 small c1">♫</span>
+          <span class="splash-note n15 c2">♩</span>
+          <span class="splash-note n16 small c3">♬</span>
+        </div>
+      </div>
+      <div class="splash-title">
+        <h1>Hitster</h1>
+        <p>Chargement…</p>
+      </div>
+    </div>
+
     <div id="bg-effects"></div>
     <main>
       <section class="top-layout">
@@ -100,6 +137,22 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script type="module" src="assets/js/game.js"></script>
-    
+
+    <script>
+      // Dismiss splash screen after page fully loaded (min 2.5s display)
+      (function() {
+        var splash = document.getElementById('splash-screen');
+        var start = Date.now();
+        window.addEventListener('load', function() {
+          var elapsed = Date.now() - start;
+          var remaining = Math.max(0, 2500 - elapsed);
+          setTimeout(function() {
+            splash.classList.add('hidden');
+            // Remove from DOM after transition
+            setTimeout(function() { splash.remove(); }, 700);
+          }, remaining);
+        });
+      })();
+    </script>
   </body>
 </html>
