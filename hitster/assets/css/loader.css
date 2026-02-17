@@ -8,7 +8,7 @@
   border-radius: 50%;
   border-top-color: #3ec5ff;
   animation: spin 1s ease-in-out infinite;
-  margin-left: 10rem; 
+  margin-left: 0; 
   display: none; /* Caché par défaut */
 }
 
