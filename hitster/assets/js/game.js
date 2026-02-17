@@ -42,12 +42,25 @@ initThemePicker();
 if (UIElements.startBtn) UIElements.startBtn.addEventListener("click", handleStartClick);
 if (UIElements.btnNewPlaylist) UIElements.btnNewPlaylist.addEventListener("click", () => window.location.reload());
 
+function setControlsEnabled(enabled) {
+  const el = document.getElementById("playlist-select");
+  if (!el) return;
+  el.querySelectorAll("input, select, button").forEach(c => c.disabled = !enabled);
+  el.style.opacity = enabled ? "1" : "0.4";
+  if (UIElements.startBtn) UIElements.startBtn.textContent = enabled ? "Démarrer la partie" : "⏳ Partie en cours…";
+}
+
 setupDragAndDrop(UIElements.currentCardEl, dragInstruction);
 setupKeyboard(player, moveFocusedDropZone, placeAtFocusedZone, () => gameActive);
 
 async function loadSongs() {
-  const res = await fetch(`assets/data/songs.json?v=${Date.now()}`);
-  songs = shuffle(await res.json());
+  try {
+    const res = await fetch(`assets/data/songs.json?v=${Date.now()}`);
+    songs = shuffle(await res.json());
+  } catch (e) {
+    console.warn("Impossible de charger songs.json", e);
+    songs = [];
+  }
 }
 
 loadSongs();
@@ -108,7 +121,7 @@ async function handleStartClick() {
 
 function startGame(selectedDifficulty) {
   if (!songs.length) return;
-  document.getElementById("playlist-select")?.style.setProperty("display", "none");
+  setControlsEnabled(false);
   shortcutsHint?.classList.add("visible");
 
   difficulty = selectedDifficulty;
@@ -148,6 +161,7 @@ function nextCard() {
     UIElements.currentCardEl?.setAttribute("draggable", "false");
     hideCoverArt();
     gameActive = false;
+    setControlsEnabled(true);
     showGameOver(true);
     return;
   }
@@ -271,6 +285,7 @@ function endGame() {
   shortcutsHint?.classList.remove("visible");
   document.body.classList.remove("is-dragging");
   document.querySelectorAll(".drop-zone").forEach(z => z.classList.add("disabled"));
+  setControlsEnabled(true);
   clearGameState();
   showGameOver(false);
 }
@@ -301,55 +316,64 @@ function persist() {
 // Restauration d'une partie sauvegardée au chargement
 (function tryRestore() {
   const s = tryRestoreState();
-  if (!s) return;
-
-  songs = s.songs || [];
-  timeline = s.timeline || [];
-  currentCard = s.currentCard;
-  score = s.score || 0;
-  highScore = s.highScore || highScore;
-  difficulty = s.difficulty || "normal";
-  lives = s.lives || 3;
-  totalSongs = s.totalSongs || 0;
-  songsPlayed = s.songsPlayed || 0;
-  streak = s.streak || 0;
-  bestStreak = s.bestStreak || 0;
-  correctPlacements = s.correctPlacements || 0;
-  totalAttempts = s.totalAttempts || 0;
-  totalCardTime = s.totalCardTime || 0;
-  currentPlaylistId = s.currentPlaylistId || null;
-  gameActive = true;
-
-  document.getElementById("playlist-select")?.style.setProperty("display", "none");
-  shortcutsHint?.classList.add("visible");
-
-  updateScoreUI(score, highScore);
-  updateStreakUI(streak);
-  updateProgress(songsPlayed, totalSongs);
-
-  if (difficulty === "hard") {
-    if (UIElements.livesEl) UIElements.livesEl.style.display = "none";
-  } else if (UIElements.livesEl) {
-    UIElements.livesEl.style.display = "block";
-    renderLives(lives);
+  if (!s || !s.currentCard || !s.timeline?.length) {
+    clearGameState();
+    return;
   }
 
-  renderTimeline(timeline, (pos) => checkPlacement(pos));
-  gameArea?.classList.add("active");
-  UIElements.timelineEl.classList.add("active");
+  try {
+    songs = s.songs || [];
+    timeline = s.timeline || [];
+    currentCard = s.currentCard;
+    score = s.score || 0;
+    highScore = s.highScore || highScore;
+    difficulty = s.difficulty || "normal";
+    lives = s.lives || 3;
+    totalSongs = s.totalSongs || 0;
+    songsPlayed = s.songsPlayed || 0;
+    streak = s.streak || 0;
+    bestStreak = s.bestStreak || 0;
+    correctPlacements = s.correctPlacements || 0;
+    totalAttempts = s.totalAttempts || 0;
+    totalCardTime = s.totalCardTime || 0;
+    currentPlaylistId = s.currentPlaylistId || null;
+    gameActive = true;
 
-  cardStartTime = Date.now();
-  hideCoverArt();
-  UIElements.currentCardEl?.setAttribute("draggable", "true");
-  dragInstruction?.classList.add("visible");
-  UIElements.messageEl.textContent = "🔄 Partie restaurée ! Place la carte dans la timeline";
+    setControlsEnabled(false);
+    shortcutsHint?.classList.add("visible");
 
-  if (difficulty === "easy") startProgressiveHints(currentCard);
-  if (typeof currentCard.audio === "string" && currentCard.audio.startsWith("http")) {
-    player.load(currentCard.audio);
-    player.play().catch(() => {});
-  }
-  if (difficulty === "chrono") {
-    startTimer(CHRONO_SECONDS, () => { flashTimeline("error"); playErrorSound(); handleIncorrect(); });
+    updateScoreUI(score, highScore);
+    updateStreakUI(streak);
+    updateProgress(songsPlayed, totalSongs);
+
+    if (difficulty === "hard") {
+      if (UIElements.livesEl) UIElements.livesEl.style.display = "none";
+    } else if (UIElements.livesEl) {
+      UIElements.livesEl.style.display = "block";
+      renderLives(lives);
+    }
+
+    renderTimeline(timeline, (pos) => checkPlacement(pos));
+    gameArea?.classList.add("active");
+    UIElements.timelineEl.classList.add("active");
+
+    cardStartTime = Date.now();
+    hideCoverArt();
+    UIElements.currentCardEl?.setAttribute("draggable", "true");
+    dragInstruction?.classList.add("visible");
+    UIElements.messageEl.textContent = "🔄 Partie restaurée ! Place la carte dans la timeline";
+
+    if (difficulty === "easy") startProgressiveHints(currentCard);
+    if (typeof currentCard.audio === "string" && currentCard.audio.startsWith("http")) {
+      player.load(currentCard.audio);
+      player.play().catch(() => {});
+    }
+    if (difficulty === "chrono") {
+      startTimer(CHRONO_SECONDS, () => { flashTimeline("error"); playErrorSound(); handleIncorrect(); });
+    }
+  } catch (e) {
+    console.warn("Restauration échouée, reset", e);
+    clearGameState();
+    window.location.reload();
   }
 })();
