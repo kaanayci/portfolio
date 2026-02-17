@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hitster – Timeline Musicale</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/animations.css" />
     <link rel="stylesheet" href="assets/css/loader.css" />
@@ -13,14 +16,12 @@
     <!-- Splash / Loading Screen -->
     <div id="splash-screen">
       <div class="splash-center">
-        <!-- Carré central qui s'ouvre -->
         <div class="splash-box">
           <div class="box-side side-top"></div>
           <div class="box-side side-right"></div>
           <div class="box-side side-bottom"></div>
           <div class="box-side side-left"></div>
         </div>
-        <!-- Notes de musique qui sortent du centre -->
         <div class="splash-notes">
           <span class="splash-note n1 small c1">♪</span>
           <span class="splash-note n2 big c2">♫</span>
@@ -50,7 +51,7 @@
     <main>
       <section class="top-layout">
         <header>
-          <a href="../index.html" style="position:absolute; top:20px; left:20px; color:white; text-decoration:none; font-weight:bold; background:rgba(255,255,255,0.2); padding:5px 10px; border-radius:5px; border:1px solid rgba(255,255,255,0.5);">⬅ Portfolio</a>
+          <a href="../index.html" class="back-link">⬅ Portfolio</a>
           <h1>Hitster – Timeline Musicale</h1>
           <p>Place la musique au bon endroit dans le temps</p>
         </header>
@@ -71,20 +72,28 @@
             <button id="start-game">Démarrer la partie</button>
           </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-               <p id="score" style="margin: 0;">Score : 0</p>
-               <p id="high-score" style="margin: 0; font-size: 0.9rem; color: #adb5bd;">Record : 0</p>
+          <div class="game-area" id="game-area">
+            <div class="game-status">
+            <div class="score-group">
+               <p id="score">Score : 0</p>
+               <p id="high-score" class="high-score">Record : 0</p>
             </div>
-            <p id="lives" style="font-size: 1.2rem; display: none;">❤️❤️❤️</p>
+            <div id="progress-tracker" class="progress-tracker hidden">
+              <span id="song-counter">0 / 0</span>
+              <div class="progress-track">
+                <div class="progress-fill" id="song-progress"></div>
+              </div>
+            </div>
+            <p id="lives" class="lives-display">❤️❤️❤️</p>
           </div>
 
           <section id="current-card">
             <p class="hint">
               🎧 Écoute la musique et place la carte dans la timeline
             </p>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <p id="card-hint" style="color: #3ec5ff; font-weight: bold; min-height: 1.5rem; margin: 0;"></p>
+            <p class="drag-instruction" id="drag-instruction">👆 Glisse ou clique sur un <strong>+</strong> dans la timeline</p>
+            <div class="hint-row">
+                <p id="card-hint" class="card-hint"></p>
                 <div id="audio-loading" class="audio-loader"></div>
             </div>
             <div id="custom-audio-player" class="player-container">
@@ -96,6 +105,7 @@
             </div>
             <audio id="audio"></audio>
           </section>
+          </div><!-- /.game-area -->
         </section>
       </section>
 
@@ -108,14 +118,16 @@
           <p id="modal-message">Bravo !</p>
           <p class="final-score" id="modal-score">Score final : 0</p>
 
-          <div id="styles-qrcode" style="margin: 1rem 0; display: flex; flex-direction: column; align-items: center;">
-             <p id="qrcode-mess" style="margin-bottom: 0.5rem; font-size: 0.9rem; color: #adb5bd;">Ajouter sur Spotify :</p>
+          <div id="timeline-recap" class="timeline-recap"></div>
+
+          <div class="qrcode-section">
+             <p id="qrcode-mess" class="qrcode-label">Ajouter sur Spotify :</p>
              <div id="qrcode"></div>
           </div>
 
-          <div style="margin-bottom: 1rem;">
-            <label for="modal-difficulty" style="display:block; margin-bottom: 0.5rem; color: #adb5bd;">Difficulté prochaine partie :</label>
-            <select id="modal-difficulty" style="padding: 0.5rem; border-radius: 6px; border:none; width: 100%; max-width: 250px;">
+          <div class="modal-difficulty">
+            <label for="modal-difficulty-select">Difficulté prochaine partie :</label>
+            <select id="modal-difficulty">
               <option value="easy">Facile (3 vies + indices)</option>
               <option value="normal" selected>Normal (3 vies)</option>
               <option value="hard">Difficile (Mort subite)</option>
@@ -129,8 +141,15 @@
         </div>
       </div>
       
-      <div style="text-align: center; margin-top: 1rem; opacity: 0.7;">
-          <a href="docs.html" style="color:white; text-decoration: underline; font-size: 0.9rem;">📚 Fiches Techniques</a>
+      <div class="docs-link">
+          <a href="docs.html">📚 Fiches Techniques</a>
+      </div>
+
+      <!-- Game start countdown overlay -->
+      <div id="countdown-overlay" class="countdown-overlay hidden">
+        <div class="countdown-content">
+          <span id="countdown-number" class="countdown-number"></span>
+        </div>
       </div>
     </main>
 
@@ -139,7 +158,6 @@
     <script type="module" src="assets/js/game.js"></script>
 
     <script>
-      // Dismiss splash screen after page fully loaded (min 2.5s display)
       (function() {
         var splash = document.getElementById('splash-screen');
         var start = Date.now();
@@ -148,7 +166,6 @@
           var remaining = Math.max(0, 2500 - elapsed);
           setTimeout(function() {
             splash.classList.add('hidden');
-            // Remove from DOM after transition
             setTimeout(function() { splash.remove(); }, 700);
           }, remaining);
         });
