@@ -804,6 +804,37 @@ select:focus {
   user-select: none;
 }
 
+/* ===== AUDIO WAVEFORM – SMOOTH CENTRAL WAVE ===== */
+.waveform-canvas {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 120px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.waveform-canvas.visible {
+  opacity: 1;
+}
+
+.waveform-left {
+  left: 0;
+}
+
+.waveform-right {
+  right: 0;
+}
+
+/* Hide on small screens */
+@media (max-width: 1024px) {
+  .waveform-canvas {
+    display: none;
+  }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   #timeline {
