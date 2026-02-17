@@ -1,0 +1,40 @@
+@media (max-width: 1024px) {
+  .waveform-canvas { display: none; }
+}
+
+@media (max-width: 768px) {
+  .shortcuts-hint { display: none; }
+  .volume-control { display: none; }
+
+  /* Timeline horizontal scroll avec snap */
+  #timeline {
+    flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    padding: 1rem 0.5rem; gap: 0.4rem;
+    scrollbar-width: thin; scrollbar-color: rgba(0,212,255,0.3) transparent;
+  }
+  #timeline::-webkit-scrollbar { height: 4px; }
+  #timeline::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 2px; }
+  #timeline .timeline-card { scroll-snap-align: center; min-width: 120px; }
+  #timeline .drop-zone { scroll-snap-align: center; }
+}
+
+@media (max-width: 600px) {
+  .top-layout { grid-template-columns: 1fr; }
+  main { padding: 1rem; }
+
+  #playlist-select { flex-direction: column; align-items: stretch; }
+  #playlist-select input,
+  #playlist-select select,
+  #playlist-select button { width: 100%; box-sizing: border-box; }
+
+  .game-status { flex-direction: column; text-align: center; gap: 0.5rem; }
+  .progress-tracker { max-width: 100%; }
+
+  .modal-content { padding: 1.5rem; }
+  .modal-stats { gap: 0.8rem; }
+  .stat-value { font-size: 1.1rem; }
+
+  .drop-zone { width: 44px; height: 44px; font-size: 1.5rem; }
+  button { min-height: 44px; }
+}
