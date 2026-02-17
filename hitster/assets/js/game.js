@@ -1,8 +1,13 @@
 import { shuffle } from './modules/utils.js';
 import { AudioPlayer } from './modules/audio.js';
-import { initBackgroundEffects, triggerConfetti, triggerHeartLoss, triggerDamageEffect } from './modules/effects.js';
+import { initBackgroundEffects, triggerConfetti, triggerStreakConfetti, triggerHeartLoss, triggerDamageEffect, playSuccessSound, playErrorSound, playComboSound } from './modules/effects.js';
 import { initWaveform } from './modules/waveform.js';
-import { UIElements, renderLives, renderTimeline, updateScoreUI, updateProgress, flashTimeline, showGameOverModal } from './modules/ui.js';
+import {
+  UIElements, renderLives, renderTimeline, updateScoreUI, updateProgress,
+  flashTimeline, showGameOverModal, updateStreakUI, showCoverArt, hideCoverArt,
+  highlightCorrectPosition, startTimer, stopTimer, startProgressiveHints,
+  clearProgressiveHints, moveFocusedDropZone, placeAtFocusedZone, initThemePicker
+} from './modules/ui.js';
 
 // --- State ---
 let songs = [];
@@ -16,14 +21,41 @@ let lives = 3;
 let totalSongs = 0;
 let songsPlayed = 0;
 
+// Streak / Combo
+let streak = 0;
+let bestStreak = 0;
+
+// Stats
+let correctPlacements = 0;
+let totalAttempts = 0;
+let cardStartTime = 0;
+let totalCardTime = 0;
+
+// Game state flag
+let gameActive = false;
+
+// Chrono mode
+const CHRONO_SECONDS = 15;
+
 // --- Init Player ---
 const player = new AudioPlayer(UIElements.audioEl, UIElements);
+
+// Audio error handler: skip to next card
+player.onError(() => {
+  if (!gameActive) return;
+  UIElements.messageEl.textContent = "⚠️ Audio indisponible, passage au morceau suivant…";
+  UIElements.messageEl.className = "error";
+  setTimeout(() => nextCard(), 1500);
+});
 
 // --- Init Waveform (desktop only) ---
 initWaveform(UIElements.audioEl);
 
 // --- Init Effects ---
 initBackgroundEffects();
+
+// --- Init Theme Picker ---
+initThemePicker();
 
 // --- Event Listeners ---
 if (UIElements.startBtn) {
@@ -64,7 +96,6 @@ if (UIElements.currentCardEl) {
         if (!touchActive) return;
         e.preventDefault();
         const touch = e.touches[0];
-        // Highlight the drop zone under the finger
         const el = document.elementFromPoint(touch.clientX, touch.clientY);
         document.querySelectorAll(".drop-zone.touch-hover").forEach(z => z.classList.remove("touch-hover"));
         if (el && el.classList.contains("drop-zone")) {
@@ -77,15 +108,43 @@ if (UIElements.currentCardEl) {
         touchActive = false;
         UIElements.currentCardEl.classList.remove("dragging");
         document.body.classList.remove("is-dragging");
-        // Find which drop zone we ended on
         const touch = e.changedTouches[0];
         const el = document.elementFromPoint(touch.clientX, touch.clientY);
         document.querySelectorAll(".drop-zone.touch-hover").forEach(z => z.classList.remove("touch-hover"));
         if (el && el.classList.contains("drop-zone")) {
-            el.click(); // Trigger the placement
+            el.click();
         }
     });
 }
+
+// --- Keyboard Shortcuts ---
+document.addEventListener("keydown", (e) => {
+  if (!gameActive) return;
+  // Ignore if typing in input
+  if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+  
+  switch (e.code) {
+    case "Space":
+      e.preventDefault();
+      player.togglePlay();
+      break;
+    case "ArrowLeft":
+      e.preventDefault();
+      moveFocusedDropZone(-1);
+      break;
+    case "ArrowRight":
+      e.preventDefault();
+      moveFocusedDropZone(1);
+      break;
+    case "Enter":
+      e.preventDefault();
+      placeAtFocusedZone();
+      break;
+  }
+});
+
+// Show shortcuts hint during game
+const shortcutsHint = document.getElementById("shortcuts-hint");
 
 // --- Logic ---
 
@@ -170,7 +229,6 @@ function showCountdown() {
   return new Promise((resolve) => {
     if (!countdownOverlay || !countdownNumber) { resolve(); return; }
 
-    // Hide game area during countdown
     if (gameArea) gameArea.classList.remove("active");
     UIElements.timelineEl.classList.remove("active");
 
@@ -180,14 +238,12 @@ function showCountdown() {
 
     function showNext() {
       if (i >= steps.length) {
-        // Fade out overlay
         countdownOverlay.style.opacity = "0";
         countdownOverlay.style.transition = "opacity 0.3s ease";
         setTimeout(() => {
           countdownOverlay.classList.add("hidden");
           countdownOverlay.style.opacity = "";
           countdownOverlay.style.transition = "";
-          // Reveal game area with staggered animation
           if (gameArea) gameArea.classList.add("active");
           setTimeout(() => UIElements.timelineEl.classList.add("active"), 100);
           resolve();
@@ -195,10 +251,8 @@ function showCountdown() {
         return;
       }
       countdownNumber.textContent = steps[i];
-      // Re-trigger pop animation
       countdownNumber.style.animation = "none";
-      // eslint-disable-next-line no-unused-expressions
-      countdownNumber.offsetHeight; // force reflow
+      void countdownNumber.offsetHeight;
       countdownNumber.style.animation = "";
       i++;
       setTimeout(showNext, 650);
@@ -211,15 +265,32 @@ function showCountdown() {
 function startGame(selectedDifficulty) {
   if (songs.length === 0) return;
 
-  // Hide setup, show game
   const playlistSelect = document.getElementById("playlist-select");
   if (playlistSelect) playlistSelect.style.display = "none";
 
+  // Show keyboard shortcuts hint
+  if (shortcutsHint) shortcutsHint.classList.add("visible");
+
   difficulty = selectedDifficulty;
+  gameActive = true;
+
+  // Reset stats
+  streak = 0;
+  bestStreak = 0;
+  correctPlacements = 0;
+  totalAttempts = 0;
+  totalCardTime = 0;
+  updateStreakUI(0);
 
   if (difficulty === "hard") {
     lives = 1;
     if (UIElements.livesEl) UIElements.livesEl.style.display = "none";
+  } else if (difficulty === "chrono") {
+    lives = 3;
+    if (UIElements.livesEl) {
+      UIElements.livesEl.style.display = "block";
+      renderLives(lives);
+    }
   } else {
     lives = 3;
     if (UIElements.livesEl) {
@@ -230,7 +301,7 @@ function startGame(selectedDifficulty) {
 
   timeline = [];
   const firstCard = songs.pop();
-  if(firstCard) timeline.push(firstCard);
+  if (firstCard) timeline.push(firstCard);
 
   totalSongs = songs.length + 1;
   songsPlayed = 1;
@@ -240,33 +311,46 @@ function startGame(selectedDifficulty) {
   updateProgress(songsPlayed, totalSongs);
   renderTimeline(timeline, (pos) => checkPlacement(pos));
   
+  // Save game state
+  saveGameState();
+  
   nextCard();
 }
 
 function nextCard() {
+  stopTimer();
+  clearProgressiveHints();
+  
   if (songs.length === 0) {
     player.pause();
     if (UIElements.currentCardEl) UIElements.currentCardEl.setAttribute("draggable", "false");
+    hideCoverArt();
+    gameActive = false;
     showGameOver(true);
     return;
   }
 
   currentCard = songs.pop();
+  cardStartTime = Date.now();
 
   songsPlayed++;
   updateProgress(songsPlayed, totalSongs);
 
   if (UIElements.hintEl) UIElements.hintEl.textContent = "";
 
-  if (difficulty === "easy" && UIElements.hintEl) {
-    const wordCount = currentCard.title ? currentCard.title.split(" ").length : 0;
-    UIElements.hintEl.textContent = `💡 ${wordCount} mot(s) dans le titre`;
+  // Progressive hints in easy mode
+  if (difficulty === "easy") {
+    startProgressiveHints(currentCard);
   }
+
+  // Hide cover art while guessing – it will be revealed once placed
+  hideCoverArt();
 
   if (UIElements.currentCardEl) UIElements.currentCardEl.setAttribute("draggable", "true");
   if (dragInstruction) dragInstruction.classList.add("visible");
 
   UIElements.messageEl.textContent = "❓ Place la carte dans la timeline";
+  UIElements.messageEl.className = "";
   
   // Audio Playback
   if (typeof currentCard.audio === "string" && currentCard.audio.startsWith("http")) {
@@ -278,47 +362,126 @@ function nextCard() {
       player.reset();
       UIElements.messageEl.textContent = "⚠️ Aucun extrait audio.";
   }
+
+  // Start timer in chrono mode
+  if (difficulty === "chrono") {
+    startTimer(CHRONO_SECONDS, () => {
+      // Time expired = wrong answer
+      flashTimeline("error");
+      playErrorSound();
+      handleIncorrect();
+    });
+  }
+
+  // Save state
+  saveGameState();
 }
 
 function checkPlacement(position) {
+  if (!gameActive || !currentCard) return;
+  
   const left = timeline[position - 1];
   const right = timeline[position];
   const year = currentCard.year;
 
   const isCorrect = (!left || year >= left.year) && (!right || year <= right.year);
+  
+  totalAttempts++;
+  const cardTime = (Date.now() - cardStartTime) / 1000;
+  totalCardTime += cardTime;
 
   if (isCorrect) {
-    timeline.splice(position, 0, currentCard);
-    score++;
+    correctPlacements++;
+    streak++;
+    if (streak > bestStreak) bestStreak = streak;
+    
+    // Score with streak multiplier
+    const multiplier = Math.min(1 + Math.floor(streak / 3), 5);
+    score += multiplier;
     
     if (score > highScore) {
       highScore = score;
       localStorage.setItem("hitster_high_score", highScore);
     }
     updateScoreUI(score, highScore);
+    updateStreakUI(streak);
 
     if (UIElements.currentCardEl) UIElements.currentCardEl.setAttribute("draggable", "false");
     if (dragInstruction) dragInstruction.classList.remove("visible");
 
-    UIElements.messageEl.textContent = "✅ Bien placé !";
+    timeline.splice(position, 0, currentCard);
+
+    if (streak >= 3) {
+      UIElements.messageEl.textContent = `✅ Bien placé ! 🔥 Combo ×${multiplier}`;
+    } else {
+      UIElements.messageEl.textContent = "✅ Bien placé !";
+    }
     UIElements.messageEl.className = "success";
     
-    triggerConfetti();
+    // Effects
+    playSuccessSound();
+    if (streak >= 3) {
+      triggerStreakConfetti(streak);
+      playComboSound(streak);
+    } else {
+      triggerConfetti();
+    }
     flashTimeline("success");
+    
+    stopTimer();
+    clearProgressiveHints();
+    
+    // Reveal the cover art now that the card is placed
+    showCoverArt(currentCard.image);
+    
     renderTimeline(timeline, (pos) => checkPlacement(pos), position);
     
-    nextCard();
+    // Brief pause so the player can see the cover before next card
+    setTimeout(() => {
+      hideCoverArt();
+      nextCard();
+    }, 1200);
   } else {
-     flashTimeline("error");
-     if (dragInstruction) dragInstruction.classList.remove("visible");
-     document.body.classList.remove("is-dragging");
-     handleIncorrect();
+    streak = 0;
+    updateStreakUI(0);
+    flashTimeline("error");
+    playErrorSound();
+    if (dragInstruction) dragInstruction.classList.remove("visible");
+    document.body.classList.remove("is-dragging");
+    
+    // Show correct position
+    highlightCorrectPosition(timeline, currentCard);
+    
+    // Reveal cover art as part of the answer
+    showCoverArt(currentCard.image);
+    
+    stopTimer();
+    clearProgressiveHints();
+    
+    handleIncorrect();
   }
 }
 
 function handleIncorrect() {
     if (difficulty === "hard") {
         endGame();
+    } else if (difficulty === "chrono") {
+        lives--;
+        triggerHeartLoss(UIElements.livesEl);
+        triggerDamageEffect();
+
+        if (lives > 0) {
+            UIElements.messageEl.textContent = `❌ Raté ! C'était en ${currentCard.year}. Restant : ${lives}`;
+            UIElements.messageEl.className = "error";
+            player.fadeOut().then(() => {
+                setTimeout(() => {
+                    renderLives(lives);
+                    nextCard();
+                }, 1500);
+            });
+        } else {
+            endGame();
+        }
     } else {
         lives--;
         triggerHeartLoss(UIElements.livesEl);
@@ -327,11 +490,12 @@ function handleIncorrect() {
         if (lives > 0) {
             UIElements.messageEl.textContent = `❌ Raté ! C'était en ${currentCard.year}. Restant : ${lives}`;
             UIElements.messageEl.className = "error";
-            player.pause();
-            setTimeout(() => {
-                if (difficulty !== "hard") renderLives(lives);
-                nextCard();
-            }, 1500);
+            player.fadeOut().then(() => {
+                setTimeout(() => {
+                    if (difficulty !== "hard") renderLives(lives);
+                    nextCard();
+                }, 1500);
+            });
         } else {
             endGame();
         }
@@ -339,19 +503,159 @@ function handleIncorrect() {
 }
 
 function endGame() {
-    player.pause();
+    gameActive = false;
+    player.fadeOut();
+    stopTimer();
+    clearProgressiveHints();
+    hideCoverArt();
     if (dragInstruction) dragInstruction.classList.remove("visible");
+    if (shortcutsHint) shortcutsHint.classList.remove("visible");
     document.body.classList.remove("is-dragging");
     document.querySelectorAll(".drop-zone").forEach(z => z.classList.add("disabled"));
+    clearGameState();
     showGameOver(false);
 }
 
 function showGameOver(isVictory) {
+    const stats = {
+      accuracy: totalAttempts > 0 ? Math.round((correctPlacements / totalAttempts) * 100) : 0,
+      bestStreak: bestStreak,
+      avgTime: totalAttempts > 0 ? totalCardTime / totalAttempts : 0
+    };
+    
+    clearGameState();
+    
     showGameOverModal(isVictory, score, currentCard, currentPlaylistId, difficulty, async (newDiff) => {
-        // Restart logic
         if (UIElements.difficultySelect) UIElements.difficultySelect.value = newDiff;
         await loadSongs();
         await showCountdown();
         startGame(newDiff);
-    }, timeline);
+    }, timeline, stats);
 }
+
+/* ===== GAME STATE PERSISTENCE (localStorage) ===== */
+
+function saveGameState() {
+  const state = {
+    songs: songs,
+    timeline: timeline,
+    currentCard: currentCard,
+    score: score,
+    highScore: highScore,
+    difficulty: difficulty,
+    lives: lives,
+    totalSongs: totalSongs,
+    songsPlayed: songsPlayed,
+    streak: streak,
+    bestStreak: bestStreak,
+    correctPlacements: correctPlacements,
+    totalAttempts: totalAttempts,
+    totalCardTime: totalCardTime,
+    currentPlaylistId: currentPlaylistId,
+    gameActive: gameActive,
+    timestamp: Date.now()
+  };
+  try {
+    localStorage.setItem("hitster_game_state", JSON.stringify(state));
+  } catch (e) { /* storage full, ignore */ }
+}
+
+function clearGameState() {
+  localStorage.removeItem("hitster_game_state");
+}
+
+function tryRestoreGame() {
+  try {
+    const raw = localStorage.getItem("hitster_game_state");
+    if (!raw) return false;
+    const state = JSON.parse(raw);
+    
+    // Expire after 2 hours
+    if (Date.now() - state.timestamp > 2 * 60 * 60 * 1000) {
+      clearGameState();
+      return false;
+    }
+    
+    if (!state.gameActive || !state.currentCard) {
+      clearGameState();
+      return false;
+    }
+    
+    // Restore state
+    songs = state.songs || [];
+    timeline = state.timeline || [];
+    currentCard = state.currentCard;
+    score = state.score || 0;
+    highScore = state.highScore || highScore;
+    difficulty = state.difficulty || "normal";
+    lives = state.lives || 3;
+    totalSongs = state.totalSongs || 0;
+    songsPlayed = state.songsPlayed || 0;
+    streak = state.streak || 0;
+    bestStreak = state.bestStreak || 0;
+    correctPlacements = state.correctPlacements || 0;
+    totalAttempts = state.totalAttempts || 0;
+    totalCardTime = state.totalCardTime || 0;
+    currentPlaylistId = state.currentPlaylistId || null;
+    gameActive = true;
+    
+    // Rebuild UI
+    const playlistSelect = document.getElementById("playlist-select");
+    if (playlistSelect) playlistSelect.style.display = "none";
+    if (shortcutsHint) shortcutsHint.classList.add("visible");
+    
+    updateScoreUI(score, highScore);
+    updateStreakUI(streak);
+    updateProgress(songsPlayed, totalSongs);
+    
+    if (difficulty === "hard") {
+      if (UIElements.livesEl) UIElements.livesEl.style.display = "none";
+    } else {
+      if (UIElements.livesEl) {
+        UIElements.livesEl.style.display = "block";
+        renderLives(lives);
+      }
+    }
+    
+    renderTimeline(timeline, (pos) => checkPlacement(pos));
+    
+    // Show game area immediately
+    if (gameArea) gameArea.classList.add("active");
+    UIElements.timelineEl.classList.add("active");
+    
+    // Show current card
+    cardStartTime = Date.now();
+    hideCoverArt();
+    
+    if (UIElements.currentCardEl) UIElements.currentCardEl.setAttribute("draggable", "true");
+    if (dragInstruction) dragInstruction.classList.add("visible");
+    
+    UIElements.messageEl.textContent = "🔄 Partie restaurée ! Place la carte dans la timeline";
+    
+    if (difficulty === "easy") {
+      startProgressiveHints(currentCard);
+    }
+    
+    if (typeof currentCard.audio === "string" && currentCard.audio.startsWith("http")) {
+      player.load(currentCard.audio);
+      player.play().catch(() => {});
+    }
+    
+    if (difficulty === "chrono") {
+      startTimer(CHRONO_SECONDS, () => {
+        flashTimeline("error");
+        playErrorSound();
+        handleIncorrect();
+      });
+    }
+    
+    return true;
+  } catch (e) {
+    console.warn("Could not restore game state:", e);
+    clearGameState();
+    return false;
+  }
+}
+
+// Try to restore a saved game on load
+tryRestoreGame();
