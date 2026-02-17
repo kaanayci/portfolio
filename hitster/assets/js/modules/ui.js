@@ -29,8 +29,27 @@ export const UIElements = {
   progressContainer: document.getElementById("progress-container"),
   timeDisplay: document.getElementById("time-display"),
   audioLoader: document.getElementById("audio-loading"),
-  audioEl: document.getElementById("audio")
+  audioEl: document.getElementById("audio"),
+  // Cover art
+  cardCover: document.getElementById("card-cover"),
+  cardCoverImg: document.getElementById("card-cover-img"),
+  // Streak
+  streakDisplay: document.getElementById("streak-display"),
+  streakCount: document.getElementById("streak-count"),
+  streakMultiplier: document.getElementById("streak-multiplier"),
+  // Timer
+  timerBarContainer: document.getElementById("timer-bar-container"),
+  timerBar: document.getElementById("timer-bar"),
+  timerText: document.getElementById("timer-text"),
+  // Stats
+  statAccuracy: document.getElementById("stat-accuracy"),
+  statBestStreak: document.getElementById("stat-best-streak"),
+  statAvgTime: document.getElementById("stat-avg-time"),
+  modalStats: document.getElementById("modal-stats")
 };
+
+// Track the currently focused drop zone for keyboard nav
+let focusedDropIndex = -1;
 
 export function renderLives(count) {
   if (!UIElements.livesEl) return;
@@ -48,6 +67,40 @@ export function updateScoreUI(score, highScore) {
   if (UIElements.highScoreEl) UIElements.highScoreEl.textContent = "Record : " + highScore;
 }
 
+/** Update streak display */
+export function updateStreakUI(streak) {
+  if (!UIElements.streakDisplay) return;
+  if (streak >= 2) {
+    UIElements.streakDisplay.classList.remove("hidden");
+    UIElements.streakCount.textContent = `🔥 ${streak}`;
+    const multiplier = Math.min(1 + Math.floor(streak / 3), 5);
+    UIElements.streakMultiplier.textContent = `×${multiplier}`;
+    UIElements.streakMultiplier.className = `streak-multiplier streak-x${Math.min(multiplier, 5)}`;
+    // Pulse animation
+    UIElements.streakDisplay.classList.remove("streak-pop");
+    void UIElements.streakDisplay.offsetHeight;
+    UIElements.streakDisplay.classList.add("streak-pop");
+  } else {
+    UIElements.streakDisplay.classList.add("hidden");
+  }
+}
+
+/** Show cover art on current card */
+export function showCoverArt(imageUrl) {
+  if (!UIElements.cardCover || !UIElements.cardCoverImg) return;
+  if (imageUrl) {
+    UIElements.cardCoverImg.src = imageUrl;
+    UIElements.cardCover.classList.remove("hidden");
+  } else {
+    UIElements.cardCover.classList.add("hidden");
+  }
+}
+
+/** Hide cover art */
+export function hideCoverArt() {
+  if (UIElements.cardCover) UIElements.cardCover.classList.add("hidden");
+}
+
 /** Update the song progress tracker */
 export function updateProgress(current, total) {
   if (!UIElements.progressTracker) return;
@@ -59,8 +112,60 @@ export function updateProgress(current, total) {
   }
 }
 
+/* ===== TIMER BAR (chrono mode) ===== */
+let timerInterval = null;
+let timerRemaining = 0;
+
+export function startTimer(seconds, onExpired) {
+  stopTimer();
+  if (!UIElements.timerBarContainer) return;
+  UIElements.timerBarContainer.classList.remove("hidden");
+  timerRemaining = seconds;
+  const total = seconds;
+  updateTimerDisplay(total, total);
+  
+  timerInterval = setInterval(() => {
+    timerRemaining -= 0.1;
+    if (timerRemaining <= 0) {
+      timerRemaining = 0;
+      stopTimer();
+      onExpired();
+    }
+    updateTimerDisplay(timerRemaining, total);
+  }, 100);
+}
+
+function updateTimerDisplay(remaining, total) {
+  if (UIElements.timerBar) {
+    const pct = (remaining / total) * 100;
+    UIElements.timerBar.style.width = pct + "%";
+    // Color change: green > yellow > red
+    if (pct > 50) UIElements.timerBar.className = "timer-bar timer-green";
+    else if (pct > 25) UIElements.timerBar.className = "timer-bar timer-yellow";
+    else UIElements.timerBar.className = "timer-bar timer-red";
+  }
+  if (UIElements.timerText) {
+    UIElements.timerText.textContent = Math.ceil(remaining) + "s";
+  }
+}
+
+export function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  if (UIElements.timerBarContainer) UIElements.timerBarContainer.classList.add("hidden");
+}
+
+/* ===== TIMELINE RENDERING ===== */
+
+// Store onDropCallback for keyboard access
+let _currentDropCallback = null;
+
 export function renderTimeline(timeline, onDropCallback, newIndex = -1) {
   UIElements.timelineEl.innerHTML = "";
+  _currentDropCallback = onDropCallback;
+  focusedDropIndex = -1;
 
   addDropZone(0, onDropCallback);
 
@@ -76,7 +181,14 @@ export function renderTimeline(timeline, onDropCallback, newIndex = -1) {
       }, 900);
     }
     
+    // Build card with cover art
+    let coverHtml = "";
+    if (card.image) {
+      coverHtml = `<img class="timeline-card-cover" src="${card.image}" alt="" loading="lazy" />`;
+    }
+    
     cardDiv.innerHTML = `
+      ${coverHtml}
       <div class="year">${card.year}</div>
       <div class="title">${card.title}</div>
       <div class="artist">${card.artist}</div>
@@ -97,10 +209,28 @@ export function renderTimeline(timeline, onDropCallback, newIndex = -1) {
   }
 }
 
+/** Highlight the correct position in the timeline when wrong */
+export function highlightCorrectPosition(timeline, currentCard) {
+  const year = currentCard.year;
+  let correctPos = 0;
+  for (let i = 0; i < timeline.length; i++) {
+    if (year >= timeline[i].year) correctPos = i + 1;
+  }
+  
+  const dropZones = UIElements.timelineEl.querySelectorAll(".drop-zone");
+  if (dropZones[correctPos]) {
+    dropZones[correctPos].classList.add("correct-position-hint");
+    setTimeout(() => {
+      dropZones[correctPos].classList.remove("correct-position-hint");
+    }, 2000);
+  }
+}
+
 function addDropZone(position, onDropCallback) {
   const zone = document.createElement("div");
   zone.className = "drop-zone";
   zone.textContent = "+";
+  zone.setAttribute("data-position", position);
   zone.onclick = () => onDropCallback(position);
 
   zone.ondragover = (e) => {
@@ -129,7 +259,38 @@ export function flashTimeline(type) {
   setTimeout(() => UIElements.timelineEl.classList.remove(cls), 800);
 }
 
-export function showGameOverModal(isVictory, score, currentCard, currentPlaylistId, difficulty, onRestart, timeline = []) {
+/* ===== KEYBOARD NAVIGATION ===== */
+
+/** Move focus between drop zones */
+export function moveFocusedDropZone(direction) {
+  const zones = UIElements.timelineEl.querySelectorAll(".drop-zone");
+  if (zones.length === 0) return;
+  
+  // Clear previous highlight
+  zones.forEach(z => z.classList.remove("keyboard-focus"));
+  
+  focusedDropIndex += direction;
+  if (focusedDropIndex < 0) focusedDropIndex = zones.length - 1;
+  if (focusedDropIndex >= zones.length) focusedDropIndex = 0;
+  
+  zones[focusedDropIndex].classList.add("keyboard-focus");
+  zones[focusedDropIndex].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+}
+
+/** Trigger placement at focused drop zone */
+export function placeAtFocusedZone() {
+  if (focusedDropIndex < 0 || !_currentDropCallback) return false;
+  const zones = UIElements.timelineEl.querySelectorAll(".drop-zone");
+  if (zones[focusedDropIndex]) {
+    zones[focusedDropIndex].click();
+    return true;
+  }
+  return false;
+}
+
+/* ===== GAME OVER MODAL ===== */
+
+export function showGameOverModal(isVictory, score, currentCard, currentPlaylistId, difficulty, onRestart, timeline = [], stats = {}) {
     if (UIElements.qrDiv) UIElements.qrDiv.innerHTML = "";
 
     if (currentPlaylistId && typeof QRCode !== "undefined") {
@@ -143,14 +304,29 @@ export function showGameOverModal(isVictory, score, currentCard, currentPlaylist
       if (UIElements.qrMess) UIElements.qrMess.style.display = "none";
     }
 
-    // Build timeline recap
+    // Stats
+    if (UIElements.statAccuracy) {
+      UIElements.statAccuracy.textContent = (stats.accuracy || 0) + "%";
+    }
+    if (UIElements.statBestStreak) {
+      UIElements.statBestStreak.textContent = stats.bestStreak || 0;
+    }
+    if (UIElements.statAvgTime) {
+      UIElements.statAvgTime.textContent = (stats.avgTime || 0).toFixed(1) + "s";
+    }
+
+    // Build timeline recap with covers
     if (UIElements.timelineRecap) {
       UIElements.timelineRecap.innerHTML = "";
       const sorted = [...timeline].sort((a, b) => a.year - b.year);
       sorted.forEach(card => {
         const chip = document.createElement("span");
         chip.className = "recap-chip";
-        chip.innerHTML = `<span class="recap-year">${card.year}</span>${card.title}`;
+        let coverHtml = "";
+        if (card.image) {
+          coverHtml = `<img class="recap-cover" src="${card.image}" alt="" />`;
+        }
+        chip.innerHTML = `${coverHtml}<span class="recap-year">${card.year}</span>${card.title}`;
         UIElements.timelineRecap.appendChild(chip);
       });
     }
@@ -187,4 +363,61 @@ export function showGameOverModal(isVictory, score, currentCard, currentPlaylist
 
         onRestart(newDiff);
     }, { once: true });
+}
+
+/* ===== PROGRESSIVE HINTS (easy mode) ===== */
+
+let hintTimers = [];
+
+export function startProgressiveHints(card) {
+  clearProgressiveHints();
+  if (!UIElements.hintEl) return;
+  
+  // Immediate: word count
+  const wordCount = card.title ? card.title.split(" ").length : 0;
+  UIElements.hintEl.textContent = `💡 ${wordCount} mot(s) dans le titre`;
+  
+  // After 5s: reveal artist
+  hintTimers.push(setTimeout(() => {
+    UIElements.hintEl.textContent = `💡 Artiste : ${card.artist}`;
+    UIElements.hintEl.classList.add("hint-reveal");
+    setTimeout(() => UIElements.hintEl.classList.remove("hint-reveal"), 500);
+  }, 5000));
+  
+  // After 10s: reveal decade
+  hintTimers.push(setTimeout(() => {
+    const decade = Math.floor(card.year / 10) * 10;
+    UIElements.hintEl.textContent = `💡 Décennie : ${decade}s`;
+    UIElements.hintEl.classList.add("hint-reveal");
+    setTimeout(() => UIElements.hintEl.classList.remove("hint-reveal"), 500);
+  }, 10000));
+}
+
+export function clearProgressiveHints() {
+  hintTimers.forEach(t => clearTimeout(t));
+  hintTimers = [];
+}
+
+/* ===== THEME PICKER ===== */
+
+export function initThemePicker() {
+  const picker = document.getElementById("theme-picker");
+  if (!picker) return;
+  
+  // Restore saved theme
+  const saved = localStorage.getItem("hitster_theme") || "synthwave";
+  document.documentElement.setAttribute("data-theme", saved);
+  picker.querySelectorAll(".theme-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.theme === saved);
+  });
+  
+  picker.addEventListener("click", (e) => {
+    const btn = e.target.closest(".theme-btn");
+    if (!btn) return;
+    const theme = btn.dataset.theme;
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("hitster_theme", theme);
+    picker.querySelectorAll(".theme-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
 }
