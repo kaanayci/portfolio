@@ -18,6 +18,11 @@ export const UIElements = {
   btnNewPlaylist: document.getElementById("btn-new-playlist"),
   qrDiv: document.getElementById("qrcode"),
   qrMess: document.getElementById("qrcode-mess"),
+  timelineRecap: document.getElementById("timeline-recap"),
+  // Progress tracker
+  progressTracker: document.getElementById("progress-tracker"),
+  songCounter: document.getElementById("song-counter"),
+  songProgress: document.getElementById("song-progress"),
   // Audio UI
   playPauseBtn: document.getElementById("play-pause-btn"),
   progressBar: document.getElementById("progress-bar"),
@@ -43,7 +48,18 @@ export function updateScoreUI(score, highScore) {
   if (UIElements.highScoreEl) UIElements.highScoreEl.textContent = "Record : " + highScore;
 }
 
-export function renderTimeline(timeline, onDropCallback) {
+/** Update the song progress tracker */
+export function updateProgress(current, total) {
+  if (!UIElements.progressTracker) return;
+  UIElements.progressTracker.classList.remove("hidden");
+  if (UIElements.songCounter) UIElements.songCounter.textContent = `${current} / ${total}`;
+  if (UIElements.songProgress) {
+    const pct = total > 0 ? (current / total) * 100 : 0;
+    UIElements.songProgress.style.width = pct + "%";
+  }
+}
+
+export function renderTimeline(timeline, onDropCallback, newIndex = -1) {
   UIElements.timelineEl.innerHTML = "";
 
   addDropZone(0, onDropCallback);
@@ -52,10 +68,13 @@ export function renderTimeline(timeline, onDropCallback) {
     const cardDiv = document.createElement("div");
     cardDiv.className = "timeline-card";
     
-    // Check if it's new (logic handled outside, but we can add class via arg if needed, 
-    // for now we'll rely on the logic passing a flag or just assume simplistic rendering)
-    // To support animation like before, we might need to know which index is new.
-    // For simplicity, we'll omit the 'newly-placed' check here or add it if needed later.
+    // Animate newly inserted card
+    if (index === newIndex) {
+      cardDiv.classList.add("slide-in", "correct-flash");
+      setTimeout(() => {
+        cardDiv.classList.remove("slide-in", "correct-flash");
+      }, 900);
+    }
     
     cardDiv.innerHTML = `
       <div class="year">${card.year}</div>
@@ -66,6 +85,16 @@ export function renderTimeline(timeline, onDropCallback) {
     UIElements.timelineEl.appendChild(cardDiv);
     addDropZone(index + 1, onDropCallback);
   });
+
+  // Auto-scroll to newest card on mobile
+  if (newIndex >= 0 && window.innerWidth <= 768) {
+    const cards = UIElements.timelineEl.querySelectorAll(".timeline-card");
+    if (cards[newIndex]) {
+      setTimeout(() => {
+        cards[newIndex].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }, 100);
+    }
+  }
 }
 
 function addDropZone(position, onDropCallback) {
@@ -74,7 +103,6 @@ function addDropZone(position, onDropCallback) {
   zone.textContent = "+";
   zone.onclick = () => onDropCallback(position);
 
-  // Drag listeners
   zone.ondragover = (e) => {
     e.preventDefault();
     zone.classList.add("drag-over");
@@ -94,7 +122,14 @@ function addDropZone(position, onDropCallback) {
   UIElements.timelineEl.appendChild(zone);
 }
 
-export function showGameOverModal(isVictory, score, currentCard, currentPlaylistId, difficulty, onRestart) {
+/** Flash feedback on the timeline area */
+export function flashTimeline(type) {
+  const cls = type === "success" ? "success-pulse" : "error-shake";
+  UIElements.timelineEl.classList.add(cls);
+  setTimeout(() => UIElements.timelineEl.classList.remove(cls), 800);
+}
+
+export function showGameOverModal(isVictory, score, currentCard, currentPlaylistId, difficulty, onRestart, timeline = []) {
     if (UIElements.qrDiv) UIElements.qrDiv.innerHTML = "";
 
     if (currentPlaylistId && typeof QRCode !== "undefined") {
@@ -106,6 +141,18 @@ export function showGameOverModal(isVictory, score, currentCard, currentPlaylist
       });
     } else {
       if (UIElements.qrMess) UIElements.qrMess.style.display = "none";
+    }
+
+    // Build timeline recap
+    if (UIElements.timelineRecap) {
+      UIElements.timelineRecap.innerHTML = "";
+      const sorted = [...timeline].sort((a, b) => a.year - b.year);
+      sorted.forEach(card => {
+        const chip = document.createElement("span");
+        chip.className = "recap-chip";
+        chip.innerHTML = `<span class="recap-year">${card.year}</span>${card.title}`;
+        UIElements.timelineRecap.appendChild(chip);
+      });
     }
   
     UIElements.modal.classList.remove("hidden");
@@ -124,7 +171,6 @@ export function showGameOverModal(isVictory, score, currentCard, currentPlaylist
         UIElements.modalMessage.textContent = `C'était "${currentCard.title}" de ${currentCard.artist} (${currentCard.year})`;
     }
   
-    // Cleanup old listeners to prevent duplicates if any
     const newBtn = UIElements.btnRestart.cloneNode(true);
     UIElements.btnRestart.parentNode.replaceChild(newBtn, UIElements.btnRestart);
     UIElements.btnRestart = newBtn;
@@ -139,7 +185,6 @@ export function showGameOverModal(isVictory, score, currentCard, currentPlaylist
         UIElements.messageEl.className = ""; 
         UIElements.messageEl.textContent = "";
 
-        // Trigger restart callback
         onRestart(newDiff);
     }, { once: true });
 }
