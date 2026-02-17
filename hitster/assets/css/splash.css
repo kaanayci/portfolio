@@ -1,0 +1,272 @@
+/* =============================================
+   SPLASH / LOADING SCREEN
+   Square opens to release music notes
+   ============================================= */
+
+:root {
+  --splash-c1: #ff2f92;
+  --splash-c2: #00d4ff;
+  --splash-c3: #a855f7;
+  --splash-dur: 2.2s;
+  --splash-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* --- Fullscreen overlay --- */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-background, #0b132b);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  overflow: hidden;
+}
+
+#splash-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* --- Center container --- */
+.splash-center {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+/* =========================
+   SQUARE BOX
+   4 sides that fold open like flaps
+   ========================= */
+.splash-box {
+  position: absolute;
+  inset: 0;
+}
+
+.box-side {
+  position: absolute;
+  background: linear-gradient(135deg, rgba(255,47,146,0.25), rgba(0,212,255,0.25));
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2), inset 0 0 15px rgba(255, 47, 146, 0.1);
+}
+
+/* Top flap */
+.box-side.side-top {
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  border-bottom: none;
+  transform-origin: top center;
+  animation: flapTop var(--splash-dur) var(--splash-ease) infinite alternate;
+}
+
+/* Bottom flap */
+.box-side.side-bottom {
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  border-top: none;
+  transform-origin: bottom center;
+  animation: flapBottom var(--splash-dur) var(--splash-ease) infinite alternate;
+}
+
+/* Left flap */
+.box-side.side-left {
+  top: 0; bottom: 0; left: 0;
+  width: 50%;
+  border-right: none;
+  transform-origin: left center;
+  animation: flapLeft var(--splash-dur) var(--splash-ease) infinite alternate;
+}
+
+/* Right flap */
+.box-side.side-right {
+  top: 0; bottom: 0; right: 0;
+  width: 50%;
+  border-left: none;
+  transform-origin: right center;
+  animation: flapRight var(--splash-dur) var(--splash-ease) infinite alternate;
+}
+
+/* Flaps fold open outward (perspective rotation) */
+@keyframes flapTop {
+  0%, 35% { transform: perspective(400px) rotateX(0deg);   opacity: 1; }
+  100%    { transform: perspective(400px) rotateX(-85deg);  opacity: 0.3; }
+}
+@keyframes flapBottom {
+  0%, 35% { transform: perspective(400px) rotateX(0deg);   opacity: 1; }
+  100%    { transform: perspective(400px) rotateX(85deg);   opacity: 0.3; }
+}
+@keyframes flapLeft {
+  0%, 35% { transform: perspective(400px) rotateY(0deg);   opacity: 1; }
+  100%    { transform: perspective(400px) rotateY(85deg);   opacity: 0.3; }
+}
+@keyframes flapRight {
+  0%, 35% { transform: perspective(400px) rotateY(0deg);   opacity: 1; }
+  100%    { transform: perspective(400px) rotateY(-85deg);  opacity: 0.3; }
+}
+
+/* =========================
+   MUSIC NOTES
+   Hidden inside, burst out when box opens
+   ========================= */
+.splash-notes {
+  position: absolute;
+  inset: 0;
+}
+
+.splash-note {
+  position: absolute;
+  font-size: 18px;
+  line-height: 1;
+  top: 50%;
+  left: 50%;
+  margin-top: -9px;
+  margin-left: -6px;
+  display: block;
+  text-shadow: 0 0 8px currentColor, 0 0 20px currentColor;
+  opacity: 0;
+}
+
+.splash-note.small { font-size: 12px; margin-top: -6px; margin-left: -4px; }
+.splash-note.big   { font-size: 26px; margin-top: -13px; margin-left: -9px; }
+
+.splash-note.c1 { color: var(--splash-c1); }
+.splash-note.c2 { color: var(--splash-c2); }
+.splash-note.c3 { color: var(--splash-c3); }
+
+/* --- 16 note trajectories ---
+   Stay at center while box is closed (0-35%),
+   then fly outward as flaps open (35-100%) */
+
+@keyframes note1 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(95px,-65px) scale(1) rotate(20deg);   opacity: 1; }
+}
+@keyframes note2 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(-85px,-95px) scale(1) rotate(-15deg);  opacity: 1; }
+}
+@keyframes note3 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(115px,45px) scale(1) rotate(25deg);    opacity: 1; }
+}
+@keyframes note4 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(-65px,105px) scale(1) rotate(-20deg);  opacity: 1; }
+}
+@keyframes note5 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(55px,-125px) scale(1) rotate(18deg);   opacity: 1; }
+}
+@keyframes note6 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(-125px,-35px) scale(1) rotate(-25deg); opacity: 1; }
+}
+@keyframes note7 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(75px,115px) scale(1) rotate(30deg);    opacity: 1; }
+}
+@keyframes note8 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(-105px,75px) scale(1) rotate(-12deg);  opacity: 1; }
+}
+@keyframes note9 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(5px,-135px) scale(1) rotate(15deg);    opacity: 1; }
+}
+@keyframes note10 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(135px,5px) scale(1) rotate(-22deg);    opacity: 1; }
+}
+@keyframes note11 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(-45px,-115px) scale(1) rotate(10deg);  opacity: 1; }
+}
+@keyframes note12 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(35px,135px) scale(1) rotate(-28deg);   opacity: 1; }
+}
+@keyframes note13 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(-135px,15px) scale(1) rotate(22deg);   opacity: 1; }
+}
+@keyframes note14 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(105px,-105px) scale(1) rotate(-18deg); opacity: 1; }
+}
+@keyframes note15 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(-95px,95px) scale(1) rotate(28deg);    opacity: 1; }
+}
+@keyframes note16 {
+  0%, 30% { transform: translate(0,0) scale(0) rotate(0);    opacity: 0; }
+  45%     { opacity: 1; }
+  100%    { transform: translate(25px,-85px) scale(1) rotate(-15deg);   opacity: 1; }
+}
+
+/* --- Apply animations --- */
+.splash-note.n1  { animation: note1  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n2  { animation: note2  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n3  { animation: note3  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n4  { animation: note4  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n5  { animation: note5  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n6  { animation: note6  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n7  { animation: note7  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n8  { animation: note8  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n9  { animation: note9  var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n10 { animation: note10 var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n11 { animation: note11 var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n12 { animation: note12 var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n13 { animation: note13 var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n14 { animation: note14 var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n15 { animation: note15 var(--splash-dur) var(--splash-ease) infinite alternate; }
+.splash-note.n16 { animation: note16 var(--splash-dur) var(--splash-ease) infinite alternate; }
+
+/* --- Title --- */
+.splash-title {
+  margin-top: 40px;
+  text-align: center;
+  opacity: 0;
+  animation: splashFadeIn 1s ease 0.5s forwards;
+}
+
+.splash-title h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--splash-c1), var(--splash-c2), var(--splash-c3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.splash-title p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  letter-spacing: 2px;
+}
+
+@keyframes splashFadeIn {
+  to { opacity: 1; }
+}
