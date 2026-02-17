@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-theme="synthwave">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,6 +54,12 @@
           <a href="../index.html" class="back-link">⬅ Portfolio</a>
           <h1>Hitster – Timeline Musicale</h1>
           <p>Place la musique au bon endroit dans le temps</p>
+          <!-- Theme picker -->
+          <div class="theme-picker" id="theme-picker">
+            <button class="theme-btn active" data-theme="synthwave" title="Synthwave">🌆</button>
+            <button class="theme-btn" data-theme="midnight" title="Midnight">🌙</button>
+            <button class="theme-btn" data-theme="vinyl" title="Rétro Vinyle">🎵</button>
+          </div>
         </header>
 
         <section class="controls">
@@ -68,43 +74,63 @@
               <option value="easy">Facile (3 vies + indices)</option>
               <option value="normal" selected>Normal (3 vies)</option>
               <option value="hard">Difficile (Mort subite)</option>
+              <option value="chrono">⏱ Chrono (15s par carte)</option>
             </select>
             <button id="start-game">Démarrer la partie</button>
           </div>
 
           <div class="game-area" id="game-area">
             <div class="game-status">
-            <div class="score-group">
-               <p id="score">Score : 0</p>
-               <p id="high-score" class="high-score">Record : 0</p>
-            </div>
-            <div id="progress-tracker" class="progress-tracker hidden">
-              <span id="song-counter">0 / 0</span>
-              <div class="progress-track">
-                <div class="progress-fill" id="song-progress"></div>
+              <div class="score-group">
+                <p id="score">Score : 0</p>
+                <p id="high-score" class="high-score">Record : 0</p>
               </div>
+              <!-- Streak display -->
+              <div id="streak-display" class="streak-display hidden">
+                <span id="streak-count" class="streak-count">🔥 0</span>
+                <span id="streak-multiplier" class="streak-multiplier">×1</span>
+              </div>
+              <div id="progress-tracker" class="progress-tracker hidden">
+                <span id="song-counter">0 / 0</span>
+                <div class="progress-track">
+                  <div class="progress-fill" id="song-progress"></div>
+                </div>
+              </div>
+              <p id="lives" class="lives-display">❤️❤️❤️</p>
             </div>
-            <p id="lives" class="lives-display">❤️❤️❤️</p>
-          </div>
 
-          <section id="current-card">
-            <p class="hint">
-              🎧 Écoute la musique et place la carte dans la timeline
-            </p>
-            <p class="drag-instruction" id="drag-instruction">👆 Glisse ou clique sur un <strong>+</strong> dans la timeline</p>
-            <div class="hint-row">
+            <!-- Chrono timer bar -->
+            <div id="timer-bar-container" class="timer-bar-container hidden">
+              <div id="timer-bar" class="timer-bar"></div>
+              <span id="timer-text" class="timer-text">15s</span>
+            </div>
+
+            <section id="current-card">
+              <div id="card-cover" class="card-cover hidden">
+                <img id="card-cover-img" src="" alt="Pochette" />
+              </div>
+              <p class="hint">
+                🎧 Écoute la musique et place la carte dans la timeline
+              </p>
+              <p class="drag-instruction" id="drag-instruction">👆 Glisse ou clique sur un <strong>+</strong> dans la timeline</p>
+              <div class="hint-row">
                 <p id="card-hint" class="card-hint"></p>
                 <div id="audio-loading" class="audio-loader"></div>
-            </div>
-            <div id="custom-audio-player" class="player-container">
-              <button id="play-pause-btn" class="player-btn">▶</button>
-              <div class="progress-wrapper" id="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
               </div>
-              <span id="time-display">00:00</span>
-            </div>
-            <audio id="audio" crossorigin="anonymous"></audio>
-          </section>
+              <div id="custom-audio-player" class="player-container">
+                <button id="play-pause-btn" class="player-btn">▶</button>
+                <div class="progress-wrapper" id="progress-container">
+                  <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <span id="time-display">00:00</span>
+                <!-- Volume control -->
+                <div class="volume-control">
+                  <button id="volume-btn" class="volume-btn" title="Volume">🔊</button>
+                  <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.05" value="0.7" />
+                </div>
+              </div>
+              <audio id="audio" crossorigin="anonymous"></audio>
+            </section>
           </div><!-- /.game-area -->
         </section>
       </section>
@@ -117,6 +143,22 @@
           <h2 id="modal-title">Partie Terminée</h2>
           <p id="modal-message">Bravo !</p>
           <p class="final-score" id="modal-score">Score final : 0</p>
+
+          <!-- Stats section -->
+          <div id="modal-stats" class="modal-stats">
+            <div class="stat-item">
+              <span class="stat-value" id="stat-accuracy">0%</span>
+              <span class="stat-label">Précision</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="stat-best-streak">0</span>
+              <span class="stat-label">Meilleur combo</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="stat-avg-time">0s</span>
+              <span class="stat-label">Temps moyen</span>
+            </div>
+          </div>
 
           <div id="timeline-recap" class="timeline-recap"></div>
 
@@ -131,6 +173,7 @@
               <option value="easy">Facile (3 vies + indices)</option>
               <option value="normal" selected>Normal (3 vies)</option>
               <option value="hard">Difficile (Mort subite)</option>
+              <option value="chrono">⏱ Chrono (15s par carte)</option>
             </select>
           </div>
 
@@ -143,6 +186,11 @@
       
       <div class="docs-link">
           <a href="docs.html">📚 Fiches Techniques</a>
+      </div>
+
+      <!-- Keyboard shortcuts tooltip -->
+      <div class="shortcuts-hint" id="shortcuts-hint">
+        <span>⌨️</span> Espace : play/pause · ← → : naviguer · Entrée : placer
       </div>
 
       <!-- Game start countdown overlay -->
