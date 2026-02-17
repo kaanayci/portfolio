@@ -3,58 +3,37 @@ const express = require("express");
 const path = require("path");
 
 const app = express();
+const ROOT_DIR = path.resolve(__dirname, "..");
 
-// 👉 Racine réelle du projet (portfolio/)
-const ROOT_DIR = path.resolve(__dirname, ".."); // remonte de hitster/ vers portfolio/
-
-// 1) JSON body AVANT les routes
 app.use(express.json());
 
-// 2) No-cache pour songs.json (pour forcer le reload)
 app.use((req, res, next) => {
-  if (req.url.includes("songs.json")) {
-    res.setHeader("Cache-Control", "no-store");
-  }
+  if (req.url.includes("songs.json")) res.setHeader("Cache-Control", "no-store");
   next();
 });
 
-// 3) API : générer songs.json depuis une playlist
 app.post("/api/playlist", async (req, res) => {
   try {
     const { playlistUrl, playlistId } = req.body || {};
     const id = extractSpotifyPlaylistId(playlistUrl) || playlistId;
 
-    if (!id) {
-      return res.status(400).json({
-        ok: false,
-        error: "Playlist Spotify invalide (URL ou ID manquant).",
-      });
-    }
+    if (!id) return res.status(400).json({ ok: false, error: "Playlist Spotify invalide." });
 
-    // Convertisseur dans: portfolio/hitster/assets/tools/spotify-to-json.mjs
     const modulePath = path.resolve(__dirname, "assets/tools/spotify-to-json.mjs");
     const converter = await import(`file://${modulePath}`);
-
     const result = await converter.generateSongsJsonFromSpotifyPlaylist(id);
 
-    return res.json({
-      ok: true,
-      playlistId: id,
-      count: result.count,
-      savedTo: result.outputPath,
-    });
+    return res.json({ ok: true, playlistId: id, count: result.count, savedTo: result.outputPath });
   } catch (e) {
     console.error("POST /api/playlist error:", e);
     return res.status(500).json({ ok: false, error: e.message || "Erreur serveur" });
   }
 });
 
-// 4) Static : sert tout le dossier portfolio/ (donc /hitster marche)
 app.use(express.static(ROOT_DIR));
-
 app.listen(3000, () => console.log("Serveur lancé sur http://localhost:3000"));
 
-// Helpers
+// Extrait l'ID playlist depuis une URL Spotify, un URI spotify: ou un ID brut
 function extractSpotifyPlaylistId(input) {
   if (!input || typeof input !== "string") return null;
 
