@@ -37,7 +37,7 @@ onMounted(() => {
           <RouterLink to="/menu" class="hover:text-secondary font-medium transition">Menu</RouterLink>
           
           <!-- Liens Externes -->
-          <a href="/docs/index.html" class="hover:text-secondary font-medium transition flex items-center gap-1 opacity-80" target="_blank">
+          <a href="./docs/index.html" class="hover:text-secondary font-medium transition flex items-center gap-1 opacity-80" target="_blank">
              <span>📚 Tech</span>
           </a>
           <a :href="portfolioUrl" class="hover:text-secondary font-medium transition flex items-center gap-1 opacity-80 border-l border-white/20 pl-4">
