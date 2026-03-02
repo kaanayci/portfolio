@@ -1,76 +1,113 @@
-# Portfolio – Intégration Web
+# Portfolio - Integration Web
 
-Ce dépôt contient mon **portfolio d’intégration web**, réalisé dans le cadre du cours  
-*Réseaux / Web – Intégration web* (CPNE – Informatique de gestion).
+Ce depot contient mon **portfolio d'integration web**, realise dans le cadre du cours
+*Reseaux / Web - Integration web* (ESNE - Informatique de gestion).
 
-Ce portfolio a pour objectif de démontrer :
-- ma maîtrise des bases du développement web (HTML, CSS, JavaScript)
-- ma capacité à structurer et documenter des projets
-- ma progression et ma réflexion critique tout au long du cours
+## Objectifs
 
----
-
-## 📦 Contenu du portfolio
-
-Le portfolio regroupe trois types de contenus complémentaires :
-
-### 🔹 Projets pratiques
-Des projets d’intégration web fonctionnels permettant d’appliquer les notions vues en cours :
-- mise en page responsive
-- manipulation du DOM
-- logique JavaScript
-- structuration de projets
-
-### 🔹 Documentation technique
-Chaque projet est accompagné de :
-- fichiers `README.md`
-- documentation spécifique (règles du jeu, explications fonctionnelles)
-- commentaires dans le code lorsque nécessaire
-
-### 🔹 Réflexion critique
-Le portfolio inclut une démarche réflexive sur :
-- les choix techniques réalisés
-- les difficultés rencontrées
-- les compétences acquises et à approfondir
+- Demontrer ma maitrise progressive du developpement web (HTML, CSS, JavaScript, Vue 3)
+- Structurer et documenter trois projets fonctionnels de complexite croissante
+- Mener une reflexion critique sur mes choix techniques et ma progression
 
 ---
 
-## 🌐 Portfolio en ligne
+## Portfolio en ligne
 
-🔗 **Lien : http://91.98.164.47/**
-
-Le portfolio est hébergé sur un serveur distant et accessible depuis n’importe quel navigateur moderne.
+**Lien : http://91.98.164.47/**
 
 ---
 
-## 🧱 Structure du projet
+## Projets
 
-Le portfolio est organisé comme un **hub** regroupant plusieurs projets indépendants.
-Chaque projet possède sa propre architecture et sa documentation.
+| Projet | Stack | Description |
+|--------|-------|-------------|
+| **SwissMeteo** (Dashboard) | jQuery, Leaflet, OpenWeatherMap API, PWA | Dashboard meteo interactif avec carte, favoris et Service Worker |
+| **Hitster Music** | ES Modules natifs, Node/Express, Web Audio API | Jeu de culture musicale : placement chronologique, drag & drop, scores |
+| **Coin Regal** (Restaurant) | Vue 3, Vite, Pinia, Tailwind CSS, PWA | Application de commande restaurant : panier, QR code, impression thermique |
 
-```txt
+Chaque projet possede son propre `README.md` avec instructions de lancement.
+
+---
+
+## Documentation
+
+### Fiches techniques (18)
+
+Chaque projet est accompagne de **6 fiches techniques** detaillant un concept cle avec definition, extrait de code commente, analyse et sources.
+
+- `dashboard/fiches-techniques/` - API externe, architecture, interactivite carte, DOM, persistance, PWA
+- `hitster/fiches-techniques/` - Boucle de jeu, controle audio, zones cliquables, JSON BDD, placement chronologique, randomisation
+- `restaurant/public/docs/` - Architecture composants, fidelite, QR code, Pinia, impression thermique, PWA offline
+
+### Analyses de sites (2) et Veille technologique
+
+- `analyses/site-cff.md` - Analyse UX/accessibilite/SEO de CFF.ch
+- `analyses/site-qoqa.md` - Analyse UX/accessibilite/SEO de Qoqa.ch
+- `analyses/veille-technologique.md` - 5 tendances web 2025-2026 (Container Queries, View Transitions API, etc.)
+
+### Reflexions
+
+- `reflexions/mi-parcours.md` - Bilan intermediaire
+- `reflexions/bilan-final.md` - Synthese finale, auto-evaluation et perspectives professionnelles
+
+---
+
+## Structure du depot
+
+```
 portfolio/
+├── index.html                  # Page d'accueil (hub)
+├── assets/css/main.css         # Styles du hub
+├── assets/js/portfolio.js      # Chargement dynamique des documents
 │
-├── index.html              # Page d’accueil du portfolio
-├── style.css               # Styles globaux
-├── package.json            # Configuration Node.js
+├── analyses/                   # Analyses de sites + veille
+├── reflexions/                 # Reflexions mi-parcours & bilan final
 │
-├── dashboard/              # Projet Dashboard
+├── dashboard/                  # Projet 1 - SwissMeteo
+│   ├── index.html
+│   ├── sw.js
+│   ├── assets/
+│   └── fiches-techniques/
+│
+├── hitster/                    # Projet 2 - Hitster Music
 │   ├── index.html
 │   ├── server.js
-│   ├── README.md
-│   └── assets/
-│       ├── css/style.css
-│       └── js/app.js
+│   ├── assets/
+│   ├── docs/
+│   └── fiches-techniques/
 │
-└── hitster/                # Projet Hitster (adaptation web)
-    ├── index.html
-    ├── server.js
-    ├── README.md
-    ├── assets/
-    │   ├── audio/
-    │   ├── css/style.css
-    │   ├── data/songs.json
-    │   └── js/game.js
-    └── docs/
-        └── regle-du-jeu.md
+└── restaurant/                 # Projet 3 - Coin Regal
+    ├── src/                    # Code source Vue 3
+    ├── public/docs/            # Fiches techniques
+    ├── vite.config.js
+    └── tailwind.config.js
+```
+
+---
+
+## Installation locale
+
+```bash
+# Cloner le depot
+git clone https://github.com/kaanayci/portfolio.git
+cd portfolio
+
+# Hitster (necessite Node pour le proxy Spotify)
+cd hitster
+npm install
+node server.js            # http://localhost:3000
+
+# Restaurant (Vue 3 + Vite)
+cd ../restaurant
+npm install
+npm run dev               # http://localhost:5173
+```
+
+Le Dashboard et le hub fonctionnent en fichiers statiques (ouvrir `index.html` directement ou via un serveur local).
+
+---
+
+## Auteur
+
+**Kaan Ayci** - ESNE Neuchatel
+[GitHub](https://github.com/kaanayci)
