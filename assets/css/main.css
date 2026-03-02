@@ -165,6 +165,42 @@ h2 {
   font-weight: bold;
 }
 
+.tag.reflexion {
+  background: rgba(236, 72, 153, 0.2);
+  color: #f472b6;
+}
+
+/* À propos */
+.about-content {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 700px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.about-content p {
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.about-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.about-links a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.about-links a:hover {
+  color: var(--secondary);
+}
+
 /* Modal pour Markdown */
 #doc-modal {
   position: fixed;
