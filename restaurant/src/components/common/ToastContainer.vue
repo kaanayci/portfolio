@@ -1,9 +1,10 @@
 <template>
-  <div class="fixed top-4 right-4 z-[9999] flex flex-col gap-2 pointer-events-none">
+  <div class="fixed top-4 right-4 z-[9999] flex flex-col gap-2 pointer-events-none" aria-live="assertive" aria-atomic="true">
     <transition-group name="toast">
       <div 
         v-for="toast in toastStore.toasts" 
         :key="toast.id"
+        role="alert"
         class="pointer-events-auto min-w-[300px] p-4 rounded-lg shadow-lg flex items-center justify-between text-white transform transition-all duration-300"
         :class="{
           'bg-green-500': toast.type === 'success',
@@ -17,7 +18,7 @@
           <span v-if="toast.type === 'info'" class="mr-2">ℹ️</span>
           <span class="font-medium">{{ toast.message }}</span>
         </div>
-        <button @click="toastStore.remove(toast.id)" class="ml-4 text-white hover:text-gray-200">
+        <button @click="toastStore.remove(toast.id)" class="ml-4 text-white hover:text-gray-200" aria-label="Fermer la notification">
           ✕
         </button>
       </div>
