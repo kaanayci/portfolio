@@ -11,9 +11,15 @@ Ce depot contient mon **portfolio d'integration web**, realise dans le cadre du 
 
 ---
 
-## Portfolio en ligne
+## Lancement
 
-**Lien : http://91.98.164.47/**
+Le portfolio fonctionne en local via Node/Express :
+
+```bash
+npm start       # lance le serveur sur http://localhost:3000
+```
+
+Tous les projets (hub, Dashboard, Hitster, Restaurant) sont alors accessibles depuis ce port.
 
 ---
 
@@ -91,19 +97,14 @@ portfolio/
 # Cloner le depot
 git clone https://github.com/kaanayci/portfolio.git
 cd portfolio
-
-# Hitster (necessite Node pour le proxy Spotify)
-cd hitster
 npm install
-node server.js            # http://localhost:3000
-
-# Restaurant (Vue 3 + Vite)
-cd ../restaurant
-npm install
-npm run dev               # http://localhost:5173
+npm start                 # http://localhost:3000
 ```
 
-Le Dashboard et le hub fonctionnent en fichiers statiques (ouvrir `index.html` directement ou via un serveur local).
+Le hub, Dashboard, Hitster et Restaurant (`/restaurant/dist/`) sont tous servis automatiquement.
+
+> **Note :** le Dashboard necessite une cle API OpenWeatherMap.
+> Copier `dashboard/assets/js/modules/config.example.js` vers `config.js` et y mettre votre cle.
 
 ---
 
