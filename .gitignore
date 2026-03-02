@@ -4,3 +4,6 @@ node_modules/
 *.log
 package-lock.json
 package.json
+
+# Cles API (ne pas committer)
+dashboard/assets/js/modules/config.js
