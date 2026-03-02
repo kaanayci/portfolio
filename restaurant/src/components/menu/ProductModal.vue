@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" :aria-label="'Personnaliser ' + product?.name">
     <!-- Overlay -->
     <div @click="close" class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"></div>
     
@@ -9,8 +9,8 @@
       <!-- Header -->
       <div class="p-4 border-b flex justify-between items-center bg-gray-50">
         <h3 class="text-xl font-bold text-primary">{{ product?.name }}</h3>
-        <button @click="close" class="text-gray-400 hover:text-gray-600">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button @click="close" class="text-gray-400 hover:text-gray-600" aria-label="Fermer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
@@ -97,11 +97,13 @@
               @click="quantity > 1 ? quantity-- : null" 
               class="px-3 py-1 text-gray-600 hover:text-primary font-bold text-lg disabled:opacity-50"
               :disabled="quantity <= 1"
+              aria-label="Diminuer la quantité"
             >-</button>
             <span class="px-2 font-bold w-8 text-center">{{ quantity }}</span>
             <button 
               @click="quantity++" 
               class="px-3 py-1 text-gray-600 hover:text-primary font-bold text-lg"
+              aria-label="Augmenter la quantité"
             >+</button>
           </div>
         </div>
