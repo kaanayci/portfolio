@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard – Portfolio</title>
+    <meta name="description" content="SwissMétéo – Dashboard météo interactif pour la Suisse. Prévisions en temps réel, comparateur de villes, carte Leaflet et mode hors-ligne (PWA).">
+    <meta property="og:title" content="SwissMétéo – Dashboard Météo Suisse">
+    <meta property="og:description" content="Application web progressive affichant la météo suisse en temps réel avec comparaison de villes et carte interactive.">
+    <meta property="og:type" content="website">
+    <title>SwissMétéo – Dashboard Météo Suisse</title>
 
     <!-- PWA Config -->
     <link rel="manifest" href="manifest.json">
@@ -31,15 +35,15 @@
       <div id="sidebar-overlay" class="sidebar-overlay"></div>
       <nav class="sidebar" id="sidebar" aria-label="Navigation des salons">
         <ul>
-          <li onclick="window.location.href='../index.html'" style="background: #cbd5e1; font-weight: bold; color: #0f172a; margin-bottom: 10px; border: 1px solid #94a3b8;">⬅ Portfolio</li>
-          <li data-channel="home" class="active">🏠 Panorama</li>
-          <li data-channel="meteo">🌤 Recherche</li>
-          <li data-channel="favorites">🌟 Favoris</li>
-          <li data-channel="mountain">🏔️ Montagne</li>
-          <li data-channel="map">🗺️ Carte</li>
-          <li data-channel="compare">🆚 Comparateur</li>
-          <li data-channel="docs">📚 Docs Techniques</li>
-          <li data-channel="settings">⚙️ Paramètres</li>
+          <li onclick="window.location.href='../index.html'" role="button" tabindex="0" style="background: #cbd5e1; font-weight: bold; color: #0f172a; margin-bottom: 10px; border: 1px solid #94a3b8;">⬅ Portfolio</li>
+          <li data-channel="home" class="active" role="button" tabindex="0" aria-current="page">🏠 Panorama</li>
+          <li data-channel="meteo" role="button" tabindex="0">🌤 Recherche</li>
+          <li data-channel="favorites" role="button" tabindex="0">🌟 Favoris</li>
+          <li data-channel="mountain" role="button" tabindex="0">🏔️ Montagne</li>
+          <li data-channel="map" role="button" tabindex="0">🗺️ Carte</li>
+          <li data-channel="compare" role="button" tabindex="0">🆚 Comparateur</li>
+          <li data-channel="docs" role="button" tabindex="0">📚 Docs Techniques</li>
+          <li data-channel="settings" role="button" tabindex="0">⚙️ Paramètres</li>
         </ul>
       </nav>
 
@@ -50,7 +54,7 @@
         <section id="view-home" class="view-section">
             <h2>Vue d'ensemble</h2>
             <p>Aperçu rapide de la météo dans les grandes villes suisses.</p>
-            <div id="panorama-container" class="panorama-grid"></div>
+            <div id="panorama-container" class="panorama-grid" aria-live="polite"></div>
         </section>
 
         <!-- View: Meteo -->
@@ -61,16 +65,16 @@
                     <input type="text" id="weather-input" placeholder="Entrez une ville..." required />
                     <button type="submit">Rechercher</button>
                 </form>
-                <button id="btn-geo" class="btn-secondary" title="Ma position">📍</button>
+                <button id="btn-geo" class="btn-secondary" title="Ma position" aria-label="Utiliser ma position GPS">📍</button>
                 
-                <div class="unit-toggle-container" id="unit-toggle" data-unit="metric" title="Changer d'unité">
+                <div class="unit-toggle-container" id="unit-toggle" data-unit="metric" role="radiogroup" aria-label="Unité de température">
                     <div class="toggle-pill"></div>
-                    <div class="unit-option active" data-val="metric">°C</div>
-                    <div class="unit-option" data-val="imperial">°F</div>
+                    <div class="unit-option active" data-val="metric" role="radio" aria-checked="true" tabindex="0">°C</div>
+                    <div class="unit-option" data-val="imperial" role="radio" aria-checked="false" tabindex="0">°F</div>
                 </div>
             </div>
             
-            <div id="weather-result" class="weather__result">
+            <div id="weather-result" class="weather__result" aria-live="polite" aria-atomic="true">
                 <p>Recherchez une ville pour afficher la météo.</p>
             </div>
         </section>
@@ -109,10 +113,10 @@
                 <input type="text" class="comp-input" placeholder="Ville 2 (ex: Londres)">
                 <input type="text" class="comp-input" placeholder="Ville 3 (Optionnel)">
                 <input type="text" class="comp-input" placeholder="Ville 4 (Optionnel)">
-                <button onclick="compareCities()">Comparer</button>
+                <button onclick="compareCities()" aria-label="Comparer les villes saisies">Comparer</button>
             </div>
 
-            <div id="compare-loader" style="display:none; text-align:center; padding:2rem;">
+            <div id="compare-loader" style="display:none; text-align:center; padding:2rem;" role="status" aria-label="Chargement de la comparaison">
                 <div class="loader-spinner"></div>
             </div>
 
