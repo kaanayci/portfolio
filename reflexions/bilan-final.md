@@ -33,11 +33,11 @@ Aujourd'hui, mon projet Restaurant repose sur **Vue 3 avec la Composition API**,
 
 - **La sécurisation des clés API** : Dans ma première version du Dashboard, la clé OpenWeatherMap était en dur dans le code source. C'est lors du feedback de mi-parcours que j'ai compris le problème. J'ai ensuite créé un fichier `config.js` ignoré par Git, avec un `config.example.js` versionné pour guider l'installation. Pour Hitster, j'ai directement opté pour un proxy backend Express avec `dotenv`. Cette évolution montre une prise de conscience progressive de la sécurité.
 
-- **L'accessibilité insuffisante** : C'est la compétence que j'ai le plus sous-estimée. Dans aucun de mes projets je n'ai pensé à l'accessibilité dès la conception. Je l'ai ajoutée après coup (quelques `aria-label` sur le Dashboard, sémantique HTML de base), mais c'est resté superficiel. Je n'ai pas testé avec un lecteur d'écran, je n'ai pas vérifié les contrastes systématiquement, je n'ai pas implémenté de `skip-nav`. C'est un défaut que je reconnais honnêtement.
+- **L'accessibilité ajoutée tardivement** : C'est la compétence que j'ai le plus sous-estimée. Dans aucun de mes projets je n'ai pensé à l'accessibilité dès la conception. Je l'ai ajoutée en fin de projet (`aria-label`, `aria-live`, `role="dialog"`, skip-nav dans le Restaurant), ce qui montre que j'ai compris les concepts, mais l'idéal aurait été de les intégrer dès le départ. Je n'ai pas non plus testé avec un lecteur d'écran.
 
 - **La régularité du travail** : Mon historique Git montre des pics d'activité (13-15 décembre, 3-4 février, 2 mars) entrecoupés de longues pauses. Ce manque de régularité a parfois causé des pertes de contexte : en revenant sur le Dashboard après plusieurs semaines, j'ai dû relire mon propre code pour me souvenir de la logique. Cela m'a convaincu de l'importance des commentaires qui expliquent le **pourquoi**, pas juste le **quoi**.
 
-- **Le SEO négligé** : Aucun de mes projets ne contient de balise `<meta name="description">`, d'Open Graph ou de données structurées. Pour une SPA comme le Restaurant (avec hash routing), c'est encore plus problématique car les moteurs de recherche n'indexent pas les routes `/#/menu`. J'aurais dû utiliser `createWebHistory` au lieu de `createWebHashHistory` pour le routeur Vue. C'est un point que je comprends maintenant mais que je n'avais pas anticipé.
+- **Le SEO pris en compte tardivement** : J'ai ajouté les balises `<meta name="description">` et Open Graph en fin de projet, mais je n'ai pas de données structurées Schema.org. Pour le Restaurant (SPA avec hash routing `/#/menu`), c'est encore problématique car les moteurs de recherche n'indexent pas ces routes. J'aurais dû utiliser `createWebHistory` dès le départ.
 
 ### Comment j'ai surmonté les obstacles
 
@@ -59,11 +59,11 @@ Pour les concepts nouveaux (Composition API, Pinia, Vue Router), j'ai adopté un
 | **APIs et données** | Bon | Intégration d'OpenWeatherMap (REST), proxy Spotify (backend Express), manipulation de JSON. Gestion d'erreurs améliorée (try/catch) mais pas systématique partout. |
 | **Responsive design** | Bon | Media queries multiples (Dashboard), CSS scroll-snap (Hitster), classes responsive Tailwind (Restaurant). Testé sur mobile et desktop. |
 | **PWA** | Bon | Service Worker manuel (Dashboard) + vite-plugin-pwa (Restaurant). Manifest, cache, install prompt. |
-| **Accessibilité (WCAG)** | Insuffisant | Quelques `aria-label`, sémantique HTML de base, mais aucun test avec lecteur d'écran, pas de skip-nav, pas d'`aria-live` pour le contenu dynamique. C'est ma plus grande lacune. |
-| **SEO** | Insuffisant | Aucune meta description, pas d'Open Graph, pas de données structurées. Non pris en compte dans la conception. |
+| **Accessibilité (WCAG)** | Satisfaisant | `aria-label`, `aria-live`, `role="dialog"`, `aria-pressed` et skip-nav ajoutés sur les 3 projets. Sémantique HTML correcte. Cependant, je n'ai pas testé avec un lecteur d'écran ni vérifié tous les contrastes systématiquement. |
+| **SEO** | Satisfaisant | Meta descriptions et Open Graph ajoutés sur les 4 pages. Pas de données structurées Schema.org, et le Restaurant utilise `createWebHashHistory` (non indexable). SEO pris en compte tardivement. |
 | **Sécurité web** | Satisfaisant | Clés API protégées (config.js + .gitignore, dotenv côté serveur), mais pas de Content Security Policy, pas de rate limiting. |
 | **Versionning (Git)** | Satisfaisant | Commits réguliers avec messages descriptifs, mais pas de branches feature, pas de pull requests. Historique parfois irrégulier. |
-| **Documentation** | Bon | 18 fiches techniques, README complets pour chaque projet, documentation d'architecture. Les fiches Hitster sont cependant moins détaillées que les autres. |
+| **Documentation** | Bon | 18 fiches techniques uniformes (définition, code, analyse, sources), README complets pour chaque projet, documentation d'architecture. |
 
 ---
 
@@ -97,8 +97,8 @@ Pour l'avenir, je veux utiliser l'IA davantage pour la **relecture de code** (co
 
 | Objectif | Actions concrètes | Ressources |
 |---|---|---|
-| **Maîtriser l'accessibilité WCAG 2.1** | Auditer mes 3 projets avec axe DevTools et NVDA. Ajouter aria-live, skip-nav, focus management. Viser le niveau AA. | [WAI-ARIA Practices](https://www.w3.org/WAI/ARIA/apg/), [Cours Accessibilité Google/Udacity](https://web.dev/accessibility) |
-| **Implémenter le SEO** | Ajouter meta descriptions, Open Graph, données structurées Schema.org. Migrer le Restaurant vers `createWebHistory`. | [web.dev SEO](https://web.dev/learn/seo), [Schema.org](https://schema.org) |
+| **Maîtriser l'accessibilité WCAG 2.1** | Continuer l'audit de mes 3 projets avec axe DevTools et NVDA. Tester la navigation clavier complète. Améliorer le focus management. Viser le niveau AA. | [WAI-ARIA Practices](https://www.w3.org/WAI/ARIA/apg/), [Cours Accessibilité Google/Udacity](https://web.dev/accessibility) |
+| **Améliorer le SEO** | Ajouter des données structurées Schema.org. Migrer le Restaurant vers `createWebHistory`. Ajouter `og:image` pour les prévisualisations de lien. | [web.dev SEO](https://web.dev/learn/seo), [Schema.org](https://schema.org) |
 | **Approfondir les tests** | Écrire des tests unitaires pour les stores Pinia (Vitest) et des tests d'intégration pour les composants Vue (Vue Test Utils). | [Vitest](https://vitest.dev/), [Vue Test Utils](https://test-utils.vuejs.org/) |
 
 ### Objectifs moyen terme (6-12 mois)
