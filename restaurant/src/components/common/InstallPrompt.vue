@@ -8,7 +8,7 @@
           <p class="text-xs text-gray-300">Commandez plus rapidement et hors-ligne !</p>
         </div>
       </div>
-      <button @click="dismiss" class="text-gray-400 hover:text-white">✕</button>
+      <button @click="dismiss" class="text-gray-400 hover:text-white" aria-label="Fermer">✕</button>
     </div>
     
     <div class="flex space-x-2 mt-2">
