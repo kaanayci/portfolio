@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kaan's Portfolio</title>
+  <meta name="description" content="Portfolio d'intégration web de Kaan Ayci – Projets Dashboard météo, jeu musical Hitster et application restaurant Vue 3. ESNE Neuchâtel.">
+  <meta name="author" content="Kaan Ayci">
+  <meta property="og:title" content="Kaan Ayci – Portfolio Intégration Web">
+  <meta property="og:description" content="Découvrez mes projets : Dashboard météo PWA, jeu musical Hitster et application de commande restaurant avec Vue 3.">
+  <meta property="og:type" content="website">
+  <title>Kaan Ayci – Portfolio Intégration Web</title>
   <link rel="stylesheet" href="assets/css/main.css" />
   <!-- Librairie légère pour convertir Markdown -> HTML -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -50,16 +55,34 @@
   </section>
 
   <section id="docs">
-    <h2>Fiches Techniques</h2>
+    <h2>Base de Connaissances</h2>
     <div id="doc-list" class="doc-list">
       <!-- Généré par JS -->
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>À propos</h2>
+    <div class="about-content">
+      <p>
+        Je suis <strong>Kaan Ayci</strong>, étudiant à l'<strong>ESNE de Neuchâtel</strong> en intégration web.
+        Ce portfolio rassemble mes projets réalisés tout au long de ma formation : un dashboard météo interactif,
+        un jeu musical en ligne et une application de commande restaurant complète.
+      </p>
+      <p>
+        Chaque projet m'a permis d'explorer des technologies différentes — de jQuery à Vue 3 en passant par
+        les modules ES natifs — et de progresser aussi bien en front-end qu'en architecture logicielle.
+      </p>
+      <p class="about-links">
+        <a href="https://github.com/kaanayci" target="_blank" rel="noopener">GitHub</a>
+      </p>
     </div>
   </section>
 
   <!-- Modal pour lire les MD -->
   <div id="doc-modal">
     <div class="modal-content">
-      <button class="close-btn">✕</button>
+      <button class="close-btn" aria-label="Fermer la modale">✕</button>
       <div id="markdown-content" class="markdown-body"></div>
     </div>
   </div>
