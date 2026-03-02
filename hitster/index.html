@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Hitster – Jeu de quiz musical interactif. Écoutez un extrait, devinez l'année et placez la chanson dans votre timeline chronologique.">
+    <meta property="og:title" content="Hitster – Timeline Musicale">
+    <meta property="og:description" content="Un jeu musical interactif en Vanilla JS inspiré du jeu de société Hitster. Drag & drop, modes de difficulté et import de playlists Spotify.">
+    <meta property="og:type" content="website">
     <title>Hitster – Timeline Musicale</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,10 +62,10 @@
           <h1>Hitster – Timeline Musicale</h1>
           <p>Place la musique au bon endroit dans le temps</p>
           <!-- Theme picker -->
-          <div class="theme-picker" id="theme-picker">
-            <button class="theme-btn active" data-theme="synthwave" title="Synthwave">🌆</button>
-            <button class="theme-btn" data-theme="midnight" title="Midnight">🌙</button>
-            <button class="theme-btn" data-theme="vinyl" title="Rétro Vinyle">🎵</button>
+          <div class="theme-picker" id="theme-picker" role="group" aria-label="Choix du thème">
+            <button class="theme-btn active" data-theme="synthwave" title="Synthwave" aria-label="Thème Synthwave" aria-pressed="true">🌆</button>
+            <button class="theme-btn" data-theme="midnight" title="Midnight" aria-label="Thème Midnight" aria-pressed="false">🌙</button>
+            <button class="theme-btn" data-theme="vinyl" title="Rétro Vinyle" aria-label="Thème Rétro Vinyle" aria-pressed="false">🎵</button>
           </div>
         </header>
 
@@ -84,7 +88,7 @@
 
           <div class="game-area" id="game-area">
             <div class="game-status">
-              <div class="score-group">
+              <div class="score-group" aria-live="polite">
                 <p id="score">Score : 0</p>
                 <p id="high-score" class="high-score">Record : 0</p>
               </div>
@@ -99,7 +103,7 @@
                   <div class="progress-fill" id="song-progress"></div>
                 </div>
               </div>
-              <p id="lives" class="lives-display">❤️❤️❤️</p>
+              <p id="lives" class="lives-display" aria-live="polite" aria-label="Vies restantes">❤️❤️❤️</p>
             </div>
 
             <!-- Chrono timer bar -->
@@ -121,15 +125,15 @@
                 <div id="audio-loading" class="audio-loader"></div>
               </div>
               <div id="custom-audio-player" class="player-container">
-                <button id="play-pause-btn" class="player-btn">▶</button>
+                <button id="play-pause-btn" class="player-btn" aria-label="Lecture / Pause">▶</button>
                 <div class="progress-wrapper" id="progress-container">
                   <div class="progress-bar" id="progress-bar"></div>
                 </div>
                 <span id="time-display">00:00</span>
                 <!-- Volume control -->
                 <div class="volume-control">
-                  <button id="volume-btn" class="volume-btn" title="Volume">🔊</button>
-                  <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.05" value="0.7" />
+                  <button id="volume-btn" class="volume-btn" title="Volume" aria-label="Couper/rétablir le son">🔊</button>
+                  <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.05" value="0.7" aria-label="Volume" />
                 </div>
               </div>
               <audio id="audio" crossorigin="anonymous"></audio>
@@ -138,10 +142,10 @@
         </section>
       </section>
 
-      <section id="timeline"></section>
-      <p id="message"></p>
+      <section id="timeline" aria-label="Timeline chronologique" aria-live="polite"></section>
+      <p id="message" aria-live="assertive" role="status"></p>
 
-      <div id="game-over-modal" class="modal hidden">
+      <div id="game-over-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-content">
           <h2 id="modal-title">Partie Terminée</h2>
           <p id="modal-message">Bravo !</p>
