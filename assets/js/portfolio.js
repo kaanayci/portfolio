@@ -1,8 +1,10 @@
-// Liste des documents transversaux (Analyses & Veille)
+// Liste des documents transversaux (Analyses, Veille & Réflexions)
 const documents = [
   { title: "Analyse UX/Tech : CFF.ch", category: "Analyse", path: "analyses/site-cff.md" },
   { title: "Analyse UX/Tech : Qoqa.ch", category: "Analyse", path: "analyses/site-qoqa.md" },
-  { title: "Veille Technologique 2026", category: "Veille", path: "analyses/veille-technologique.md" }
+  { title: "Veille Technologique 2026", category: "Veille", path: "analyses/veille-technologique.md" },
+  { title: "Réflexion de mi-parcours", category: "Réflexion", path: "reflexions/mi-parcours.md" },
+  { title: "Bilan final & perspectives", category: "Réflexion", path: "reflexions/bilan-final.md" }
 ];
 
 // Rendu de la liste
@@ -10,9 +12,10 @@ const listContainer = document.getElementById('doc-list');
 documents.forEach(doc => {
   const item = document.createElement('div');
   item.className = 'doc-item';
+  const tagClass = doc.category === 'Réflexion' ? 'tag reflexion' : 'tag';
   item.innerHTML = `
     <div class="doc-meta">
-      <span class="tag">${doc.category}</span>
+      <span class="${tagClass}">${doc.category}</span>
       <strong>${doc.title}</strong>
     </div>
     <span>→</span>
@@ -38,7 +41,7 @@ async function loadMarkdown(path) {
 }
 
 // Fermeture de la modale
-document.querySelector('.close-modal').onclick = () => {
+document.querySelector('.close-btn').onclick = () => {
   document.getElementById('doc-modal').classList.remove('active');
 };
 
