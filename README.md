@@ -45,6 +45,22 @@ Chaque projet est accompagne de **6 fiches techniques** detaillant un concept cl
 - `hitster/fiches-techniques/` - Boucle de jeu, controle audio, zones cliquables, JSON BDD, placement chronologique, randomisation
 - `restaurant/public/docs/` - Architecture composants, fidelite, QR code, Pinia, impression thermique, PWA offline
 
+### Fiches de connaissances (19)
+
+Le dossier `connaissances/` contient **19 fiches thematiques** couvrant l'ensemble du developpement web :
+
+| Theme | Fiches |
+|-------|--------|
+| Fondamentaux du Web | 01-HTML5, 02-CSS3 |
+| Frameworks CSS | 03-Bootstrap, 04-Tailwind |
+| JavaScript cote client | 05-ES6+, 06-jQuery, 07-React, 08-React avance |
+| Developpement serveur | 09-Node.js, 10-Express, 11-API REST |
+| Accessibilite et SEO | 12-WCAG, 13-SEO |
+| Securite et confidentialite | 14-Securite web, 15-Tokens, 16-RGPD |
+| Deploiement et outils | 17-CI/CD, 18-Performance, 19-Outils dev |
+
+Voir `connaissances/INDEX.md` pour la table des matieres complete et les parcours de lecture recommandes.
+
 ### Analyses de sites (2) et Veille technologique
 
 - `analyses/site-cff.md` - Analyse UX/accessibilite/SEO de CFF.ch
@@ -68,6 +84,7 @@ portfolio/
 │
 ├── analyses/                   # Analyses de sites + veille
 ├── reflexions/                 # Reflexions mi-parcours & bilan final
+├── connaissances/              # 19 fiches thematiques (INDEX.md inclus)
 │
 ├── dashboard/                  # Projet 1 - SwissMeteo
 │   ├── index.html
