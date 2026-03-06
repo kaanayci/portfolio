@@ -110,5 +110,5 @@ Le hub, Dashboard, Hitster et Restaurant (`/restaurant/dist/`) sont tous servis 
 
 ## Auteur
 
-**Kaan Ayci** - ESNE Neuchatel
+**Kaan Kalayci** - CPNE Neuchatel
 [GitHub](https://github.com/kaanayci)
