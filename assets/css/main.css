@@ -170,6 +170,36 @@ h2 {
   color: #f472b6;
 }
 
+.tag.connaissances {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.tag.veille {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+}
+
+/* Intro de section */
+.section-intro {
+  color: var(--gray);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* Groupes par thème */
+.theme-group {
+  margin-bottom: 1.5rem;
+}
+
+.theme-header {
+  color: var(--primary);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(79, 70, 229, 0.3);
+}
+
 /* À propos */
 .about-content {
   background: var(--surface);
