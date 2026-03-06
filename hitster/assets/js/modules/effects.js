@@ -7,10 +7,11 @@ export function initBackgroundEffects() {
     const note = document.createElement('div');
     note.classList.add('floating-note');
     note.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    note.style.left = Math.random() * 100 + '%';
-    note.style.fontSize = (1 + Math.random() * 2) + 'rem';
+    note.style.setProperty('--left', Math.random() * 100 + '%');
+    note.style.setProperty('--size', (1 + Math.random() * 2) + 'rem');
     const dur = 10 + Math.random() * 10;
-    note.style.animation = `floatUp ${dur}s linear forwards`;
+    note.style.setProperty('--duration', dur + 's');
+    note.style.setProperty('--delay', '0s');
     container.appendChild(note);
     setTimeout(() => note.remove(), dur * 1000);
   }
