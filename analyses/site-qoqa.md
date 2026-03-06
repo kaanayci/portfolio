@@ -1,111 +1,117 @@
-# Analyse Critique : Qoqa.ch
+# Analyse du site Qoqa.ch
 
-## Contexte
-Qoqa est un site e-commerce suisse communautaire basé sur des offres éphémères (« deal du jour »). Le modèle repose sur l'urgence et l'engagement communautaire. L'analyse porte sur la page d'accueil et le parcours d'achat, évalués en termes d'UX, performance, accessibilité et SEO. Observations réalisées en février 2026 avec Chrome DevTools et Lighthouse.
+## Pourquoi ce site ?
 
----
+J'ai choisi Qoqa parce que c'est l'inverse total de CFF.ch. Là où les CFF misent sur l'efficacité sobre, Qoqa mise tout sur le fun, l'urgence et le visuel. C'est aussi un site suisse que je connais en tant qu'utilisateur — j'ai déjà acheté des trucs dessus et je voulais comprendre comment leur système de "deal du jour" influence les choix techniques.
 
-## 1. UX & Engagement (Gamification)
-
-**Points Forts :**
-*   **Urgence et FOMO** : Utilisation massive de barres de progression (« Plus que 12% ! »), comptes à rebours et indicateurs de stock limité qui créent un sentiment d'urgence (Fear Of Missing Out). Cette technique de gamification est très efficace pour le taux de conversion.
-*   **Micro-interactions** : Les boutons réagissent au survol avec des transitions fluides (`transition: transform 0.15s ease`), les animations d'ajout au panier sont satisfaisantes (scale + fade). Cela rend l'expérience « fun », ce que j'ai essayé de reproduire dans mon projet Hitster avec les confettis et le screen shake.
-*   **Communauté intégrée** : Section commentaires sous chaque produit, votes, partage — le site est autant un réseau social qu'un e-commerce.
-
-**Lien avec mes projets :** La gamification de Qoqa m'a directement inspiré pour le « Game Juice » de Hitster (feedback visuel immédiat, animations de récompense). Cependant, Qoqa pousse parfois trop loin : l'urgence artificielle peut frustrer. Dans Hitster, j'ai essayé de garder le fun sans manipulation.
+L'analyse porte sur la page d'accueil et le parcours d'achat, avec les mêmes outils que pour CFF (Lighthouse, DevTools, axe).
 
 ---
 
-## 2. Performance (Core Web Vitals – Lighthouse)
+## UX et gamification
 
-**Résultats Lighthouse (mode mobile, février 2026) :**
+Le premier truc qui frappe quand on regarde le code de Qoqa, c'est à quel point tout est pensé pour te pousser à acheter. La barre de progression ("Plus que 12% !"), le compte à rebours, les indicateurs de stock limité — c'est du FOMO (Fear Of Missing Out) pur et dur.
 
-| Métrique | Valeur observée | Seuil Google (Bon) | Verdict |
+Les micro-interactions sont bien faites : les boutons réagissent au survol avec un petit scale, l'animation d'ajout au panier est satisfaisante. C'est le genre de "game juice" que j'ai essayé de reproduire dans Hitster avec les confettis et les sons de feedback. La différence, c'est que chez Qoqa ça sert à vendre, dans Hitster ça sert à récompenser.
+
+Il y a aussi toute une dimension communautaire (commentaires, votes, partage) qui fait que le site est à mi-chemin entre un e-commerce et un réseau social. C'est malin, mais ça a un coût technique — on va le voir avec la performance.
+
+Honnêtement, l'urgence artificielle me dérange un peu en tant qu'utilisateur. Quand tu vois "PLUS QUE 3 EN STOCK" et que le lendemain le même produit revient... ça casse la confiance. Dans Hitster, j'ai essayé de garder le côté fun sans cette manipulation.
+
+---
+
+## Performance
+
+Là, c'est beaucoup moins glorieux que les CFF.
+
+| Métrique | Valeur | Seuil "Bon" | |
 |---|---|---|---|
-| **LCP** (Largest Contentful Paint) | ~3.8s | < 2.5s | ❌ Lent |
-| **INP** (Interaction to Next Paint) | ~280ms | < 200ms | ⚠️ À améliorer |
-| **CLS** (Cumulative Layout Shift) | ~0.15 | < 0.1 | ❌ Instable |
-| **Score Performance** | 52/100 | > 90 | ❌ Mauvais |
-| **Score Accessibilité** | 68/100 | > 90 | ❌ Insuffisant |
+| LCP | ~3.8s | < 2.5s | Mauvais |
+| INP | ~280ms | < 200ms | Moyen |
+| CLS | ~0.15 | < 0.1 | Mauvais |
+| Score global | 52/100 | > 90 | Mauvais |
+| Score accessibilité | 68/100 | > 90 | Insuffisant |
 
-**Analyse des problèmes :**
-*   **LCP élevé** : L'image produit principale (hero) est servie en JPEG haute résolution (~800 Ko) au lieu de WebP ou AVIF. Pas de `srcset` pour adapter la résolution à la taille d'écran.
-*   **CLS instable** : Les bannières promotionnelles et les barres de progression se chargent dynamiquement sans dimensions réservées, causant des sauts de layout. Contrairement à CFF.ch qui réserve l'espace avec des `min-height` fixes.
-*   **JavaScript lourd** : Le bundle JS principal pèse ~1.2 Mo (non compressé). Sur un smartphone de milieu de gamme, le thread principal est bloqué pendant ~2s au chargement, causant le saccadement du défilement.
+52 en performance mobile, c'est franchement pas terrible pour un site e-commerce où chaque seconde de chargement = des ventes en moins. Google estime d'ailleurs que chaque 100ms de latence supplémentaire coûte environ 1% de conversion.
 
-**Solutions proposées :**
-*   Convertir les images en WebP/AVIF avec `<picture>` et `srcset` pour le responsive → gain LCP estimé : -1.5s
-*   Implémenter le code-splitting pour ne charger que le JS nécessaire à la vue actuelle (le module commentaires et le chat communautaire pourraient être lazy-loadés)
-*   Réserver les dimensions des blocs dynamiques avec un skeleton loading (comme je l'ai fait partiellement dans mon Dashboard pour la météo)
+En regardant dans le détail :
 
-**Comparaison avec CFF.ch :**
-La différence de score (CFF : 88/100 vs Qoqa : 52/100) s'explique par les priorités : CFF optimise pour l'efficacité (trouver un train en < 2s), Qoqa privilégie l'engagement visuel (animations, images HD, effets). C'est un compromis assumé, mais pour un site e-commerce mobile-first, la performance impacte directement le taux de conversion (Google estime -1% de conversion par 100ms de latence supplémentaire).
+Le **LCP à 3.8s** vient en grande partie de l'image produit principale. Elle est servie en JPEG haute résolution (~800 Ko) au lieu de WebP. Pas de `srcset` non plus, donc un téléphone charge la même image qu'un écran 4K. C'est surprenant pour un site de cette taille.
+
+Le **CLS à 0.15** s'explique facilement : les bannières promo et les barres de progression se chargent dynamiquement sans espace réservé. Résultat, la page "saute" pendant le chargement. CFF résout ça avec des `min-height` fixes — c'est basique mais ça marche.
+
+Le **bundle JS pèse ~1.2 Mo** (non compressé). Sur un smartphone moyen, le thread principal est bloqué ~2 secondes au chargement. Le module commentaires et le chat communautaire pourraient largement être lazy-loadés — tu n'en as pas besoin tant que tu n'as pas scrollé jusqu'en bas.
+
+La comparaison avec CFF (88 vs 52) est parlante : CFF optimise pour l'efficacité, Qoqa pour l'engagement visuel. C'est un compromis, mais pour un site mobile-first comme Qoqa, je pense qu'ils y perdent plus qu'ils n'y gagnent.
 
 ---
 
-## 3. Accessibilité (WCAG 2.1)
+## Accessibilité
 
-**Faiblesses identifiées :**
+C'est le gros point noir du site, et ça m'a un peu choqué pour une boîte suisse de cette taille.
 
 | Problème | Critère WCAG | Sévérité |
 |---|---|---|
-| Contrastes insuffisants (rose Qoqa #E84C8A sur gris #888) : ratio ~3.1:1 au lieu de 4.5:1 minimum | 1.4.3 – Contraste minimum (AA) | Haute |
-| Navigation clavier quasi impossible : les modales pop-up (newsletter, cookies, offres flash) ne capturent pas le focus et ne sont pas fermables au clavier (`Escape`) | 2.1.1 – Clavier, 2.4.3 – Ordre du focus | Critique |
-| Bouton « Ajouter au panier » sans libellé accessible : `<button>` contenant uniquement un SVG sans `aria-label` | 4.1.2 – Nom, rôle, valeur | Haute |
-| Pas de skip link pour sauter la navigation | 2.4.1 – Contourner des blocs | Moyenne |
-| Compte à rebours non annoncé aux lecteurs d'écran (pas d'`aria-live`) | 4.1.3 – Messages d'état | Moyenne |
+| Contraste du rose Qoqa (#E84C8A) sur gris (#888) : ratio ~3.1:1 au lieu de 4.5:1 | 1.4.3 – Contraste | Haute |
+| Modales (newsletter, cookies, offres flash) pas fermables au clavier, pas de focus trap | 2.1.1 / 2.4.3 – Clavier et focus | Critique |
+| Bouton "Ajouter au panier" = SVG sans `aria-label` | 4.1.2 – Nom, rôle, valeur | Haute |
+| Pas de skip link | 2.4.1 – Contourner des blocs | Moyenne |
+| Compte à rebours non annoncé aux lecteurs d'écran | 4.1.3 – Messages d'état | Moyenne |
 
-**Solutions proposées :**
-*   Changer le rose Qoqa pour un ton plus foncé (#D63384, ratio 4.6:1) ou augmenter le contraste du fond
-*   Implémenter une focus trap dans les modales avec gestion de `Escape` pour fermer
-*   Ajouter `aria-label="Ajouter [nom produit] au panier"` sur chaque bouton d'ajout
-*   Ajouter un composant `<div aria-live="polite">` pour annoncer les changements de compte à rebours
+Le problème de contraste est visible à l'oeil nu : le rose Qoqa sur fond gris, c'est dur à lire même pour quelqu'un sans déficience visuelle. Un rose plus foncé (#D63384) donnerait un ratio de 4.6:1 sans changer l'identité de la marque.
 
----
+Le plus grave à mon avis, c'est les modales. Quand une pop-up newsletter s'ouvre, tu ne peux pas la fermer avec `Escape` si tu navigues au clavier. Le focus ne bouge même pas vers la modale — il reste "derrière". Pour un utilisateur de lecteur d'écran, c'est comme si la modale n'existait pas, sauf qu'elle bloque visuellement tout le reste. C'est exactement le problème inverse de ce que j'ai trouvé chez CFF (où les modales ne capturent pas le focus mais restent fermables).
 
-## 4. SEO & Référencement
-
-**Points Forts :**
-*   **Contenu unique quotidien** : Chaque « deal » génère une page unique avec description, photos, avis — excellent pour le référencement naturel (contenu frais quotidien).
-*   **URLs propres** : Structure `/fr/product/nom-du-produit-12345` lisible et SEO-friendly.
-*   **Données structurées** : Utilisation de Schema.org `Product` avec `price`, `availability`, `review` — permet l'affichage de rich snippets (étoiles, prix) dans Google.
-
-**Points à Améliorer :**
-*   **Meta descriptions** : Certaines pages produits ont des meta descriptions identiques (« Découvrez l'offre Qoqa du jour ! »). Chaque page devrait avoir une description unique intégrant le nom du produit et le prix.
-*   **Temps de chargement mobile** : Google utilise l'indexation mobile-first. Avec un score performance de 52/100, Qoqa est pénalisé dans le classement mobile.
-*   **Pas de balise `<link rel="canonical">`** sur certaines variantes d'URL (avec/sans paramètres de tracking), ce qui peut créer du contenu dupliqué.
+Le bouton d'ajout au panier contient juste un SVG sans aucun label. Un lecteur d'écran va lire "bouton" sans rien d'autre. Un simple `aria-label="Ajouter [nom du produit] au panier"` réglerait le problème.
 
 ---
 
-## 5. Comparaison des approches techniques
+## SEO
 
-| Aspect | CFF.ch | Qoqa.ch | Mon projet Restaurant |
+Malgré les problèmes de performance, le SEO a des points intéressants.
+
+Le modèle "deal du jour" génère du contenu unique quotidien avec descriptions, photos et avis — Google adore ça. Les URLs sont propres (`/fr/product/nom-du-produit-12345`), et ils utilisent Schema.org `Product` avec prix, disponibilité et avis, ce qui permet d'afficher les étoiles et le prix directement dans les résultats Google.
+
+Par contre, j'ai trouvé des meta descriptions identiques sur plusieurs pages produits ("Découvrez l'offre Qoqa du jour !"). C'est le genre de truc qui arrive quand le template par défaut n'est pas personnalisé. Et il manque des `<link rel="canonical">` sur certaines variantes d'URL (avec/sans paramètres de tracking), ce qui peut créer du contenu dupliqué.
+
+Le vrai problème SEO de Qoqa, c'est indirect : avec un score performance de 52/100 en mobile, Google les pénalise dans le classement mobile-first. Toute l'optimisation de contenu est un peu annulée par la lenteur du site.
+
+---
+
+## Comparaison CFF vs Qoqa vs mon Restaurant
+
+| | CFF.ch | Qoqa.ch | Mon Restaurant |
 |---|---|---|---|
-| **Rendu** | SSR (serveur) | SSR + hydratation JS lourde | SPA (Vue 3 + Vite) |
-| **Framework** | Propriétaire/Angular | React (Next.js probable) | Vue 3 |
-| **Images** | WebP + srcset | JPEG (ancien stock) | Pas d'images lourdes (icônes SVG) |
-| **Accessibilité** | Bon (91/100) | Insuffisant (68/100) | Moyen (~75/100 estimé) |
-| **SEO** | Excellent (SSR + Schema.org) | Correct (contenu riche mais perf faible) | Faible (SPA hash routing) |
-| **Performance** | 88/100 | 52/100 | ~90/100 (app légère) |
+| Rendu | SSR (serveur) | SSR + JS lourd | SPA (Vue 3 + Vite) |
+| Framework | Propriétaire | React (probablement Next.js) | Vue 3 |
+| Images | WebP + srcset | JPEG sans srcset | SVG / pas d'images lourdes |
+| Accessibilité | 91/100 | 68/100 | ~80/100 (estimé) |
+| SEO | Excellent (SSR + Schema.org) | Correct (bon contenu, mauvaise perf) | Limité (SPA hash routing) |
+| Performance | 88/100 | 52/100 | ~90/100 (app légère) |
 
-**Enseignement clé :** Le choix de l'architecture (SSR vs SPA) a un impact majeur sur le SEO et la performance. Pour mon projet Restaurant, le hash routing (`/#/menu`) empêche l'indexation par les moteurs de recherche. Si c'était un vrai site commercial, j'aurais dû utiliser Nuxt.js (SSR) ou au minimum `createWebHistory` avec une configuration serveur pour le fallback.
-
----
-
-## 6. Synthèse
-
-Qoqa excelle dans le marketing et l'UX visuelle, mais sacrifie l'accessibilité et la performance au profit du « Waouh effect ». Pour un projet d'examen, il faut trouver un équilibre entre le fun de Qoqa (animations, feedback) et la rigueur technique de CFF.ch (accessibilité, performance, SEO).
-
-**Ce que j'en retiens pour mes projets :**
-*   La gamification fonctionne (Hitster le prouve), mais ne doit pas se faire au détriment de l'accessibilité
-*   Les images doivent toujours être optimisées (WebP, srcset, lazy loading) — même pour un portfolio
-*   Le SEO doit être pensé dès la conception (choix du routage, meta tags, données structurées), pas ajouté après coup
+Ce tableau résume bien les compromis. CFF, c'est la rigueur. Qoqa, c'est l'engagement au détriment de la qualité technique. Mon Restaurant est quelque part entre les deux : bon en performance (parce que c'est léger), correct en accessibilité (j'ai fait l'effort des ARIA), mais faible en SEO à cause du hash routing. Si c'était un vrai site commercial, j'aurais dû partir sur Nuxt.js pour avoir du SSR.
 
 ---
 
-**Sources :**
-*   [Google Core Web Vitals](https://web.dev/vitals/)
-*   [WCAG 2.1 Quick Reference](https://www.w3.org/WAI/WCAG21/quickref/)
-*   [Google – Page Experience Update](https://developers.google.com/search/docs/appearance/page-experience)
-*   [Schema.org – Product](https://schema.org/Product)
-*   [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+## Ce que j'en tire
+
+Qoqa m'a surtout appris ce qu'il ne faut PAS faire :
+- Sacrifier l'accessibilité pour le design, c'est pas acceptable en 2026, même pour un site privé
+- Les images non optimisées sur un site à fort trafic, c'est du gaspillage de bande passante
+- Un bundle JS de 1.2 Mo sans code-splitting, c'est le genre de dette technique qui s'accumule
+
+Mais aussi ce qu'ils font bien :
+- La gamification et les micro-interactions rendent l'expérience mémorable (j'ai appliqué ça dans Hitster)
+- Schema.org `Product` avec les rich snippets, c'est malin et pas si compliqué à mettre en place
+- Le contenu communautaire (avis, commentaires) est un vrai atout SEO
+
+La comparaison avec CFF montre qu'il n'y a pas de solution universelle : le choix technique dépend du contexte métier. Mais certains fondamentaux (contraste, navigation clavier, images optimisées) devraient être non négociables quel que soit le type de site.
+
+---
+
+**Sources utilisées :**
+*   [Google – Core Web Vitals](https://web.dev/vitals/) — métriques de performance web
+*   [W3C – WCAG 2.1 Quick Reference](https://www.w3.org/WAI/WCAG21/quickref/) — les critères d'accessibilité vérifiés
+*   [Google – Page Experience Update](https://developers.google.com/search/docs/appearance/page-experience) — impact de la performance sur le SEO
+*   [Schema.org – Product](https://schema.org/Product) — données structurées utilisées par Qoqa
+*   [WebAIM – Contrast Checker](https://webaim.org/resources/contrastchecker/) — outil utilisé pour vérifier les ratios de contraste
