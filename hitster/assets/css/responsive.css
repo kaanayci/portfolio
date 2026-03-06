@@ -6,35 +6,122 @@
   .shortcuts-hint { display: none; }
   .volume-control { display: none; }
 
+  header h1 { font-size: 1.3rem; }
+  header p { font-size: 0.85rem; }
+
+  .back-link {
+    position: static;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+
   /* Timeline horizontal scroll avec snap */
   #timeline {
     flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;
     scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
     padding: 1rem 0.5rem; gap: 0.4rem;
     scrollbar-width: thin; scrollbar-color: rgba(0,212,255,0.3) transparent;
+    margin-top: 1.5rem;
   }
   #timeline::-webkit-scrollbar { height: 4px; }
   #timeline::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 2px; }
-  #timeline .timeline-card { scroll-snap-align: center; min-width: 120px; }
+  #timeline .timeline-card { scroll-snap-align: center; min-width: 110px; font-size: 0.8rem; padding: 0.5rem; }
+  #timeline .timeline-card .title { font-size: 0.75rem; }
+  #timeline .timeline-card .artist { font-size: 0.65rem; }
+  #timeline .timeline-card .year { font-size: 0.85rem; }
   #timeline .drop-zone { scroll-snap-align: center; }
+
+  /* Player plus compact */
+  .player-container { padding: 0.5rem 0.6rem; gap: 0.5rem; }
+  #time-display { font-size: 0.7rem; min-width: 32px; }
 }
 
 @media (max-width: 600px) {
-  .top-layout { grid-template-columns: 1fr; }
-  main { padding: 1rem; }
+  .top-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+  main { padding: 0.75rem; }
 
-  #playlist-select { flex-direction: column; align-items: stretch; }
+  header h1 { font-size: 1.15rem; margin-top: 0; }
+  header p { font-size: 0.8rem; margin: 0.25rem 0; }
+
+  .theme-picker { gap: 0.3rem; margin-top: 0.3rem; }
+  .theme-btn { padding: 3px 8px; font-size: 0.95rem; }
+
+  #playlist-select { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  #playlist-select p { font-size: 0.85rem; margin: 0; }
   #playlist-select input,
   #playlist-select select,
-  #playlist-select button { width: 100%; box-sizing: border-box; }
+  #playlist-select button { width: 100%; box-sizing: border-box; font-size: 0.9rem; padding: 0.5rem 0.7rem; }
 
-  .game-status { flex-direction: column; text-align: center; gap: 0.5rem; }
+  .game-status { flex-direction: column; text-align: center; gap: 0.4rem; }
+  .game-status #score { font-size: 0.95rem; }
   .progress-tracker { max-width: 100%; }
+  .lives-display { font-size: 1rem; }
+  .streak-display { padding: 3px 8px; }
+  .streak-count { font-size: 0.8rem; }
+  .streak-multiplier { font-size: 0.75rem; }
 
-  .modal-content { padding: 1.5rem; }
-  .modal-stats { gap: 0.8rem; }
-  .stat-value { font-size: 1.1rem; }
+  #current-card { padding: 0.8rem; max-width: 100%; }
+  #current-card .hint { font-size: 0.8rem; }
+  .drag-instruction { font-size: 0.75rem; }
+  .card-hint { font-size: 0.85rem; }
+  .card-cover img { width: 60px; height: 60px; }
 
-  .drop-zone { width: 44px; height: 44px; font-size: 1.5rem; }
+  .player-container { gap: 0.4rem; padding: 0.4rem 0.6rem; max-width: 100%; }
+  .player-btn { width: 32px; height: 32px; font-size: 0.85rem; }
+  #time-display { font-size: 0.7rem; min-width: 28px; }
+
+  /* Timer bar compact */
+  .timer-bar-container { padding: 0; margin-bottom: 0.5rem; }
+  .timer-bar-container .timer-text { font-size: 0.75rem; }
+
+  /* Timeline cards encore plus compacts */
+  #timeline .timeline-card { min-width: 95px; padding: 0.4rem; }
+  .timeline-card-cover { width: 40px; height: 40px; }
+
+  .modal-content { padding: 1.2rem; margin: 0.5rem; max-height: 90vh; overflow-y: auto; }
+  .modal-content h2 { font-size: 1.2rem; }
+  .final-score { font-size: 1rem; }
+  .modal-stats { gap: 0.6rem; flex-wrap: wrap; }
+  .stat-item { min-width: 70px; }
+  .stat-value { font-size: 1rem; }
+  .stat-label { font-size: 0.65rem; }
+  .modal-actions { flex-direction: column; gap: 0.5rem; }
+  .modal-actions button { width: 100%; }
+  .modal-difficulty { flex-direction: column; gap: 0.3rem; }
+  .modal-difficulty select { width: 100%; }
+  .timeline-recap { font-size: 0.75rem; max-height: 150px; overflow-y: auto; }
+
+  .drop-zone { width: 38px; height: 38px; font-size: 1.3rem; }
+  .is-dragging .drop-zone { width: 44px; height: 44px; }
   button { min-height: 44px; }
+
+  /* Countdown plus petit */
+  .countdown-number { font-size: 4rem; }
+
+  .docs-link { margin-top: 1rem; }
+  .docs-link a { font-size: 0.8rem; }
+
+  /* QR code section dans la modale */
+  .qrcode-section { transform: scale(0.8); transform-origin: center; }
+}
+
+/* Très petits écrans (iPhone SE, etc.) */
+@media (max-width: 380px) {
+  main { padding: 0.5rem; }
+  header h1 { font-size: 1rem; }
+
+  #playlist-select input,
+  #playlist-select select,
+  #playlist-select button { font-size: 0.85rem; padding: 0.45rem 0.6rem; }
+
+  #current-card { padding: 0.6rem; }
+  #current-card .hint { font-size: 0.75rem; }
+
+  #timeline .timeline-card { min-width: 85px; }
+  .timeline-card .title { font-size: 0.7rem; }
+  .timeline-card .artist { font-size: 0.6rem; }
+
+  .modal-content { padding: 1rem; }
 }
