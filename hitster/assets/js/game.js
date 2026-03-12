@@ -71,6 +71,18 @@ async function handleStartClick() {
   const url = UIElements.playlistInput.value.trim();
 
   if (url) {
+    const isStaticHost = !window.location.hostname.includes("localhost") && !window.location.hostname.includes("127.0.0.1");
+
+    if (isStaticHost) {
+      UIElements.messageEl.innerHTML = `⚠️ L'import Spotify n'est pas disponible sur GitHub Pages.<br>
+        <small>Pour importer une playlist, utilise le workflow GitHub Actions
+        <a href="https://github.com/kaanayci/portfolio/actions/workflows/import-playlist.yml" target="_blank" rel="noopener">"Import Spotify Playlist"</a>
+        avec ton URL Spotify. La playlist sera disponible après le redéploiement.</small>`;
+      UIElements.startBtn.disabled = false;
+      UIElements.startBtn.textContent = "Démarrer la partie";
+      return;
+    }
+
     UIElements.messageEl.textContent = "⏳ Import de la playlist...";
     try {
       const resp = await fetch("/api/playlist", {

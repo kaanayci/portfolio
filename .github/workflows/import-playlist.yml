@@ -1,0 +1,48 @@
+name: Import Spotify Playlist
+
+on:
+  workflow_dispatch:
+    inputs:
+      playlist_url:
+        description: "URL ou ID de la playlist Spotify"
+        required: true
+        type: string
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Spotify import
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+        run: node -e "
+          const { generateSongsJsonFromSpotifyPlaylist } = await import('./hitster/assets/tools/spotify-to-json.mjs');
+          const input = '${{ inputs.playlist_url }}';
+          const match = input.match(/playlist\/([a-zA-Z0-9]+)/) || input.match(/spotify:playlist:([a-zA-Z0-9]+)/);
+          const id = match ? match[1] : input.trim();
+          const result = await generateSongsJsonFromSpotifyPlaylist(id);
+          console.log('✅ songs.json généré (' + result.count + ' morceaux)');
+        " --input-type=module
+
+      - name: Commit songs.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add hitster/assets/data/songs.json
+          git diff --staged --quiet || git commit -m "feat: update hitster songs.json from Spotify playlist"
+          git push
