@@ -10,6 +10,7 @@ import { initThemePicker } from './modules/theme.js';
 import { saveGameState, clearGameState, tryRestoreState } from './modules/state.js';
 import { setupDragAndDrop, setupKeyboard } from './modules/input.js';
 import { showCountdown } from './modules/countdown.js';
+import { importPlaylistFromSpotify, handleSpotifyCallback, getCustomSongs } from './modules/spotify-import.js';
 
 let songs = [], timeline = [], currentCard = null;
 let score = 0, highScore = parseInt(localStorage.getItem("hitster_high_score")) || 0;
@@ -54,6 +55,11 @@ setupDragAndDrop(UIElements.currentCardEl, dragInstruction);
 setupKeyboard(player, moveFocusedDropZone, placeAtFocusedZone, () => gameActive);
 
 async function loadSongs() {
+  const custom = getCustomSongs();
+  if (custom?.length) {
+    songs = shuffle(custom);
+    return;
+  }
   try {
     const res = await fetch(`assets/data/songs.json?v=${Date.now()}`);
     songs = shuffle(await res.json());
@@ -63,7 +69,25 @@ async function loadSongs() {
   }
 }
 
-loadSongs();
+// Gère le retour depuis l'auth Spotify (redirect OAuth)
+handleSpotifyCallback()
+  .then(async (pendingPlaylist) => {
+    if (!pendingPlaylist) { loadSongs(); return; }
+    if (UIElements.playlistInput) UIElements.playlistInput.value = pendingPlaylist;
+    UIElements.messageEl.textContent = "⏳ Connexion Spotify réussie, import en cours…";
+    const imported = await importPlaylistFromSpotify(pendingPlaylist, (done, total, found) => {
+      UIElements.messageEl.textContent = `⏳ ${done}/${total} — ${found} previews trouvés…`;
+    });
+    if (imported) {
+      songs = shuffle(imported);
+      UIElements.messageEl.textContent = `✅ ${songs.length} morceaux importés. Clique sur Démarrer !`;
+    }
+  })
+  .catch((e) => {
+    console.error(e);
+    UIElements.messageEl.textContent = `❌ ${e.message}`;
+    loadSongs();
+  });
 
 async function handleStartClick() {
   UIElements.startBtn.disabled = true;
@@ -71,55 +95,24 @@ async function handleStartClick() {
   const url = UIElements.playlistInput.value.trim();
 
   if (url) {
-    const isStaticHost = !window.location.hostname.includes("localhost") && !window.location.hostname.includes("127.0.0.1");
-
-    if (isStaticHost) {
-      UIElements.messageEl.innerHTML = `⚠️ L'import Spotify n'est pas disponible sur GitHub Pages.<br>
-        <small>Pour importer une playlist, utilise le workflow GitHub Actions
-        <a href="https://github.com/kaanayci/portfolio/actions/workflows/import-playlist.yml" target="_blank" rel="noopener">"Import Spotify Playlist"</a>
-        avec ton URL Spotify. La playlist sera disponible après le redéploiement.</small>`;
-      UIElements.startBtn.disabled = false;
-      UIElements.startBtn.textContent = "Démarrer la partie";
-      return;
-    }
-
-    UIElements.messageEl.textContent = "⏳ Import de la playlist...";
+    UIElements.messageEl.textContent = "⏳ Import de la playlist…";
     try {
-      const resp = await fetch("/api/playlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ playlistUrl: url }),
+      const imported = await importPlaylistFromSpotify(url, (done, total, found) => {
+        UIElements.messageEl.textContent = `⏳ ${done}/${total} — ${found} previews trouvés…`;
       });
-      const raw = await resp.text();
-      let result;
-      try { result = JSON.parse(raw); }
-      catch {
-        UIElements.messageEl.textContent = "❌ Le serveur ne renvoie pas du JSON.";
+      // null = redirection Spotify en cours, on arrête ici
+      if (imported === null) return;
+      if (!imported.length) {
+        UIElements.messageEl.textContent = "⚠️ Aucun extrait audio trouvé dans cette playlist.";
         UIElements.startBtn.disabled = false;
         UIElements.startBtn.textContent = "Démarrer la partie";
         return;
       }
-      if (!result.ok) {
-        UIElements.messageEl.textContent = `❌ ${result.error || "Import échoué"}`;
-        UIElements.startBtn.disabled = false;
-        UIElements.startBtn.textContent = "Démarrer la partie";
-        return;
-      }
-      if (result.playlistId) {
-        currentPlaylistId = result.playlistId;
-        localStorage.setItem("hitster_playlist_id", currentPlaylistId);
-      }
-      await loadSongs();
-      if (!songs.length) {
-        UIElements.messageEl.textContent = "⚠️ Aucun extrait audio trouvé.";
-        UIElements.startBtn.disabled = false;
-        UIElements.startBtn.textContent = "Démarrer la partie";
-        return;
-      }
+      songs = shuffle(imported);
       UIElements.messageEl.textContent = `✅ Playlist importée (${songs.length} morceaux)`;
     } catch (e) {
       console.error(e);
-      UIElements.messageEl.textContent = "❌ Erreur import.";
+      UIElements.messageEl.textContent = `❌ ${e.message}`;
       UIElements.startBtn.disabled = false;
       UIElements.startBtn.textContent = "Démarrer la partie";
       return;
