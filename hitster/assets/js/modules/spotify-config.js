@@ -10,4 +10,4 @@
  *   http://localhost:3000/hitster/
  *   https://kaanayci.github.io/portfolio/hitster/
  */
-export const SPOTIFY_CLIENT_ID = "REMPLACE_PAR_TON_CLIENT_ID";
+export const SPOTIFY_CLIENT_ID = "246d790f8e444b319176f8d05c119230";
